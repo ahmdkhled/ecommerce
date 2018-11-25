@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.RegistrationActivity"
+    android:background="@android:color/white"
+
+
+    >
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/register_layout"
+        android:paddingTop="@dimen/register_layout_padding_top"
+        android:paddingStart="@dimen/register_layout_padding_left"
+        android:paddingEnd="@dimen/register_layout_padding_right"
+        android:paddingLeft="@dimen/register_layout_padding_left"
+        android:paddingRight="@dimen/register_layout_padding_right">
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_input_layout_margin_top"
+            android:layout_marginBottom="@dimen/text_input_layout_margin_top"
+            android:id="@+id/email_textInputLayout_reg"
+            app:errorTextAppearance="@style/erroStyle">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email_edit_hint"
+                android:id="@+id/email_edittext_reg"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/holo_red_light"
+                android:textColorHint="@android:color/holo_red_light"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_input_layout_margin_top"
+            android:layout_marginBottom="@dimen/text_input_layout_margin_top"
+            android:id="@+id/pass_textInputLayout_reg"
+            app:errorTextAppearance="@style/erroStyle">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password_edit_hint"
+                android:id="@+id/password_edittext_reg"
+                android:inputType="textPassword"
+                android:textColor="@android:color/holo_red_light"
+                android:textColorHint="@android:color/holo_red_light"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/app_compat_margin_top"
+            android:layout_marginBottom="@dimen/app_compat_margin_bottom"
+            android:padding="@dimen/app_compat_padding"
+            android:background="@android:color/white"
+            android:text="Create Account"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already have an account? Login"
+            android:layout_gravity="center"
+            android:id="@+id/login_txt"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
