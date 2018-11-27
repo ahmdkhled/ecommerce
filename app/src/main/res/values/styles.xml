@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<<<<<<< Updated upstream
+
     <style name="Theme.MyFancyTheme" parent="android:Theme.Holo">
         <item name="android:homeAsUpIndicator">@android:color/white</item>
     </style>
@@ -21,14 +21,14 @@
 
     <style name="erroStyle" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/holo_red_light</item>
+    </style>
 
-=======
+
     <style name="noActionTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
->>>>>>> Stashed changes
     </style>
 
 </resources>

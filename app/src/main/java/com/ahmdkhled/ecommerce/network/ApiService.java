@@ -7,14 +7,13 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-public class ApiService {
+public interface ApiService {
 
-    public interface ApiInterface{
 
-        @FormUrlEncoded
-        @POST(Constants.SIGNUP_URL)
-        public Call<String> signup(@FieldMap HashMap<String,String> map);
-    }
+    @FormUrlEncoded
+    @POST(Constants.SIGNUP_URL)
+    public Call<String> signup(@FieldMap HashMap<String,String> map);
+
 
 
 }
