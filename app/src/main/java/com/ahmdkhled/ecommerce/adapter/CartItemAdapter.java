@@ -1,4 +1,4 @@
-package com.ahmdkhled.ecommerce;
+package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.model.CartItem;
 
 import java.util.ArrayList;
 
