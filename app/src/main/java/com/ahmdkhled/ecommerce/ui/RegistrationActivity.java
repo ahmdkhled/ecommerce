@@ -50,7 +50,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             String userEmail = mEmailTxt.getText().toString();
             String userPassword = mPasswordTxt.getText().toString();
             if(!TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword)){
-                
+
             }else {
                 Toast.makeText(this, R.string.info_lack, Toast.LENGTH_SHORT).show();
             }
