@@ -3,9 +3,8 @@ package com.ahmdkhled.ecommerce.network;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofetClient {
 
-    private static final String BaseUrl="https://ecommerceg.000webhostapp.com";
+public class RetrofetClient {
 
     private static Retrofit retrofit;
     private static ApiService ApiService;
@@ -13,9 +12,10 @@ public class RetrofetClient {
     private static Retrofit getInstance(){
         if (retrofit==null){
             retrofit=new Retrofit.Builder()
-                    .baseUrl(BaseUrl)
+                    .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+            retrofit=new Retrofit.Builder().baseUrl(Constants.BASE_URL).build();
         }
         return retrofit;
     }

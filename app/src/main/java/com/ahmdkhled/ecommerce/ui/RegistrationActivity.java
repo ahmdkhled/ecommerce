@@ -1,18 +1,26 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.network.RetrofetClient;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,10 +50,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             String userEmail = mEmailTxt.getText().toString();
             String userPassword = mPasswordTxt.getText().toString();
             if(!TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword)){
-
+                
             }else {
                 Toast.makeText(this, R.string.info_lack, Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 }
