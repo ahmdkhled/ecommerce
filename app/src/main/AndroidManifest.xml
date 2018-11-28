@@ -16,10 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CartActivity"></activity>
+        <activity android:name=".ui.CartActivity"
+            android:exported="true"/>
         <activity android:name=".ui.LoginActivity"
             android:theme="@style/noActionTheme"/>
-        <activity android:name=".ui.RegistrationActivity"></activity>
+        <activity android:name=".ui.RegistrationActivity"/>
     </application>
 
 </manifest>

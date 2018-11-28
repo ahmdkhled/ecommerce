@@ -43,19 +43,20 @@
         />
 
     <Button
-        android:id="@+id/pluse_B"
+        android:id="@+id/Decrement"
         android:layout_width="30dp"
         android:layout_height="35dp"
         app:layout_constraintStart_toEndOf="@id/quantity_tv"
         app:layout_constraintTop_toTopOf="@id/quantity_tv"
         android:text="-"
+
         />
 
     <TextView
         android:id="@+id/quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/pluse_B"
+        app:layout_constraintStart_toEndOf="@id/Decrement"
         app:layout_constraintTop_toTopOf="@id/quantity_tv"
         app:layout_constraintBottom_toBottomOf="@id/quantity_tv"
         tools:text="20"
@@ -64,7 +65,7 @@
 
 
     <Button
-        android:id="@+id/mince_B"
+        android:id="@+id/Increment"
         android:layout_width="30dp"
         android:layout_height="35dp"
         app:layout_constraintStart_toEndOf="@id/quantity"

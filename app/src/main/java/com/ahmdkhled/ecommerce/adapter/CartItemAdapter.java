@@ -3,9 +3,11 @@ package com.ahmdkhled.ecommerce.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +41,6 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             holder.quantity.setText(String.valueOf(cartItemList.get(position).getQuantity()));
         }
 
-
         @Override
         public int getItemCount() {
             return cartItemList.size();
@@ -47,9 +48,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
 
     class CartItemHolder extends RecyclerView.ViewHolder{
-
         ImageView image ;
         TextView name , price , quantity ;
+        Button increment , decrement ;
 
         public CartItemHolder(View itemView) {
             super(itemView);
@@ -57,7 +58,30 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             price=itemView.findViewById(R.id.price);
             quantity=itemView.findViewById(R.id.quantity);
             image=itemView.findViewById(R.id.product_image);
+            increment=itemView.findViewById(R.id.Increment);
+            decrement=itemView.findViewById(R.id.Decrement);
 
+            increment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int Quantity=cartItemList.get(getAdapterPosition()).getQuantity();
+                    Quantity++;
+                    Log.d("ADAPTERR","quantitiy "+Quantity);
+                    cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
+                    quantity.setText(String.valueOf(Quantity));
+                }
+            });
+            decrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int Quantity=cartItemList.get(getAdapterPosition()).getQuantity();
+                    if (Quantity>0){
+                        Quantity -= 1 ;
+                        cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
+                        quantity.setText(String.valueOf(Quantity));
+                    }
+                }
+            });
         }
     }
 }
