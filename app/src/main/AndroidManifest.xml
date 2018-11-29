@@ -22,7 +22,8 @@
         <activity android:name=".ui.LoginActivity"
             android:exported="true"
             android:theme="@style/noActionTheme"/>
-        <activity android:name=".ui.RegistrationActivity"></activity>
+        <activity android:name=".ui.RegistrationActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

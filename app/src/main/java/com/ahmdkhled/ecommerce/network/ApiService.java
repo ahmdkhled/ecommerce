@@ -1,6 +1,10 @@
 package com.ahmdkhled.ecommerce.network;
 
 import com.ahmdkhled.ecommerce.model.Response;
+
+
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import java.util.HashMap;
@@ -18,6 +22,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(Constants.SIGNUP_URL)
     public Call<String> signup(@FieldMap HashMap<String,String> map);
+
+
 
 
 
