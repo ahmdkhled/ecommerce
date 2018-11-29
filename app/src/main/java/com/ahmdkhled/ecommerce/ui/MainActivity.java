@@ -9,16 +9,27 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.model.Category;
+import com.ahmdkhled.ecommerce.network.RetrofetClient;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
     DrawerLayout drawerLayout;
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
         toolbar=findViewById(R.id.mainToolbar);
         drawerLayout=findViewById(R.id.mainDrawerLayout);
-        NavigationView navigationView=findViewById(R.id.mainNavView);
+        navigationView=findViewById(R.id.mainNavView);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,6 +52,35 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        getCategories();
+    }
+
+    void getCategories(){
+        RetrofetClient.getApiService()
+                .getCategories()
+                .enqueue(new Callback<ArrayList<Category>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                        ArrayList<Category> categories=response.body();
+                        populateMenu(categories);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    private void populateMenu(ArrayList<Category> categoriesList){
+        Menu menu=navigationView.getMenu();
+        SubMenu subMenu=menu.addSubMenu("categories");
+        for (int i = 0; i < categoriesList.size(); i++) {
+            Category c=categoriesList.get(i);
+            //(categoryId,itemId,order,itemTitle)
+            subMenu.add(0,c.getId(),0,c.getName());
+        }
+        navigationView.invalidate();
     }
 
     @Override
