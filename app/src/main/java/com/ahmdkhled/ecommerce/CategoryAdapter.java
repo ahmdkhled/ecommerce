@@ -8,16 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.ahmdkhled.ecommerce.model.CategoryResponse;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
-    ArrayList<Categories> categoriesArrayList;
+    ArrayList<CategoryResponse> categoriesArrayList;
     Context context;
 
-    public CategoryAdapter(ArrayList<Categories> categoriesArrayList, Context context) {
+    public CategoryAdapter(ArrayList<CategoryResponse> categoriesArrayList, Context context) {
         this.categoriesArrayList = categoriesArrayList;
         this.context = context;
     }
@@ -25,7 +27,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @NonNull
     @Override
     public CategoryHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Log.d("adapter","oncreate");
+        Log.d("catadapter","oncreate");
         View v = LayoutInflater.from(context).inflate(R.layout.category_item,viewGroup,false)  ;
         return new CategoryHolder(v);
     }
@@ -33,9 +35,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
 
-        Log.d("URL",categoriesArrayList.get(position).getImage());
-        Glide.with(context).load(categoriesArrayList.get(position).getImage()).into(holder.image);
-
+     //   Glide.with(context).load(categoriesArrayList.get(position).getImage()).into(holder.image);
+         holder.name.setText(categoriesArrayList.get(position).getName());
     }
 
     @Override
@@ -45,10 +46,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
      class CategoryHolder extends RecyclerView.ViewHolder {
         ImageView image;
+        TextView name;
+
 
          public CategoryHolder(@NonNull View itemView) {
              super(itemView);
-             image=itemView.findViewById(R.id.imageView);
+             image=itemView.findViewById(R.id.category_img);
+             name=itemView.findViewById(R.id.category_name);
          }
      }
 }

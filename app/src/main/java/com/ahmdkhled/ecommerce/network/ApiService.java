@@ -1,6 +1,6 @@
 package com.ahmdkhled.ecommerce.network;
 
-import com.ahmdkhled.ecommerce.model.Category;
+import com.ahmdkhled.ecommerce.model.CategoryResponse;
 import com.ahmdkhled.ecommerce.model.Response;
 
 
@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
-import java.util.HashMap;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -26,8 +25,8 @@ public interface ApiService {
     @POST(Constants.SIGNUP_URL)
     public Call<Response> signup(@FieldMap HashMap<String,String> map);
 
-    @GET("categories.php")
-    Call<ArrayList<Category>> getCategories();
+    @GET(Constants.CATEGORY_URL)
+    Call<ArrayList<CategoryResponse>> getCategories();
 
 
 

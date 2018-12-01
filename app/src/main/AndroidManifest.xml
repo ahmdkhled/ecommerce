@@ -25,7 +25,8 @@
             android:theme="@style/noActionTheme"/>
         <activity android:name=".ui.RegistrationActivity"
             android:exported="true"></activity>
-        <activity android:name=".CategoriesActivity"/>
+        <activity android:name=".CategoriesActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>
