@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp">
+
+    <ImageView
+        android:id="@+id/product_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#552066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/product_image"
+        app:layout_constraintTop_toTopOf="@id/product_image"
+        tools:text="product name"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="3dp" />
+
+    <TextView
+        android:id="@+id/quantity_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/name_tv"
+        app:layout_constraintTop_toBottomOf="@id/name_tv"
+        android:layout_marginLeft="2dp"
+        android:text="Quantity :"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <Button
+        android:id="@+id/Decrement"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        app:layout_constraintStart_toEndOf="@id/quantity_tv"
+        app:layout_constraintTop_toTopOf="@id/quantity_tv"
+        android:text="-"
+
+        />
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/Decrement"
+        app:layout_constraintTop_toTopOf="@id/quantity_tv"
+        app:layout_constraintBottom_toBottomOf="@id/quantity_tv"
+        tools:text="20"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"/>
+
+
+    <Button
+        android:id="@+id/Increment"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        app:layout_constraintStart_toEndOf="@id/quantity"
+        app:layout_constraintTop_toTopOf="@id/quantity_tv"
+        android:text="+"
+        />
+
+    <TextView
+        android:id="@+id/price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/name_tv"
+        app:layout_constraintTop_toBottomOf="@id/quantity_tv"
+        android:layout_marginLeft="2dp"
+        tools:text="price :"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/price_tv"
+        app:layout_constraintTop_toBottomOf="@id/quantity_tv"
+        app:layout_constraintBottom_toBottomOf="@id/price_tv"
+        android:layout_marginLeft="2dp"
+        tools:text="100$"
+        android:textStyle="italic"
+        android:textSize="15sp"
+        />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_delete_black_24dp"/>
+
+</android.support.constraint.ConstraintLayout>
