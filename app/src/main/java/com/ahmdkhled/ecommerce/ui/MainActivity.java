@@ -15,7 +15,7 @@ import android.view.SubMenu;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
-import com.ahmdkhled.ecommerce.model.Category;
+import com.ahmdkhled.ecommerce.model.CategoryResponse;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.ArrayList;
@@ -52,35 +52,35 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        getCategories();
+//        getCategories();
     }
 
-    void getCategories(){
-        RetrofetClient.getApiService()
-                .getCategories()
-                .enqueue(new Callback<ArrayList<Category>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-                        ArrayList<Category> categories=response.body();
-                        populateMenu(categories);
-                    }
+//    void getCategories(){
+//        RetrofetClient.getApiService()
+//                .getCategories()
+//                .enqueue(new Callback<ArrayList<CategoryResponse>>() {
+//                    @Override
+//                    public void onResponse(Call<ArrayList<CategoryResponse>> call, Response<ArrayList<CategoryResponse>> response) {
+//                        ArrayList<CategoryResponse> categories=response.body();
+//                        populateMenu(categories);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ArrayList<CategoryResponse>> call, Throwable t) {
+//
+//                    }
+//                });
+//    }
 
-                    @Override
-                    public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-
-                    }
-                });
-    }
-
-    private void populateMenu(ArrayList<Category> categoriesList){
-        Menu menu=navigationView.getMenu();
-        SubMenu subMenu=menu.addSubMenu("categories");
-        for (int i = 0; i < categoriesList.size(); i++) {
-            Category c=categoriesList.get(i);
-            //(categoryId,itemId,order,itemTitle)
-            subMenu.add(0,c.getId(),0,c.getName());
-        }
-        navigationView.invalidate();
+    private void populateMenu(ArrayList<CategoryResponse> categoriesList){
+//        Menu menu=navigationView.getMenu();
+//        SubMenu subMenu=menu.addSubMenu("categories");
+//        for (int i = 0; i < categoriesList.size(); i++) {
+//            CategoryResponse c=categoriesList.get(i);
+//            //(categoryId,itemId,order,itemTitle)
+//            subMenu.add("0",c.getId(),0,c.getName());
+//        }
+//        navigationView.invalidate();
     }
 
     @Override

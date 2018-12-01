@@ -1,22 +1,22 @@
 package com.ahmdkhled.ecommerce.model;
 
-public class Category {
+public class CategoryResponse {
 
-    int id ;
-    String name;
-    String image;
+    String id ;
+    String name ;
+    String image ;
 
-    public Category(int id, String name, String image) {
+    public CategoryResponse(String id, String name, String image) {
         this.id = id;
         this.name = name;
         this.image = image;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
