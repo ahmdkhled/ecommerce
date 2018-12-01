@@ -5,10 +5,16 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductsActivity  extends AppCompatActivity {
 
@@ -18,18 +24,48 @@ public class ProductsActivity  extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_products);
         recyclerView=findViewById(R.id.recycler_view);
         productsList=new ArrayList<>();
 
 
-        Product p=new Product("","15","50","general");
-        Product p1=new Product("","20","20","general");
-        Product p2=new Product("","30","40","general");
-        Product p3=new Product("","60","50","general");
-        Product p4=new Product("","60","70","general");
-        Product p5=new Product("","25","40","general");
-        Product p6=new Product("","60","70","general");
+
+        getProducts();
+
+
+    }
+
+
+    public void getProducts(){
+        RetrofetClient.getApiService().getProducts(null)
+                .enqueue(new Callback<ArrayList<Product>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                        ArrayList<Product> productsList= response.body();
+                        ProductAdapter productAdapter=new ProductAdapter(productsList,getApplicationContext());
+                        recyclerView.setAdapter(productAdapter);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+
+                        Log.d("categoryyy","name "+productsList.get(0).getDate());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                        Log.d("amiraa","amira"+t.getMessage());
+
+                    }
+                });
+    }
+
+
+    public void getFakeData (){
+        Product p=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
+        Product p1=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
+        Product p2=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
+        Product p3=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
+        Product p4=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
+        Product p5=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
+        Product p6=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
 
 
         productsList.add(p);
@@ -39,16 +75,6 @@ public class ProductsActivity  extends AppCompatActivity {
         productsList.add(p4);
         productsList.add(p5);
         productsList.add(p6);
-
-
-        ProductAdapter productAdapter=new ProductAdapter(productsList,this);
-        recyclerView.setAdapter(productAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-
-
-
-
-
 
     }
 

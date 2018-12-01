@@ -2,47 +2,82 @@ package com.ahmdkhled.ecommerce;
 
 public class Product  {
 
-    private String image;
-    private String discount;
-    private String price;
-    private String category;
+    int id,marketId,quantity,price,categoryId;
+    String name ,date ,description;
 
-    public Product(String image, String discount, String price, String category) {
-        this.image = image;
-        this.discount = discount;
+    public Product(int id, int marketId, int quantity, int price, int categoryId, String name, String date, String description) {
+        this.id = id;
+        this.marketId = marketId;
+        this.quantity = quantity;
         this.price = price;
-        this.category = category;
+        this.categoryId = categoryId;
+        this.name = name;
+        this.date = date;
+        this.description = description;
     }
 
-    public String getImage() {
-        return image;
+
+    public int getId() {
+        return id;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getDiscount() {
-        return discount;
+    public int getMarketId() {
+        return marketId;
     }
 
-    public void setDiscount(String discount) {
-        this.discount = discount;
+    public void setMarketId(int marketId) {
+        this.marketId = marketId;
     }
 
-    public String getPrice() {
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public String getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -14,11 +14,11 @@
         android:src="#b67272"/>
 
     <TextView
-        android:id="@+id/discount"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/product_image"
-        android:text="discount"
+        android:text="name"
 
         />
     <TextView
@@ -26,14 +26,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="price"
-        app:layout_constraintTop_toBottomOf="@id/discount"/>
+        app:layout_constraintTop_toBottomOf="@id/name"/>
 
-    <TextView
-        android:id="@+id/category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/price"
-        android:text="SHOES AND BAGS"/>
+
 
 
 

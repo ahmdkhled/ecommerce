@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
 
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ProductsHolder holder, int position) {
-        holder.discount.setText(productsList.get(position).getDiscount());
-        holder.category.setText(productsList.get(position).getCategory());
         holder.price.setText(productsList.get(position).getPrice());
+        holder.name.setText(productsList.get(position).getName());
+
 
 
     }
@@ -53,7 +54,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
 
     class ProductsHolder extends RecyclerView.ViewHolder {
 
-        TextView discount,price,category;
+        TextView name,price;
         ImageView productImage;
 
 
@@ -61,9 +62,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
             super(itemView);
 
             productImage=itemView.findViewById(R.id.product_image);
-            discount=itemView.findViewById(R.id.discount);
+            name=itemView.findViewById(R.id.name);
             price=itemView.findViewById(R.id.price);
-            category=itemView.findViewById(R.id.category);
 
 
 
