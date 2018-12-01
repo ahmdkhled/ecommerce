@@ -3,4 +3,6 @@
     <string name="email_edit_hint">Email</string>
     <string name="password_edit_hint">Password</string>
     <string name="info_lack">Please enter your email and password</string>
+    <string name="open_drawer">open drawer</string>
+    <string name="close_drawer">close drawer</string>
 </resources>
