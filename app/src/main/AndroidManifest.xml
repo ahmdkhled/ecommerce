@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CartActivity"></activity>
+        <activity android:name=".ui.CartActivity"
+            android:exported="true"/>
         <activity android:name=".ui.LoginActivity"
             android:exported="true"
             android:theme="@style/noActionTheme"/>
