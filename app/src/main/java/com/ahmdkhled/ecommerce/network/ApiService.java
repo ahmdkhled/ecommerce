@@ -1,7 +1,8 @@
 package com.ahmdkhled.ecommerce.network;
-
 import com.ahmdkhled.ecommerce.Product;
-import com.ahmdkhled.ecommerce.model.Category;
+
+import com.ahmdkhled.ecommerce.model.CategoryResponse;
+import com.ahmdkhled.ecommerce.model.CategoryResponse;
 import com.ahmdkhled.ecommerce.model.Response;
 
 
@@ -30,8 +31,8 @@ public interface ApiService {
     @POST(Constants.SIGNUP_URL)
     public Call<Response> signup(@FieldMap HashMap<String,String> map);
 
-    @GET("categories.php")
-    Call<ArrayList<Category>> getCategories();
+    @GET(Constants.CATEGORY_URL)
+    Call<ArrayList<CategoryResponse>> getCategories();
 
 
 
