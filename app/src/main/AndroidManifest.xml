@@ -8,6 +8,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -18,12 +19,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CartActivity"></activity>
+        <activity android:name=".ProductsActivity"
+            android:exported="true"></activity>
+        <activity android:name=".ui.CartActivity"
+            android:exported="true"/>
         <activity android:name=".ui.LoginActivity"
             android:exported="true"
             android:theme="@style/noActionTheme"/>
         <activity android:name=".ui.RegistrationActivity"
             android:exported="true"></activity>
+        <activity android:name=".CategoriesActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

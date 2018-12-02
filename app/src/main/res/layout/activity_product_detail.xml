@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/productImage"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:background="@tools:sample/backgrounds/scenic"
+        tools:src="#6b2f57"
+        android:scaleType="fitXY" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_name"
+        android:layout_margin="5dp"
+        android:text="product name"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/productImage" />
+
+    <TextView
+        android:id="@+id/seller"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="seller:"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/product_name"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/productPrice"
+        android:layout_margin="5dp"
+        android:text="price:"
+        app:layout_constraintTop_toBottomOf="@id/seller"
+        android:textSize="20sp"/>
+    <view
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/productPrice"
+        android:layout_height="2dp"
+        android:background="#000"/>
+    <TextView
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:id="@+id/descriptionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_margin="5dp"
+        android:text="Description"
+        app:layout_constraintTop_toBottomOf="@id/line1"/>
+    <TextView
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:id="@+id/Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="this i a sample description of product"
+        app:layout_constraintTop_toBottomOf="@id/descriptionHeader"
+        android:layout_marginTop="5dp"/>
+    <view
+
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/Description"
+        android:layout_marginTop="10dp"
+        android:layout_height="2dp"
+        android:background="#000"  />
+
+
+
+    <Button
+        android:id="@+id/addToCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add to Cart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#6b2f57"
+        android:textColor="#fff"
+        android:textAllCaps="false"/>
+
+
+</android.support.constraint.ConstraintLayout>
