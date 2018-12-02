@@ -30,19 +30,12 @@ public class CategoriesActivity  extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         getCategories();
 
-
-
-
     }
 
     private void setAdapter() {
         CategoryAdapter adapter = new CategoryAdapter(categoriesArrayList, this);
-
-
         RecyclerView.LayoutManager layoutManage = new LinearLayoutManager(this);
-
         recyclerView.setLayoutManager(layoutManage);
-
         recyclerView.setAdapter(adapter);
     }
 
@@ -60,7 +53,7 @@ public class CategoriesActivity  extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ArrayList<CategoryResponse>> call, Throwable t) {
-                Log.d("cat","error is "+t.getMessage());
+                Log.d("catTTTTT","error is "+t.getMessage());
             }
         });
     }

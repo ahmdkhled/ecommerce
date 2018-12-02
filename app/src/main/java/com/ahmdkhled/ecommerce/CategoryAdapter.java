@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,22 +34,29 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryHolder holder, final int position) {
 
-     //   Glide.with(context).load(categoriesArrayList.get(position).getImage()).into(holder.image);
+      Glide.with(context).load(categoriesArrayList.get(position).getImage()).into(holder.image);
          holder.name.setText(categoriesArrayList.get(position).getName());
+         Log.d("image2",categoriesArrayList.get(position).getImage());
+         holder.itemView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent intent = new Intent(context, ProductsActivity.class);
+                 intent.putExtra(ProductsActivity.CATEGORY_ID_KEY,categoriesArrayList.get(position).getId());
+                 context.startActivity(intent);
+
+             }
+         });
     }
 
     @Override
     public int getItemCount() {
-        Log.d("tagg","count "+categoriesArrayList.size());
         return categoriesArrayList.size();
     }
      class CategoryHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView name;
-
-
          public CategoryHolder(@NonNull View itemView) {
              super(itemView);
              image=itemView.findViewById(R.id.category_img);
