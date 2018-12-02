@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,8 @@ import android.view.SubMenu;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
+import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    ViewPager mainSliderPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity
         toolbar=findViewById(R.id.mainToolbar);
         drawerLayout=findViewById(R.id.mainDrawerLayout);
         navigationView=findViewById(R.id.mainNavView);
+        mainSliderPager=findViewById(R.id.mainSliderPager);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity
 
 
         getCategories();
+        showSlider();
     }
 
     void getCategories(){
@@ -70,6 +76,11 @@ public class MainActivity extends AppCompatActivity
 
                     }
                 });
+    }
+
+    private void showSlider(){
+        MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,getFakeAds());
+        mainSliderPager.setAdapter(mainSliderAdapter);
     }
 
     private void populateMenu(ArrayList<Category> categoriesList){
@@ -97,5 +108,13 @@ public class MainActivity extends AppCompatActivity
         }else{
             super.onBackPressed();
         }
+    }
+
+    ArrayList<Ad> getFakeAds(){
+        ArrayList<Ad> ads=new ArrayList<>();
+        ads.add(new Ad("https://cms.souqcdn.com/cms/boxes/img/desktop/L_1541434120_Home-Best-Selling-ar.jpg"));
+        ads.add(new Ad("https://cms.souqcdn.com/cms/boxes/img/desktop/L_1541346447_Men-Shirts-ar.jpg"));
+        ads.add(new Ad("https://cms.souqcdn.com/cms/boxes/img/desktop/L_1541433887_Supermarket-ar.jpg"));
+        return ads;
     }
 }
