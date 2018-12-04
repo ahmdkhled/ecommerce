@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Category;
-import com.ahmdkhled.ecommerce.model.CategoryResponse;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.ArrayList;

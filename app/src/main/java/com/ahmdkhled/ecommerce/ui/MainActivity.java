@@ -14,14 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.widget.Toast;
-
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
-import com.ahmdkhled.ecommerce.model.CategoryResponse;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
-
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -59,7 +56,7 @@ public class MainActivity extends AppCompatActivity
 
 
         getCategories();
-        showSlider();
+        getAds();
     }
 
     void getCategories(){
@@ -79,9 +76,28 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-    private void showSlider(){
-        MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,getFakeAds());
+    private void showSlider(ArrayList<Ad> ads){
+        MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,ads);
         mainSliderPager.setAdapter(mainSliderAdapter);
+    }
+
+    private void getAds(){
+        RetrofetClient.getApiService()
+                .getAds()
+                .enqueue(new Callback<ArrayList<Ad>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Ad>> call, Response<ArrayList<Ad>> response) {
+                        if (response.isSuccessful()){
+                            ArrayList<Ad> ads=response.body();
+                            showSlider(ads);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Ad>> call, Throwable t) {
+
+                    }
+                });
     }
 
     private void populateMenu(ArrayList<Category> categoriesList){
@@ -94,8 +110,6 @@ public class MainActivity extends AppCompatActivity
         }
         navigationView.invalidate();
     }
-
-
 
 
 
