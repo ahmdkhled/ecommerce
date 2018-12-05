@@ -10,13 +10,14 @@ import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.utils.CartItemsManger;
+
 import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
-    ArrayList<CartItem> cartItemArrayList;
     RecyclerView recyclerView;
 
     @Override
@@ -24,11 +25,12 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        cartItemArrayList = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler);
-        fakeData();
-        String ids=arrToString(cartItemArrayList);
-                                                                                                    Log.d("CARTTT",ids);
+
+
+        CartItemsManger cartItemsManger=new CartItemsManger(this);
+        ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
+        String ids=arrToString(cartItems);
         getCartItems(ids);
 
     }
@@ -63,12 +65,14 @@ public class CartActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    void fakeData(){
+    ArrayList<CartItem> fakeData(){
+        ArrayList<CartItem> cartItemArrayList=new ArrayList<>();
         CartItem toy =new CartItem(4,"toy",200,10,"");
         cartItemArrayList.add(toy);
         CartItem flower =new CartItem(5,"flower",20,5,"");
         cartItemArrayList.add(flower);
-//        CartItem t_shirt =new CartItem(5000,"t_shirt",150,1,"");
-//        cartItemArrayList.add(t_shirt);
+        CartItem t_shirt =new CartItem(5000,"t_shirt",150,1,"");
+        cartItemArrayList.add(t_shirt);
+        return cartItemArrayList;
     }
 }
