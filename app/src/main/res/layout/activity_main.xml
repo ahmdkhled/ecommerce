@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     android:id="@+id/mainDrawerLayout"
     tools:context=".ui.MainActivity">
+    tools:context=".MainActivity">
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,6 +26,13 @@
             app:titleTextColor="#fff">
 
         </android.support.v7.widget.Toolbar>
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/mainSliderPager"
+            tools:background="@color/colorAccent"
+            app:layout_constraintTop_toBottomOf="@id/mainToolbar"/>
 
      
 
