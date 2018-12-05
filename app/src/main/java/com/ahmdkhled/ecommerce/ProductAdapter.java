@@ -19,11 +19,11 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductsHolder> {
 
-    ArrayList<Product> productsList;
-    Context context;
+    private ArrayList<Product> productsList;
+    private Context context;
 
 
-    public ProductAdapter(ArrayList<Product> productsList, Context context) {
+    ProductAdapter(ArrayList<Product> productsList, Context context) {
         this.productsList = productsList;
         this.context = context;
     }
@@ -39,7 +39,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
 
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ProductsHolder holder, int position) {
-        holder.price.setText(productsList.get(position).getPrice());
+        holder.price.setText(String.valueOf(productsList.get(position).getPrice()));
         holder.name.setText(productsList.get(position).getName());
 
 
@@ -53,21 +53,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
     }
 
     class ProductsHolder extends RecyclerView.ViewHolder {
-
         TextView name,price;
         ImageView productImage;
-
-
-        public ProductsHolder(View itemView) {
+        ProductsHolder(View itemView) {
             super(itemView);
-
             productImage=itemView.findViewById(R.id.product_image);
             name=itemView.findViewById(R.id.name);
             price=itemView.findViewById(R.id.price);
-
-
-
-
 
         }
 
