@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.widget.Toast;
-
 import com.ahmdkhled.ecommerce.R;
-import com.ahmdkhled.ecommerce.model.CategoryResponse;
+import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
+import com.ahmdkhled.ecommerce.model.Ad;
+import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
-
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    ViewPager mainSliderPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity
         toolbar=findViewById(R.id.mainToolbar);
         drawerLayout=findViewById(R.id.mainDrawerLayout);
         navigationView=findViewById(R.id.mainNavView);
+        mainSliderPager=findViewById(R.id.mainSliderPager);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,36 +55,63 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-//        getCategories();
+        getCategories();
+        getAds();
     }
 
-//    void getCategories(){
-//        RetrofetClient.getApiService()
-//                .getCategories()
-//                .enqueue(new Callback<ArrayList<CategoryResponse>>() {
-//                    @Override
-//                    public void onResponse(Call<ArrayList<CategoryResponse>> call, Response<ArrayList<CategoryResponse>> response) {
-//                        ArrayList<CategoryResponse> categories=response.body();
-//                        populateMenu(categories);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ArrayList<CategoryResponse>> call, Throwable t) {
-//
-//                    }
-//                });
-//    }
+    void getCategories(){
+        RetrofetClient.getApiService()
+                .getCategories()
+                .enqueue(new Callback<ArrayList<Category>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                        ArrayList<Category> categories=response.body();
+                        populateMenu(categories);
+                    }
 
-    private void populateMenu(ArrayList<CategoryResponse> categoriesList){
-//        Menu menu=navigationView.getMenu();
-//        SubMenu subMenu=menu.addSubMenu("categories");
-//        for (int i = 0; i < categoriesList.size(); i++) {
-//            CategoryResponse c=categoriesList.get(i);
-//            //(categoryId,itemId,order,itemTitle)
-//            subMenu.add("0",c.getId(),0,c.getName());
-//        }
-//        navigationView.invalidate();
+                    @Override
+                    public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+
+                    }
+                });
     }
+
+    private void showSlider(ArrayList<Ad> ads){
+        MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,ads);
+        mainSliderPager.setAdapter(mainSliderAdapter);
+    }
+
+    private void getAds(){
+        RetrofetClient.getApiService()
+                .getAds()
+                .enqueue(new Callback<ArrayList<Ad>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Ad>> call, Response<ArrayList<Ad>> response) {
+                        if (response.isSuccessful()){
+                            ArrayList<Ad> ads=response.body();
+                            showSlider(ads);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Ad>> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    private void populateMenu(ArrayList<Category> categoriesList){
+        Menu menu=navigationView.getMenu();
+        SubMenu subMenu=menu.addSubMenu("categories");
+        for (int i = 0; i < categoriesList.size(); i++) {
+            Category c=categoriesList.get(i);
+            //(categoryId,itemId,order,itemTitle)
+            subMenu.add(0,c.getId(),0,c.getName());
+        }
+        navigationView.invalidate();
+    }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -97,5 +127,13 @@ public class MainActivity extends AppCompatActivity
         }else{
             super.onBackPressed();
         }
+    }
+
+    ArrayList<Ad> getFakeAds(){
+        ArrayList<Ad> ads=new ArrayList<>();
+        ads.add(new Ad("https://cms.souqcdn.com/cms/boxes/img/desktop/L_1541434120_Home-Best-Selling-ar.jpg"));
+        ads.add(new Ad("https://cms.souqcdn.com/cms/boxes/img/desktop/L_1541346447_Men-Shirts-ar.jpg"));
+        ads.add(new Ad("https://cms.souqcdn.com/cms/boxes/img/desktop/L_1541433887_Supermarket-ar.jpg"));
+        return ads;
     }
 }

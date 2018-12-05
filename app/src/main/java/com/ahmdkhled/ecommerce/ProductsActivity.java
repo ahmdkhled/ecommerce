@@ -18,6 +18,7 @@ import retrofit2.Response;
 
 public class ProductsActivity  extends AppCompatActivity {
 
+    public static final String CATEGORY_ID_KEY="category_id";
     ArrayList<Product> productsList=new ArrayList<>();
     RecyclerView recyclerView;
 
