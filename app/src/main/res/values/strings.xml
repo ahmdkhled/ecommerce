@@ -5,4 +5,5 @@
     <string name="info_lack">Please enter your email and password</string>
     <string name="open_drawer">open drawer</string>
     <string name="close_drawer">close drawer</string>
+    <string name="name_edit_hint">Name</string>
 </resources>

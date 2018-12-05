@@ -1,5 +1,5 @@
 package com.ahmdkhled.ecommerce.network;
-import com.ahmdkhled.ecommerce.Product;
+import com.ahmdkhled.ecommerce.model.Product;
 
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;

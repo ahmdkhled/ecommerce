@@ -1,4 +1,4 @@
-package com.ahmdkhled.ecommerce;
+package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Category;
+import com.ahmdkhled.ecommerce.ui.ProductsActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
