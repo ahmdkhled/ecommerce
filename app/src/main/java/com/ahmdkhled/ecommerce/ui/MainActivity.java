@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.widget.Toast;
+
+import com.ahmdkhled.ecommerce.ProductsActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
@@ -115,8 +118,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(getApplicationContext()," "+item.getTitle(),Toast.LENGTH_SHORT).show();
         drawerLayout.closeDrawer(GravityCompat.START);
+        Intent intent=new Intent(this, ProductsActivity.class);
+        intent.putExtra(ProductsActivity.CATEGORY_ID_KEY,item.getItemId());
+        startActivity(intent);
         return true;
     }
 

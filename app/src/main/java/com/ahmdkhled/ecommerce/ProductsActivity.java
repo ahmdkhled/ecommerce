@@ -31,7 +31,7 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
 
-        getProducts();
+        //getProducts();
 
 
     }
