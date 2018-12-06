@@ -19,8 +19,8 @@ public class ProductDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        textView = (TextView) findViewById(R.id.product_name);
-        addToCart =(Button) findViewById(R.id.addToCart);
+        textView =  findViewById(R.id.product_name);
+        addToCart =findViewById(R.id.addToCart);
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
