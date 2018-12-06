@@ -10,14 +10,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.ahmdkhled.ecommerce.CategoriesActivity;
 import com.ahmdkhled.ecommerce.ProductsActivity;
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
@@ -35,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ViewPager mainSliderPager;
+    RecyclerView categoryRecycler;
+    Button seeAllCategories;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +52,8 @@ public class MainActivity extends AppCompatActivity
         drawerLayout=findViewById(R.id.mainDrawerLayout);
         navigationView=findViewById(R.id.mainNavView);
         mainSliderPager=findViewById(R.id.mainSliderPager);
+        categoryRecycler=findViewById(R.id.mainCategoryRecycler);
+        seeAllCategories=findViewById(R.id.seeAllCategories);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -57,6 +67,13 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        seeAllCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), CategoriesActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getCategories();
         getAds();
@@ -69,7 +86,10 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
                         ArrayList<Category> categories=response.body();
-                        populateMenu(categories);
+                        if (categories!=null){
+                            populateMenu(categories);
+                            showCategories(categories);
+                        }
                     }
 
                     @Override
@@ -82,6 +102,14 @@ public class MainActivity extends AppCompatActivity
     private void showSlider(ArrayList<Ad> ads){
         MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,ads);
         mainSliderPager.setAdapter(mainSliderAdapter);
+    }
+
+    private void showCategories(ArrayList<Category> categories){
+        MainCategoriesAdapter mainCategoriesAdapter=new MainCategoriesAdapter(this,categories);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this
+                ,LinearLayoutManager.HORIZONTAL,false);
+        categoryRecycler.setAdapter(mainCategoriesAdapter);
+        categoryRecycler.setLayoutManager(linearLayoutManager);
     }
 
     private void getAds(){
