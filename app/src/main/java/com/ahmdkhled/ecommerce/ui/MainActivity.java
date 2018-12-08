@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
@@ -142,7 +143,20 @@ public class MainActivity extends AppCompatActivity
         navigationView.invalidate();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==R.id.cart){
+            Intent intent=new Intent(this,CartActivity.class);
+            startActivity(intent);
+        }
+        return true;
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
