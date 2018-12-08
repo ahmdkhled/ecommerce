@@ -37,7 +37,7 @@ public interface ApiService {
     Call<ArrayList<CartItem>> getCartItems(@Query("id") String ids);
 
     @GET ("products.php")
-    Call <ArrayList<Product>> getProducts(@Query("category") String category) ;
+    Call <ArrayList<Product>> getProducts(@Query("categoryId") String category) ;
 
     @GET("ads.php")
     Call<ArrayList<Ad>> getAds();
