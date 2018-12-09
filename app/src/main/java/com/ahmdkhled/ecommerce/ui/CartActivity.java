@@ -30,9 +30,10 @@ public class CartActivity extends AppCompatActivity {
 
         CartItemsManger cartItemsManger=new CartItemsManger(this);
         ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
-        String ids=arrToString(cartItems);
-        getCartItems(ids);
-
+        if (cartItems != null) {
+            String ids = arrToString(cartItems);
+            getCartItems(ids);
+        }
     }
 
     public void getCartItems(String ids) {
