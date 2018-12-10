@@ -1,10 +1,14 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
@@ -19,13 +23,22 @@ import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
+    View view ;
+    Button checkoutButton ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
 
+
+        setContentView(R.layout.activity_cart);
+        view = findViewById(R.id.view);
+
+
+        checkoutButton = findViewById(R.id.checkout);
         recyclerView = findViewById(R.id.recycler);
+
 
 
         CartItemsManger cartItemsManger=new CartItemsManger(this);

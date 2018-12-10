@@ -4,26 +4,29 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="5dp"
+    android:background="#fdfdfd"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/recycler"
-        app:layout_constraintBottom_toTopOf="@id/total"
+        app:layout_constraintBottom_toTopOf="@id/cart_subtotal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
 
     <TextView
-        android:id="@+id/total"
+        android:id="@+id/cart_subtotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Total :"
-        android:textSize="25sp"
+        android:text="CART SUBTOTAL :"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#000"
         />
@@ -31,13 +34,37 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/total"
+        app:layout_constraintStart_toEndOf="@id/cart_subtotal"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="1000$"
-        android:textSize="25sp"
+        android:layout_marginBottom="100dp"
+        android:textSize="20sp"
         android:textStyle="bold"
-
         />
+
+    <Button
+        android:id="@+id/checkout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="CHECKOUT"
+        android:background="#565050"
+        android:textColor="#fff"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        app:layout_constraintBottom_toTopOf="@id/cart_subtotal"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#565050"/>
+
+
+
 
 
 
