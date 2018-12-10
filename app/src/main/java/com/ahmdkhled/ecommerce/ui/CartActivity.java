@@ -23,21 +23,26 @@ import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    View view ;
     Button checkoutButton ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_cart);
-        view = findViewById(R.id.view);
-
 
         checkoutButton = findViewById(R.id.checkout);
         recyclerView = findViewById(R.id.recycler);
+
+
+
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//             Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
+//             startActivity(intent);
+            }
+        });
 
 
 
