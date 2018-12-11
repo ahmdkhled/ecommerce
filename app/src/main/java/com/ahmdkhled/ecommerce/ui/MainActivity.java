@@ -13,19 +13,20 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.CategoriesActivity;
+import com.ahmdkhled.ecommerce.Product;
 import com.ahmdkhled.ecommerce.ProductsActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
+import com.ahmdkhled.ecommerce.adapter.RecentlyAddedProducsAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     ViewPager mainSliderPager;
     RecyclerView categoryRecycler;
+    RecyclerView recentlyAddedRecycler;
     Button seeAllCategories;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity
         navigationView=findViewById(R.id.mainNavView);
         mainSliderPager=findViewById(R.id.mainSliderPager);
         categoryRecycler=findViewById(R.id.mainCategoryRecycler);
+        recentlyAddedRecycler=findViewById(R.id.recentlyAddedProductsRecycler);
         seeAllCategories=findViewById(R.id.seeAllCategories);
 
         setSupportActionBar(toolbar);
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        getRecentlyAdedProducts();
         getCategories();
         getAds();
     }
@@ -100,6 +104,28 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
+    void getRecentlyAdedProducts(){
+        RetrofetClient.getApiService()
+                .getRecentlyAdedProducts()
+                .enqueue(new Callback<ArrayList<Product>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                        if (response.isSuccessful()){
+                            Log.d("RECENTLYADDD", String.valueOf(response.isSuccessful()));
+                            ArrayList<Product> products=response.body();
+                            showRecentlyAdedProducts(products);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                        Log.d("RECENTLYADDD",t.getMessage());
+                    }
+                });
+
+    }
+
     private void showSlider(ArrayList<Ad> ads){
         MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,ads);
         mainSliderPager.setAdapter(mainSliderAdapter);
@@ -111,6 +137,13 @@ public class MainActivity extends AppCompatActivity
                 ,LinearLayoutManager.HORIZONTAL,false);
         categoryRecycler.setAdapter(mainCategoriesAdapter);
         categoryRecycler.setLayoutManager(linearLayoutManager);
+    }
+    private void showRecentlyAdedProducts(ArrayList<Product> productsList){
+         RecentlyAddedProducsAdapter recentlyAddedProducsAdapter =new RecentlyAddedProducsAdapter(this,productsList);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this
+                ,LinearLayoutManager.HORIZONTAL,false);
+        recentlyAddedRecycler.setAdapter(recentlyAddedProducsAdapter);
+        recentlyAddedRecycler.setLayoutManager(linearLayoutManager);
     }
 
     private void getAds(){
