@@ -26,8 +26,10 @@ import com.ahmdkhled.ecommerce.model.Response;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
-//    @BindView(R.id.name_edittext_reg)
-//    AppCompatEditText mNameTxt;
+    @BindView(R.id.fname_edittext_reg)
+    AppCompatEditText mFnameTxt;
+    @BindView(R.id.lname_edittext_reg)
+    AppCompatEditText mLnameTxt;
     @BindView(R.id.email_edittext_reg)
     AppCompatEditText mEmailTxt;
     @BindView(R.id.password_edittext_reg)
@@ -51,19 +53,23 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_signup){
+            String userFname = mFnameTxt.getText().toString();
+            String userLname = mLnameTxt.getText().toString();
             String userEmail = mEmailTxt.getText().toString();
             String userPassword = mPasswordTxt.getText().toString();
-//            String userName = mNameTxt.getText().toString();
-            if(!TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword)){
-                signup(userEmail,userPassword);
+            if(!TextUtils.isEmpty(userFname) && !TextUtils.isEmpty(userLname)
+                    && !TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword)){
+                signup(userFname,userLname,userEmail,userPassword);
             }else {
                 Toast.makeText(this, R.string.info_lack, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void signup( String email, String password){
+    public void signup(String fName, String lName, String email, String password){
         HashMap<String,String> map = new HashMap<>();
+        map.put("firstname",fName);
+        map.put("lastname",lName);
         map.put("email",email);
         map.put("password",password);
 
