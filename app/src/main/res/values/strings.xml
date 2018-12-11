@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">ecommerce</string>
-    <string name="email_edit_hint">Email</string>
+    <string name="email_edit_hint">Email Address</string>
     <string name="password_edit_hint">Password</string>
     <string name="info_lack">Please enter your email and password</string>
     <string name="open_drawer">open drawer</string>
     <string name="close_drawer">close drawer</string>
     <string name="name_edit_hint">Name</string>
+    <string name="fname_edit_hint">First Name</string>
+    <string name="lname_edit_hint">Last Name</string>
 </resources>

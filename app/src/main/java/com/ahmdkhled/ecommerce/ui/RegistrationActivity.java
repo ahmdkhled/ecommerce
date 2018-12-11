@@ -26,8 +26,8 @@ import com.ahmdkhled.ecommerce.model.Response;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @BindView(R.id.name_edittext_reg)
-    AppCompatEditText mNameTxt;
+//    @BindView(R.id.name_edittext_reg)
+//    AppCompatEditText mNameTxt;
     @BindView(R.id.email_edittext_reg)
     AppCompatEditText mEmailTxt;
     @BindView(R.id.password_edittext_reg)
@@ -53,18 +53,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if(view.getId() == R.id.btn_signup){
             String userEmail = mEmailTxt.getText().toString();
             String userPassword = mPasswordTxt.getText().toString();
-            String userName = mNameTxt.getText().toString();
-            if(!TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword) && !TextUtils.isEmpty(userName)){
-                signup(userName,userEmail,userPassword);
+//            String userName = mNameTxt.getText().toString();
+            if(!TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword)){
+                signup(userEmail,userPassword);
             }else {
                 Toast.makeText(this, R.string.info_lack, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void signup(String name, String email, String password){
+    public void signup( String email, String password){
         HashMap<String,String> map = new HashMap<>();
-        map.put("name",name);
         map.put("email",email);
         map.put("password",password);
 
