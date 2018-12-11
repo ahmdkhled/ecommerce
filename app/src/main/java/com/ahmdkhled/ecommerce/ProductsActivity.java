@@ -37,8 +37,6 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
 
-
-
         getProducts(id);
 
 
