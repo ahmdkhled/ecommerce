@@ -1,10 +1,14 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
@@ -19,20 +23,35 @@ import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
+    Button checkoutButton ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        checkoutButton = findViewById(R.id.checkout);
         recyclerView = findViewById(R.id.recycler);
+
+
+
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//             Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
+//             startActivity(intent);
+            }
+        });
+
 
 
         CartItemsManger cartItemsManger=new CartItemsManger(this);
         ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
-        String ids=arrToString(cartItems);
-        getCartItems(ids);
-
+        if (cartItems != null) {
+            String ids = arrToString(cartItems);
+            getCartItems(ids);
+        }
     }
 
     public void getCartItems(String ids) {
