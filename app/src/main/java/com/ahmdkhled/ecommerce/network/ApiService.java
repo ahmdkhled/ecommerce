@@ -9,7 +9,6 @@ import com.ahmdkhled.ecommerce.model.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 
@@ -41,5 +40,8 @@ public interface ApiService {
 
     @GET("ads.php")
     Call<ArrayList<Ad>> getAds();
+
+    @GET("recentlyAdded.php")
+    Call<ArrayList<Product>> getRecentlyAdedProducts();
 
 }
