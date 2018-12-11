@@ -39,6 +39,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @BindView(R.id.login_txt)
     TextView mLoginTxt;
 
+
+    public static final String TAG = RegistrationActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,22 +81,20 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 Response regesterationResponse = response.body();
-                Log.d("mainActivity","message is "+regesterationResponse.getMessage());
+                Log.d(TAG,"message is "+regesterationResponse.getMessage());
                 if (!regesterationResponse.isError()){
-                    showDialog(regesterationResponse.getMessage());
-                }else showDialog(regesterationResponse.getMessage());
+                    Toast.makeText(RegistrationActivity.this,
+                            regesterationResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(RegistrationActivity.this,
+                        regesterationResponse.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
-                Log.d("mainActivity","onFailure "+t.getMessage());
+                Log.d(TAG,"onFailure "+t.getMessage());
             }
         });
     }
 
-    private void showDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message)
-                .show();
-    }
+
 }

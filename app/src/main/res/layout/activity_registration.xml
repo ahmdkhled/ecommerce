@@ -48,8 +48,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/fname_edit_hint"
             android:inputType="text"
-            android:textColor="#F79D5C"
-            android:textColorHint="#F79D5C" />
+            android:textColor="#56203D"
+             />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -73,8 +73,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/lname_edit_hint"
             android:inputType="text"
-            android:textColor="#F79D5C"
-            android:textColorHint="#F79D5C" />
+            android:textColor="#56203D" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -97,8 +96,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/email_edit_hint"
         android:inputType="textEmailAddress"
-        android:textColor="#F79D5C"
-        android:textColorHint="#F79D5C" />
+        android:textColor="#56203D"
+         />
 </android.support.design.widget.TextInputLayout>
 
 
@@ -122,8 +121,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/password_edit_hint"
             android:inputType="textEmailAddress"
-            android:textColor="#F79D5C"
-            android:textColorHint="#F79D5C" />
+            android:textColor="#56203D"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.AppCompatButton
