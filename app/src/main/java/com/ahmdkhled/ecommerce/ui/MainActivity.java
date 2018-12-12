@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,13 +10,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+
+import com.ahmdkhled.ecommerce.CategoriesActivity;
+import com.ahmdkhled.ecommerce.Product;
+import com.ahmdkhled.ecommerce.ProductsActivity;
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
+import com.ahmdkhled.ecommerce.adapter.RecentlyAddedProducsAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
@@ -32,6 +43,9 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ViewPager mainSliderPager;
+    RecyclerView categoryRecycler;
+    RecyclerView recentlyAddedRecycler;
+    Button seeAllCategories;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +55,9 @@ public class MainActivity extends AppCompatActivity
         drawerLayout=findViewById(R.id.mainDrawerLayout);
         navigationView=findViewById(R.id.mainNavView);
         mainSliderPager=findViewById(R.id.mainSliderPager);
+        categoryRecycler=findViewById(R.id.mainCategoryRecycler);
+        recentlyAddedRecycler=findViewById(R.id.recentlyAddedProductsRecycler);
+        seeAllCategories=findViewById(R.id.seeAllCategories);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,7 +71,15 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        seeAllCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), CategoriesActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        getRecentlyAdedProducts();
         getCategories();
         getAds();
     }
@@ -66,7 +91,10 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
                         ArrayList<Category> categories=response.body();
-                        populateMenu(categories);
+                        if (categories!=null){
+                            populateMenu(categories);
+                            showCategories(categories);
+                        }
                     }
 
                     @Override
@@ -76,9 +104,46 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
+    void getRecentlyAdedProducts(){
+        RetrofetClient.getApiService()
+                .getRecentlyAdedProducts()
+                .enqueue(new Callback<ArrayList<Product>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                        if (response.isSuccessful()){
+                            Log.d("RECENTLYADDD", String.valueOf(response.isSuccessful()));
+                            ArrayList<Product> products=response.body();
+                            showRecentlyAdedProducts(products);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                        Log.d("RECENTLYADDD",t.getMessage());
+                    }
+                });
+
+    }
+
     private void showSlider(ArrayList<Ad> ads){
         MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,ads);
         mainSliderPager.setAdapter(mainSliderAdapter);
+    }
+
+    private void showCategories(ArrayList<Category> categories){
+        MainCategoriesAdapter mainCategoriesAdapter=new MainCategoriesAdapter(this,categories);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this
+                ,LinearLayoutManager.HORIZONTAL,false);
+        categoryRecycler.setAdapter(mainCategoriesAdapter);
+        categoryRecycler.setLayoutManager(linearLayoutManager);
+    }
+    private void showRecentlyAdedProducts(ArrayList<Product> productsList){
+         RecentlyAddedProducsAdapter recentlyAddedProducsAdapter =new RecentlyAddedProducsAdapter(this,productsList);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this
+                ,LinearLayoutManager.HORIZONTAL,false);
+        recentlyAddedRecycler.setAdapter(recentlyAddedProducsAdapter);
+        recentlyAddedRecycler.setLayoutManager(linearLayoutManager);
     }
 
     private void getAds(){
@@ -111,12 +176,27 @@ public class MainActivity extends AppCompatActivity
         navigationView.invalidate();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==R.id.cart){
+            Intent intent=new Intent(this,CartActivity.class);
+            startActivity(intent);
+        }
+        return true;
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(getApplicationContext()," "+item.getTitle(),Toast.LENGTH_SHORT).show();
         drawerLayout.closeDrawer(GravityCompat.START);
+        Intent intent=new Intent(this, ProductsActivity.class);
+        intent.putExtra(ProductsActivity.CATEGORY_ID_KEY,item.getItemId());
+        startActivity(intent);
         return true;
     }
 

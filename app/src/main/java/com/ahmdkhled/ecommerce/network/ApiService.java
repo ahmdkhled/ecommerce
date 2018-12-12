@@ -1,6 +1,6 @@
 package com.ahmdkhled.ecommerce.network;
 import com.ahmdkhled.ecommerce.model.Product;
-
+import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Response;
@@ -32,12 +32,16 @@ public interface ApiService {
     @GET(Constants.CATEGORY_URL)
     Call<ArrayList<Category>> getCategories();
 
+    @GET("products.php")
+    Call<ArrayList<CartItem>> getCartItems(@Query("id") String ids);
+
     @GET ("products.php")
-    Call <ArrayList<Product>> getProducts(@Query("category") String category) ;
+    Call <ArrayList<Product>> getProducts(@Query("categoryId") String category) ;
 
     @GET("ads.php")
     Call<ArrayList<Ad>> getAds();
 
-
+    @GET("recentlyAdded.php")
+    Call<ArrayList<Product>> getRecentlyAdedProducts();
 
 }
