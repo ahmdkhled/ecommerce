@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     AppCompatButton mRegisterBtn;
     @BindView(R.id.login_txt)
     TextView mLoginTxt;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
 
 
     public static final String TAG = RegistrationActivity.class.getSimpleName();
@@ -70,6 +73,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void signup(String fName, String lName, String email, String password){
+        mProgressBar.setVisibility(View.VISIBLE);
         HashMap<String,String> map = new HashMap<>();
         map.put("firstname",fName);
         map.put("lastname",lName);
@@ -80,6 +84,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                mProgressBar.setVisibility(View.INVISIBLE);
                 Response regesterationResponse = response.body();
                 Log.d(TAG,"message is "+regesterationResponse.getMessage());
                 if (!regesterationResponse.isError()){
@@ -91,6 +96,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
+                mProgressBar.setVisibility(View.INVISIBLE);
                 Log.d(TAG,"onFailure "+t.getMessage());
             }
         });
