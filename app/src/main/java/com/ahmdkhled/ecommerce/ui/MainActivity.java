@@ -77,9 +77,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        TextView userName=navigationView.findViewById(R.id.nav_header_title);
-        userName.setText("ahmed khaled");
 
+        handleNavHeader();
         getRecentlyAdedProducts();
         getCategories();
         getAds();
@@ -139,6 +138,7 @@ public class MainActivity extends AppCompatActivity
         categoryRecycler.setAdapter(mainCategoriesAdapter);
         categoryRecycler.setLayoutManager(linearLayoutManager);
     }
+
     private void showRecentlyAdedProducts(ArrayList<Product> productsList){
          RecentlyAddedProducsAdapter recentlyAddedProducsAdapter =new RecentlyAddedProducsAdapter(this,productsList);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this
@@ -199,6 +199,19 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(ProductsActivity.CATEGORY_ID_KEY,item.getItemId());
         startActivity(intent);
         return true;
+    }
+
+    private void handleNavHeader(){
+        View navHeader=navigationView.getHeaderView(0);
+        TextView userName=navHeader.findViewById(R.id.nav_header_title);
+        TextView email=navHeader.findViewById(R.id.nav_header_desc);
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
