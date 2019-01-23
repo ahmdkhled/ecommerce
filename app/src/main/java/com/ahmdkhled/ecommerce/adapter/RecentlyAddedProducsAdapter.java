@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.ahmdkhled.ecommerce.Product;
 import com.ahmdkhled.ecommerce.R;
-import com.bumptech.glide.Glide;
+import com.ahmdkhled.ecommerce.model.Product;
 
 import java.util.ArrayList;
+
 
 public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAddedProducsAdapter.ProductHolder> {
 
