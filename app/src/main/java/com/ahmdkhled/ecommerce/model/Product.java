@@ -2,6 +2,8 @@ package com.ahmdkhled.ecommerce.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class Product  {
 
     @SerializedName("product_id")
@@ -20,8 +22,11 @@ public class Product  {
     private String date;
     @SerializedName("product_description")
     private String description;
+    @SerializedName("media")
+    private ArrayList<Media> media;
 
-    public Product(int id, int marketId, int quantity, int price, int categoryId, String name, String date, String description) {
+    public Product(int id, int marketId, int quantity, int price, int categoryId,
+                   String name, String date, String description,ArrayList<Media> media) {
         this.id = id;
         this.marketId = marketId;
         this.quantity = quantity;
@@ -30,6 +35,7 @@ public class Product  {
         this.name = name;
         this.date = date;
         this.description = description;
+        this.media=media;
     }
 
 
@@ -95,5 +101,13 @@ public class Product  {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ArrayList<Media> getMedia() {
+        return media;
+    }
+
+    public void setMedia(ArrayList<Media> media) {
+        this.media = media;
     }
 }
