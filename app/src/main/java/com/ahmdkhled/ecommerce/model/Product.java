@@ -1,9 +1,25 @@
 package com.ahmdkhled.ecommerce.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Product  {
 
-    int id,marketId,quantity,price,categoryId;
-    String name ,date ,description;
+    @SerializedName("product_id")
+    private int id;
+    @SerializedName("product_name")
+    private String name;
+    @SerializedName("product_marketId")
+    private int marketId;
+    @SerializedName("product_quantity")
+    private int quantity;
+    @SerializedName("product_price")
+    private int price;
+    @SerializedName("product_categoryId")
+    private int categoryId;
+    @SerializedName("product_date")
+    private String date;
+    @SerializedName("product_description")
+    private String description;
 
     public Product(int id, int marketId, int quantity, int price, int categoryId, String name, String date, String description) {
         this.id = id;

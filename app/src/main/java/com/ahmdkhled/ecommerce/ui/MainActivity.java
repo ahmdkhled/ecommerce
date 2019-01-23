@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                         if (response.isSuccessful()){
-                            Log.d("RECENTLYADDD", String.valueOf(response.isSuccessful()));
                             ArrayList<Product> products=response.body();
+                            Log.d("RECENTLYADDD",products.get(0).getPrice()+" --- ");
                             showRecentlyAdedProducts(products);
 
                         }
