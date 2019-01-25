@@ -67,13 +67,13 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
     public void getFakeData (){
-        Product p=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p1=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p2=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p3=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p4=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p5=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p6=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
+        Product p=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p1=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p2=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p3=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p4=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p5=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p6=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
 
 
         productsList.add(p);

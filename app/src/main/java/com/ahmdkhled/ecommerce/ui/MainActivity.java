@@ -19,7 +19,13 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+<<<<<<< HEAD
+=======
+import com.ahmdkhled.ecommerce.AccountActivity;
+>>>>>>> 05566368c4a9753beb5f5e4e9778f75290b4570e
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
@@ -28,6 +34,8 @@ import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -77,6 +85,10 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
+
+
+        handleNavHeader();
         getRecentlyAdedProducts();
         getCategories();
         getAds();
@@ -109,8 +121,8 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                         if (response.isSuccessful()){
-                            Log.d("RECENTLYADDD", String.valueOf(response.isSuccessful()));
                             ArrayList<Product> products=response.body();
+                            Log.d("RECENTLYADDD",products.get(0).getPrice()+" --- ");
                             showRecentlyAdedProducts(products);
 
                         }
@@ -136,6 +148,7 @@ public class MainActivity extends AppCompatActivity
         categoryRecycler.setAdapter(mainCategoriesAdapter);
         categoryRecycler.setLayoutManager(linearLayoutManager);
     }
+
     private void showRecentlyAdedProducts(ArrayList<Product> productsList){
          RecentlyAddedProducsAdapter recentlyAddedProducsAdapter =new RecentlyAddedProducsAdapter(this,productsList);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this
@@ -196,6 +209,56 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(ProductsActivity.CATEGORY_ID_KEY,item.getItemId());
         startActivity(intent);
         return true;
+    }
+
+    private void handleNavHeader(){
+        View navHeader=navigationView.getHeaderView(0);
+        TextView userName=navHeader.findViewById(R.id.nav_header_title);
+        TextView email=navHeader.findViewById(R.id.nav_header_desc);
+        ImageView img=navHeader.findViewById(R.id.nav_header_image);
+        final SessionManager sessionManager=new SessionManager(this);
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sessionManager.sessionExist()){
+                    Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sessionManager.sessionExist()){
+                    Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+        if (sessionManager.sessionExist()){
+            userName.setText(sessionManager.getUserName());
+            email.setText(sessionManager.getEmail());
+        }
     }
 
     @Override
