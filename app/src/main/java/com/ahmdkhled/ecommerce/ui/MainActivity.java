@@ -22,10 +22,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-<<<<<<< HEAD
-=======
+
 import com.ahmdkhled.ecommerce.AccountActivity;
->>>>>>> 05566368c4a9753beb5f5e4e9778f75290b4570e
+
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
