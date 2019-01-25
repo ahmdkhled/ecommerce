@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
@@ -20,6 +21,7 @@ public class AccountActivity extends AppCompatActivity {
     SessionManager sessionManager;
     TextView userName,email;
     Button login;
+    Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,7 @@ public class AccountActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         userName=findViewById(R.id.account_userName);
         email=findViewById(R.id.account_email);
         login=findViewById(R.id.accountLogin);
@@ -58,6 +61,7 @@ public class AccountActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu=menu;
         getMenuInflater().inflate(R.menu.account_menu,menu);
         if (!sessionManager.sessionExist()){
             menu.findItem(R.id.logOut).setVisible(false);
@@ -68,6 +72,16 @@ public class AccountActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==android.R.id.home){
+            onBackPressed();
+        }else if (item.getItemId()==R.id.logOut){
+            sessionManager.logOut();
+            Toast.makeText(getApplicationContext(),"logged out ",Toast.LENGTH_SHORT).show();
+            userName.setVisibility(View.GONE);
+            email.setVisibility(View.GONE);
+            login.setVisibility(View.VISIBLE);
+            menu.findItem(R.id.logOut).setVisible(false);
+        }
         return super.onOptionsItemSelected(item);
     }
 }
