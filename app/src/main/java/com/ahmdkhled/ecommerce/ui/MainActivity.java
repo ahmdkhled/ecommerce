@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
                 startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
 
             }
         });
@@ -229,9 +230,11 @@ public class MainActivity extends AppCompatActivity
                 if (sessionManager.sessionExist()){
                     Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
                     startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
                 }else {
                     Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
                     startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
                 }
 
             }
@@ -243,9 +246,11 @@ public class MainActivity extends AppCompatActivity
                 if (sessionManager.sessionExist()){
                     Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
                     startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
                 }else {
                     Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
                     startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
                 }
 
             }
