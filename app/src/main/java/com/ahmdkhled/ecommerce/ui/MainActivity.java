@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ahmdkhled.ecommerce.AccountActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
