@@ -20,15 +20,13 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 
-import com.ahmdkhled.ecommerce.CategoriesActivity;
-import com.ahmdkhled.ecommerce.Product;
-import com.ahmdkhled.ecommerce.ProductsActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
 import com.ahmdkhled.ecommerce.adapter.RecentlyAddedProducsAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
+import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import java.util.ArrayList;
 
