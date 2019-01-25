@@ -19,7 +19,10 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ahmdkhled.ecommerce.AccountActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
@@ -28,6 +31,8 @@ import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -76,6 +81,8 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+
 
 
         handleNavHeader();
@@ -205,13 +212,50 @@ public class MainActivity extends AppCompatActivity
         View navHeader=navigationView.getHeaderView(0);
         TextView userName=navHeader.findViewById(R.id.nav_header_title);
         TextView email=navHeader.findViewById(R.id.nav_header_desc);
+        ImageView img=navHeader.findViewById(R.id.nav_header_image);
+        final SessionManager sessionManager=new SessionManager(this);
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sessionManager.sessionExist()){
+                    Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
         email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(intent);
+                if (sessionManager.sessionExist()){
+                    Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
+
+        if (sessionManager.sessionExist()){
+            userName.setText(sessionManager.getUserName());
+            email.setText(sessionManager.getEmail());
+        }
     }
 
     @Override
