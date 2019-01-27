@@ -33,9 +33,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_arrow_back_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Ahmed Khaled" />
+                            <entry key="outputName" value="ic_like" />
+                            <entry key="sourceFile" value="C:\Users\Ahmed Khaled\Downloads\like.svg" />
                           </map>
                         </option>
                       </PersistentState>
