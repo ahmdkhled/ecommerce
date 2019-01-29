@@ -37,13 +37,20 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
 
     @Override
     public void onBindViewHolder(@NonNull AddressHolder holder, int position) {
-        holder.bindView(position);
+        holder.bindView(addresses.get(position));
     }
 
     @Override
     public int getItemCount() {
         if (addresses != null && addresses.size() != 0)return addresses.size();
         else return 0;
+    }
+
+    public void notifyAdapter(ArrayList<Address> mAddresses) {
+        if(mAddresses != null && mAddresses.size() != 0){
+            addresses = mAddresses;
+            this.notifyDataSetChanged();
+        }
     }
 
     class AddressHolder extends RecyclerView.ViewHolder{
@@ -60,8 +67,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
             ButterKnife.bind(this,itemView);
         }
 
-        public void bindView(int position) {
-
+        public void bindView(Address mAddress) {
+            mAddressDetail.setText(mAddress.getAddress1()+", "+mAddress.getAddress2());
         }
     }
 }

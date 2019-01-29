@@ -51,9 +51,8 @@ public class AddressActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<Address>> call, retrofit2.Response<ArrayList<Address>> response) {
                 if(response.isSuccessful()){
-                    Log.d(TAG,"response is successfully done");
-                    Log.d(TAG,"size is "+response.body().size());
-                    Log.d(TAG,"addresses are "+response.body().get(0).getAddress1());
+                    addresses = response.body();
+                    mAddressAdapter.notifyAdapter(addresses);
                 }
             }
 
