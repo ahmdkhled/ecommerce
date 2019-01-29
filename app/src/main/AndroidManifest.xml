@@ -35,7 +35,13 @@
             android:name=".ui.CategoriesActivity"
             android:exported="true" />
         <activity android:name=".ProductDetail" />
-        <activity android:name=".ui.AccountActivity"></activity>
+        <activity android:name=".ui.AccountActivity" />
+        <activity android:name=".ui.AddressActivity"
+            android:theme="@style/ActionBarTheme"
+            android:exported="true">
+
+
+        </activity>
     </application>
 
 </manifest>

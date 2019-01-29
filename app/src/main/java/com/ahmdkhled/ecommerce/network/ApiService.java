@@ -1,4 +1,5 @@
 package com.ahmdkhled.ecommerce.network;
+import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Ad;
@@ -43,5 +44,9 @@ public interface ApiService {
 
     @GET("recentlyAdded.php")
     Call<ArrayList<Product>> getRecentlyAdedProducts();
+
+    @FormUrlEncoded
+    @POST(Constants.GET_ADDRESSES_URL)
+    Call<ArrayList<Address>> getAddresses(@Field("id") String userId);
 
 }
