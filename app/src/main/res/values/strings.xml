@@ -10,4 +10,10 @@
     <string name="lname_edit_hint">Last Name</string>
     <string name="address1_edit_hint">Address 1</string>
     <string name="address2_edit_hint">Address 2</string>
+    <string name="state_edit_hint">State</string>
+    <string name="city_edit_hint">City</string>
+    <string name="zip_code_edit_hint">Zip Code</string>
+    <string name="add_address_activity_title">Add New Address</string>
+    <string name="field_is_required">Required Field</string>
+    <string name="address_activity_title">Select Address</string>
 </resources>

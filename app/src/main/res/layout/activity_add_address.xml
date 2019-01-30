@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorPrimary"
         app:titleTextColor="@android:color/white"
+        android:theme="@style/ToolbarTheme"
         />
 
     <android.support.design.widget.TextInputLayout
@@ -63,6 +64,52 @@
             android:textColor="#56203D" />
     </android.support.design.widget.TextInputLayout>
 
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/state_textInputLayout"
+        android:layout_width="183dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        app:errorTextAppearance="@style/erroStyle"
+        app:layout_constraintEnd_toStartOf="@+id/city_textInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/fname_textInputLayout">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/state_edittext"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/state_edit_hint"
+            android:inputType="text"
+            android:textColor="#56203D"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/city_textInputLayout"
+        android:layout_width="183dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        app:errorTextAppearance="@style/erroStyle"
+        app:layout_constraintStart_toEndOf="@+id/state_textInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/lname_textInputLayout">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/city_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/city_edit_hint"
+            android:inputType="text"
+            android:textColor="#56203D" />
+    </android.support.design.widget.TextInputLayout>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/address1_textInputLayout"
         android:layout_width="match_parent"
@@ -75,7 +122,7 @@
         app:errorTextAppearance="@style/erroStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fname_textInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/state_textInputLayout">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/address1_edittext"
@@ -113,13 +160,39 @@
     </android.support.design.widget.TextInputLayout>
 
 
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/zip_code_textInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        app:errorTextAppearance="@style/erroStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address2_textInputLayout">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/zip_code_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/zip_code_edit_hint"
+            android:inputType="numberDecimal"
+            android:textColor="#56203D"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/add_address_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address2_textInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/zip_code_textInputLayout"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"

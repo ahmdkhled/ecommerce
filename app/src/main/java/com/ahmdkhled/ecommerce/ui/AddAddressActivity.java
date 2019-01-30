@@ -42,6 +42,18 @@ public class AddAddressActivity extends AppCompatActivity {
     AppCompatEditText mAddress2Txt;
     @BindView(R.id.address2_textInputLayout)
     TextInputLayout mAddress2InputLayout;
+    @BindView(R.id.state_edittext)
+    AppCompatEditText mStateTxt;
+    @BindView(R.id.state_textInputLayout)
+    TextInputLayout mStateInputLayout;
+    @BindView(R.id.city_edittext)
+    AppCompatEditText mCityTxt;
+    @BindView(R.id.city_textInputLayout)
+    TextInputLayout mCityInputLayout;
+    @BindView(R.id.zip_code_edittext)
+    AppCompatEditText mZipCodeTxt;
+    @BindView(R.id.zip_code_textInputLayout)
+    TextInputLayout mZipCodeInputLayout;
     @BindView(R.id.add_address_btn)
     AppCompatButton mAddAddressBtn;
 
@@ -56,7 +68,8 @@ public class AddAddressActivity extends AppCompatActivity {
 
         // setup toolbar
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Add New Address");
+        getSupportActionBar().setTitle(R.string.add_address_activity_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAddAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +81,9 @@ public class AddAddressActivity extends AppCompatActivity {
 
     private void AddNewAddress() {
         if(isInputsValid()){
-            Call<Response> call = RetrofetClient.getApiService().addAddress("2","italy","rome"
-            ,12345,mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
+            Call<Response> call = RetrofetClient.getApiService().addAddress("2",mStateTxt.getText()
+                    .toString(),mCityTxt.getText().toString()
+            ,Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
             call.enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -88,14 +102,19 @@ public class AddAddressActivity extends AppCompatActivity {
 
     private boolean isInputsValid() {
         if(!TextUtils.isEmpty(mFnameTxt.getText()) && !TextUtils.isEmpty(mLnameTxt.getText())
-                && !TextUtils.isEmpty(mAddress1Txt.getText()) && !TextUtils.isEmpty(mAddress2Txt.getText())){
+                && !TextUtils.isEmpty(mAddress1Txt.getText()) && !TextUtils.isEmpty(mAddress2Txt.getText())
+                && !TextUtils.isEmpty(mStateTxt.getText()) && !TextUtils.isEmpty(mCityTxt.getText())
+                && !TextUtils.isEmpty(mZipCodeTxt.getText())){
             return true;
         }
 
-        if(TextUtils.isEmpty(mFnameTxt.getText()))mFnameInputLayout.setError("Required Field");
-        if(TextUtils.isEmpty(mLnameTxt.getText()))mLnameInputLayout.setError("Required Field");
-        if(TextUtils.isEmpty(mAddress1Txt.getText()))mAddress1InputLayout.setError("Required Field");
-        if(TextUtils.isEmpty(mAddress2Txt.getText()))mAddress2InputLayout.setError("Required Field");
+        if(TextUtils.isEmpty(mFnameTxt.getText()))mFnameInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mLnameTxt.getText()))mLnameInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mAddress1Txt.getText()))mAddress1InputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mAddress2Txt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mStateTxt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mCityTxt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mZipCodeTxt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
 
         return false;
     }

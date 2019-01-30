@@ -27,7 +27,7 @@ import retrofit2.Callback;
 
 public class AddressActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "fromAddressActivity";
+    private static final String TAG = AddressActivity.class.getSimpleName();
     @BindView(R.id.address_recycler_view)
     RecyclerView mAddressRecyclerView;
     @BindView(R.id.toolbar)
@@ -50,7 +50,8 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
         // setup toolbar
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Select Address");
+        getSupportActionBar().setTitle(R.string.address_activity_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         // setup recycler view
@@ -88,4 +89,6 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         Intent addAddressIntent = new Intent(this,AddAddressActivity.class);
         startActivity(addAddressIntent);
     }
+
+
 }
