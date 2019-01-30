@@ -8,4 +8,6 @@
     <string name="name_edit_hint">Name</string>
     <string name="fname_edit_hint">First Name</string>
     <string name="lname_edit_hint">Last Name</string>
+    <string name="address1_edit_hint">Address 1</string>
+    <string name="address2_edit_hint">Address 2</string>
 </resources>

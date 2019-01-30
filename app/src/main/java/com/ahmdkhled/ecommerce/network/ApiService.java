@@ -49,4 +49,9 @@ public interface ApiService {
     @POST(Constants.GET_ADDRESSES_URL)
     Call<ArrayList<Address>> getAddresses(@Field("id") String userId);
 
+    @FormUrlEncoded
+    @POST(Constants.ADD_ADDRESS_URL)
+    Call<Response> addAddress(@Field("user_id") String userId, @Field("state") String state,
+                              @Field("city") String city, @Field("zip_code") int zipCode,
+                              @Field("address_1") String address1, @Field("address_2") String address2);
 }

@@ -1,6 +1,8 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.nfc.Tag;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +25,7 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AddressActivity extends AppCompatActivity {
+public class AddressActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "fromAddressActivity";
     @BindView(R.id.address_recycler_view)
@@ -32,6 +34,8 @@ public class AddressActivity extends AppCompatActivity {
     Toolbar mToolbar;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.add_address_fab)
+    FloatingActionButton mAddAddressFAB;
 
     AddressAdapter mAddressAdapter;
     ArrayList<Address> addresses = new ArrayList<>();
@@ -55,6 +59,8 @@ public class AddressActivity extends AppCompatActivity {
         mAddressRecyclerView.setAdapter(mAddressAdapter);
         getAddresses("2");
 
+        mAddAddressFAB.setOnClickListener(this);
+
     }
 
     public void getAddresses(String userId){
@@ -75,5 +81,11 @@ public class AddressActivity extends AppCompatActivity {
                 Log.d(TAG,"failure "+t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent addAddressIntent = new Intent(this,AddAddressActivity.class);
+        startActivity(addAddressIntent);
     }
 }

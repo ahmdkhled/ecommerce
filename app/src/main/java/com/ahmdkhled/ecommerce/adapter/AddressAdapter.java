@@ -35,8 +35,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AddressHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final AddressHolder holder, int position) {
         holder.bindView(addresses.get(position));
+
     }
 
     @Override
@@ -58,8 +59,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         TextView mUserName;
         @BindView(R.id.address_details)
         TextView mAddressDetail;
-        @BindView(R.id.address_radio_button)
-        RadioButton mSelectedAddress;
+
 
         public AddressHolder(@NonNull View itemView) {
             super(itemView);
