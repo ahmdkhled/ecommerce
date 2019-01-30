@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.AddressAdapter;
@@ -25,6 +28,10 @@ public class AddressActivity extends AppCompatActivity {
     private static final String TAG = "fromAddressActivity";
     @BindView(R.id.address_recycler_view)
     RecyclerView mAddressRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
     AddressAdapter mAddressAdapter;
     ArrayList<Address> addresses = new ArrayList<>();
@@ -37,6 +44,11 @@ public class AddressActivity extends AppCompatActivity {
         // bind views
         ButterKnife.bind(this);
 
+        // setup toolbar
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Select Address");
+
+
         // setup recycler view
         mAddressAdapter = new AddressAdapter(this,addresses);
         mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,12 +58,14 @@ public class AddressActivity extends AppCompatActivity {
     }
 
     public void getAddresses(String userId){
+        mProgressBar.setVisibility(View.VISIBLE);
         Call<ArrayList<Address>> call = RetrofetClient.getApiService().getAddresses(userId);
         call.enqueue(new Callback<ArrayList<Address>>() {
             @Override
             public void onResponse(Call<ArrayList<Address>> call, retrofit2.Response<ArrayList<Address>> response) {
                 if(response.isSuccessful()){
                     addresses = response.body();
+                    mProgressBar.setVisibility(View.INVISIBLE);
                     mAddressAdapter.notifyAdapter(addresses);
                 }
             }

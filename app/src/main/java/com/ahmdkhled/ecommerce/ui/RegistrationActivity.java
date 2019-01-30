@@ -53,6 +53,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         // bind views
         ButterKnife.bind(this);
 
+
         mRegisterBtn.setOnClickListener(this);
     }
 
