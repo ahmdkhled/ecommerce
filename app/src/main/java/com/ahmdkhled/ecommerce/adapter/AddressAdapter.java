@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
 
     private Context mContext;
     private ArrayList<Address> addresses;
+    int mLastCheckedPosition = -1;
 
     public AddressAdapter(Context mContext, ArrayList<Address> addresses) {
         this.mContext = mContext;
@@ -36,7 +38,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
 
     @Override
     public void onBindViewHolder(@NonNull final AddressHolder holder, int position) {
-        holder.bindView(addresses.get(position));
+        Address mAddress = addresses.get(position);
+        holder.mAddressDetail.setText(mAddress.getAddress1()+", "+mAddress.getAddress2());
+        holder.mSelectAddressRB.setChecked(mLastCheckedPosition == position);
 
     }
 
@@ -59,15 +63,29 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         TextView mUserName;
         @BindView(R.id.address_details)
         TextView mAddressDetail;
+        @BindView(R.id.select_address_rb)
+        RadioButton mSelectAddressRB;
+        @BindView(R.id.edit_address)
+        TextView mEditAddress;
+        @BindView(R.id.delete_address)
+        TextView mDeleteAddress;
+
 
 
         public AddressHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mLastCheckedPosition = getAdapterPosition();
+                    notifyDataSetChanged();
+                }
+            });
         }
 
-        public void bindView(Address mAddress) {
-            mAddressDetail.setText(mAddress.getAddress1()+", "+mAddress.getAddress2());
-        }
+
+
+
     }
 }

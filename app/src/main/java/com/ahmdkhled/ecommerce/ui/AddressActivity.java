@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.AddressAdapter;
@@ -44,6 +45,8 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address);
+
+        Log.d(TAG,"onCreate method");
 
         // bind views
         ButterKnife.bind(this);
@@ -80,6 +83,8 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onFailure(Call<ArrayList<Address>> call, Throwable t) {
                 Log.d(TAG,"failure "+t.getMessage());
+                mProgressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(AddressActivity.this, "error while loading data", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -90,5 +95,10 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(addAddressIntent);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume method");
+        getAddresses("2");
+    }
 }

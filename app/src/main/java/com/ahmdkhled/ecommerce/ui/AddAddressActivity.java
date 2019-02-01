@@ -89,12 +89,14 @@ public class AddAddressActivity extends AppCompatActivity {
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                     if(response.isSuccessful()){
                         Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Response> call, Throwable t) {
                     Log.d(TAG,"failure message : "+t.getMessage());
+                    Toast.makeText(AddAddressActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -112,10 +114,12 @@ public class AddAddressActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(mLnameTxt.getText()))mLnameInputLayout.setError(getString(R.string.field_is_required));
         if(TextUtils.isEmpty(mAddress1Txt.getText()))mAddress1InputLayout.setError(getString(R.string.field_is_required));
         if(TextUtils.isEmpty(mAddress2Txt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
-        if(TextUtils.isEmpty(mStateTxt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
-        if(TextUtils.isEmpty(mCityTxt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
-        if(TextUtils.isEmpty(mZipCodeTxt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mStateTxt.getText()))mStateInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mCityTxt.getText()))mCityInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mZipCodeTxt.getText()))mZipCodeInputLayout.setError(getString(R.string.field_is_required));
 
         return false;
     }
+
+
 }
