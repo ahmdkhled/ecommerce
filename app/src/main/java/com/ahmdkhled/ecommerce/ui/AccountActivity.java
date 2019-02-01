@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,7 @@ public class AccountActivity extends AppCompatActivity {
     TextView userName,email;
     Button login;
     Menu menu;
+    ConstraintLayout favoritesContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +36,20 @@ public class AccountActivity extends AppCompatActivity {
         userName=findViewById(R.id.account_userName);
         email=findViewById(R.id.account_email);
         login=findViewById(R.id.accountLogin);
+        favoritesContainer=findViewById(R.id.favorites_container);
         sessionManager=new SessionManager(this);
         populateDetails();
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        favoritesContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),FavoritesActivity.class);
                 startActivity(intent);
             }
         });
