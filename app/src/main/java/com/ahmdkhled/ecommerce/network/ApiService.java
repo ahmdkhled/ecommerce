@@ -44,4 +44,7 @@ public interface ApiService {
     @GET("recentlyAdded.php")
     Call<ArrayList<Product>> getRecentlyAdedProducts();
 
+    @GET("favorite.php")
+    Call<ArrayList<Product>> getFavoriteProducts(@Query("userId") long userId);
+
 }
