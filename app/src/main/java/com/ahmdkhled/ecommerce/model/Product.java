@@ -38,6 +38,9 @@ public class Product  {
         this.media=media;
     }
 
+    public Product(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -109,5 +112,13 @@ public class Product  {
 
     public void setMedia(ArrayList<Media> media) {
         this.media = media;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj==null) return false;
+        if (!(obj instanceof Product)) return false;
+        Product p= (Product) obj;
+        return p.getId() == this.getId();
     }
 }

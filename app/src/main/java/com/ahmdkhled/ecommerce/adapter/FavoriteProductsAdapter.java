@@ -1,19 +1,30 @@
 package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.ui.ProductDetail;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FavoriteProductsAdapter  extends RecyclerView.Adapter<FavoriteProductsAdapter.ProductHolder>{
 
@@ -38,9 +49,13 @@ public class FavoriteProductsAdapter  extends RecyclerView.Adapter<FavoriteProdu
         Product product=productsList.get(position);
         holder.name.setText(product.getName());
         holder.price.setText(String.valueOf(product.getPrice()));
-        Glide.with(context)
-                .load(product.getMedia().get(0).getUrl())
-                .into(holder.img);
+        if (product.getMedia()!=null){
+            String url=product.getMedia().get(0).getUrl();
+            Glide.with(context)
+                    .load(url)
+                    .into(holder.img);
+        }
+
     }
 
     @Override
@@ -52,12 +67,48 @@ public class FavoriteProductsAdapter  extends RecyclerView.Adapter<FavoriteProdu
 
         ImageView img,unLike;
         TextView name,price;
-        public ProductHolder(@NonNull View itemView) {
+        ProductHolder(@NonNull View itemView) {
             super(itemView);
             img=itemView.findViewById(R.id.fav_product_img);
             unLike=itemView.findViewById(R.id.unlike);
             name=itemView.findViewById(R.id.fav_product_name);
             price=itemView.findViewById(R.id.fav_product_price);
+
+            unLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    long userId=new SessionManager(context).getId();
+                    long productId=productsList.get(getAdapterPosition()).getId();
+                    //Log.d("FAVORITEE","productId "+productId+" userId "+userId);
+                    deleteProduct(productId,userId);
+                }
+            });
+
+
         }
+    }
+
+    private void deleteProduct(final long productId, long userId ){
+        RetrofetClient.getApiService()
+                .deleteFavoriteProduct(productId,userId)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.code()==200){
+                            Product p=new Product((int) productId);
+                            productsList.remove(p);
+                            notifyDataSetChanged();
+                            Toast.makeText(context,"product removed ",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context,"error removing product from favorites ",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(context,"error removing product from favorites ",Toast.LENGTH_SHORT).show();
+                        Log.d("FAVORITEE",t.getMessage());
+                    }
+                });
     }
 }

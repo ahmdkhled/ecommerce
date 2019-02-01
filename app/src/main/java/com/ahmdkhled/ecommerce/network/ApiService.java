@@ -9,12 +9,15 @@ import com.ahmdkhled.ecommerce.model.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -46,5 +49,10 @@ public interface ApiService {
 
     @GET("favorite.php")
     Call<ArrayList<Product>> getFavoriteProducts(@Query("userId") long userId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE",path="favorite.php", hasBody = true)
+    Call<ResponseBody> deleteFavoriteProduct(@Field("productId")long productId,
+                                             @Field("userId") long userId );
 
 }
