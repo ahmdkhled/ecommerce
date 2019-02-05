@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -161,7 +162,10 @@ public class MainActivity extends AppCompatActivity
                     public void onResponse(Call<ArrayList<Ad>> call, Response<ArrayList<Ad>> response) {
                         if (response.isSuccessful()){
                             ArrayList<Ad> ads=response.body();
-                            showSlider(ads);
+                            if (ads!=null){
+                                showSlider(ads);
+                                moveSlider(ads.size());
+                            }
                         }
                     }
 
@@ -269,6 +273,24 @@ public class MainActivity extends AppCompatActivity
         }else{
             super.onBackPressed();
         }
+    }
+
+    private void moveSlider(final int adsNum){
+        final Handler handler=new Handler();
+        Runnable runnable=new Runnable() {
+            @Override
+            public void run() {
+                int currentItem=mainSliderPager.getCurrentItem();
+                if (currentItem==adsNum-1){
+                    currentItem=0;
+                }else {
+                    currentItem++;
+                }
+                mainSliderPager.setCurrentItem(currentItem,true);
+                handler.postDelayed(this,3000);
+            }
+        };
+        handler.post(runnable);
     }
 
     ArrayList<Ad> getFakeAds(){
