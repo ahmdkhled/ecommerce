@@ -39,7 +39,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
 
     @Override
     public void onBindViewHolder(@NonNull final AddressHolder holder, int position) {
-        Address mAddress = addresses.get(position);
+        final Address mAddress = addresses.get(position);
         holder.mAddressDetail.setText(mContext.getString(R.string.address_details,
                 mAddress.getAddress1(),mAddress.getAddress2()));
 

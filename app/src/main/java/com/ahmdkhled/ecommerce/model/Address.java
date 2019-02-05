@@ -1,14 +1,10 @@
 package com.ahmdkhled.ecommerce.model;
 
 public class Address {
+    private int id;
     private String address2;
 
     private String address1;
-
-    public Address(String address2, String address1) {
-        this.address2 = address2;
-        this.address1 = address1;
-    }
 
     public String getAddress2 ()
     {
@@ -28,5 +24,13 @@ public class Address {
     public void setAddress1 (String address1)
     {
         this.address1 = address1;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
