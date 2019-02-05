@@ -101,4 +101,19 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         Log.d(TAG,"onResume method");
         getAddresses("2");
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("lifecycle is","onPause method");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("lifecycle is","onStop method");
+
+
+    }
 }

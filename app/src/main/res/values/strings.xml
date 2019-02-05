@@ -16,4 +16,5 @@
     <string name="add_address_activity_title">Add New Address</string>
     <string name="field_is_required">Required Field</string>
     <string name="address_activity_title">Select Address</string>
+    <string name="address_details">%1$s!, %2$s!</string>
 </resources>

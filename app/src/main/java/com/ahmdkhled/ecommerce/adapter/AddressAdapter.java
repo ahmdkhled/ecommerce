@@ -3,6 +3,7 @@ package com.ahmdkhled.ecommerce.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
 
     private Context mContext;
     private ArrayList<Address> addresses;
-    int mLastCheckedPosition = -1;
+    RadioButton mLastRbChecked = null;
 
     public AddressAdapter(Context mContext, ArrayList<Address> addresses) {
         this.mContext = mContext;
@@ -39,13 +40,29 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     @Override
     public void onBindViewHolder(@NonNull final AddressHolder holder, int position) {
         Address mAddress = addresses.get(position);
-        holder.mAddressDetail.setText(mAddress.getAddress1()+", "+mAddress.getAddress2());
-        holder.mSelectAddressRB.setChecked(mLastCheckedPosition == position);
+        holder.mAddressDetail.setText(mContext.getString(R.string.address_details,
+                mAddress.getAddress1(),mAddress.getAddress2()));
+
+        // user can select only one address
+        holder.mSelectAddressRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                RadioButton rb = holder.mSelectAddressRB;
+                if(mLastRbChecked != null){
+                    mLastRbChecked.setChecked(false);
+                }
+                mLastRbChecked = rb;
+            }
+        });
+
+
+
 
     }
 
     @Override
     public int getItemCount() {
+
         if (addresses != null && addresses.size() != 0)return addresses.size();
         else return 0;
     }
@@ -72,16 +89,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
 
 
 
-        public AddressHolder(@NonNull View itemView) {
+
+        public AddressHolder(@NonNull final View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mLastCheckedPosition = getAdapterPosition();
-                    notifyDataSetChanged();
-                }
-            });
         }
 
 
