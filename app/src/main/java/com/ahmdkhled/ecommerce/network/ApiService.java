@@ -54,4 +54,8 @@ public interface ApiService {
     Call<Response> addAddress(@Field("user_id") String userId, @Field("state") String state,
                               @Field("city") String city, @Field("zip_code") int zipCode,
                               @Field("address_1") String address1, @Field("address_2") String address2);
+
+    @FormUrlEncoded
+    @POST(Constants.DELETE_ADDRESS)
+    Call<Response> deleteAddress(@Field("id") int addressId);
 }
