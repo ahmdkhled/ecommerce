@@ -32,6 +32,8 @@ import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.rd.PageIndicatorView;
+import com.rd.animation.type.AnimationType;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     RecyclerView categoryRecycler;
     RecyclerView recentlyAddedRecycler;
     Button seeAllCategories;
+    PageIndicatorView pageIndicatorView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,8 @@ public class MainActivity extends AppCompatActivity
         categoryRecycler=findViewById(R.id.mainCategoryRecycler);
         recentlyAddedRecycler=findViewById(R.id.recentlyAddedProductsRecycler);
         seeAllCategories=findViewById(R.id.seeAllCategories);
+        pageIndicatorView=findViewById(R.id.mainpagerIndicatorView);
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -73,6 +78,23 @@ public class MainActivity extends AppCompatActivity
         toggle.getDrawerArrowDrawable().setColor(Color.WHITE);
 
         navigationView.setNavigationItemSelectedListener(this);
+        pageIndicatorView.setAnimationType(AnimationType.WORM);
+        mainSliderPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pageIndicatorView.setSelection(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         seeAllCategories.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +158,7 @@ public class MainActivity extends AppCompatActivity
     private void showSlider(ArrayList<Ad> ads){
         MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,ads);
         mainSliderPager.setAdapter(mainSliderAdapter);
+
     }
 
     private void showCategories(ArrayList<Category> categories){
