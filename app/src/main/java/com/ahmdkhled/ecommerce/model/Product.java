@@ -1,10 +1,13 @@
 package com.ahmdkhled.ecommerce.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class Product  {
+public class Product implements Parcelable {
 
     @SerializedName("product_id")
     private int id;
@@ -41,6 +44,29 @@ public class Product  {
     public Product(int id) {
         this.id = id;
     }
+
+    protected Product(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        marketId = in.readInt();
+        quantity = in.readInt();
+        price = in.readInt();
+        categoryId = in.readInt();
+        date = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -120,5 +146,22 @@ public class Product  {
         if (!(obj instanceof Product)) return false;
         Product p= (Product) obj;
         return p.getId() == this.getId();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeInt(marketId);
+        parcel.writeInt(quantity);
+        parcel.writeInt(price);
+        parcel.writeInt(categoryId);
+        parcel.writeString(date);
+        parcel.writeString(description);
     }
 }

@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.ui.ProductDetail;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -57,6 +59,16 @@ public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAd
             image=itemView.findViewById(R.id.product_image);
             name=itemView.findViewById(R.id.name);
             price=itemView.findViewById(R.id.price);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(context, ProductDetail.class);
+                    Product product=productsList.get(getAdapterPosition());
+                    intent.putExtra(ProductDetail.PRODUCT_KEY,product);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }
