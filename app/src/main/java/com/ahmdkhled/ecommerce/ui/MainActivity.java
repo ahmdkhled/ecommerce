@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity
     RecyclerView categoryRecycler;
     RecyclerView recentlyAddedRecycler;
     Button seeAllCategories;
+    Button seeAllRecentlyAdded;
     PageIndicatorView pageIndicatorView;
+    public static final String RECENTLY_ADDED_TARGET="recently_added_target";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         categoryRecycler=findViewById(R.id.mainCategoryRecycler);
         recentlyAddedRecycler=findViewById(R.id.recentlyAddedProductsRecycler);
         seeAllCategories=findViewById(R.id.seeAllCategories);
+        seeAllRecentlyAdded=findViewById(R.id.seeAllRecentlyAdded);
         pageIndicatorView=findViewById(R.id.mainpagerIndicatorView);
 
 
@@ -100,6 +103,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), CategoriesActivity.class);
+                intent.putExtra(ProductsActivity.TARGET_KEY,RECENTLY_ADDED_TARGET);
+                startActivity(intent);
+            }
+        });
+
+        seeAllRecentlyAdded.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), ProductsActivity.class);
                 startActivity(intent);
             }
         });
