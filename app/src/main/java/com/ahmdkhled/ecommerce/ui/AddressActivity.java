@@ -1,7 +1,10 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.nfc.Tag;
+
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,10 +19,11 @@ import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.AddressAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
-import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.viewmodel.AddressActivityViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,13 +44,13 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
     AddressAdapter mAddressAdapter;
     ArrayList<Address> addresses = new ArrayList<>();
+    AddressActivityViewModel mAddressActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address);
 
-        Log.d(TAG,"onCreate method");
 
         // bind views
         ButterKnife.bind(this);
@@ -56,38 +60,40 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setTitle(R.string.address_activity_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // link address view model with this activity
+        mAddressActivityViewModel = ViewModelProviders.of(this).get(AddressActivityViewModel.class);
+        mAddressActivityViewModel.init();
+        mAddressActivityViewModel.getAddresses("2").observe(this, new Observer<List<Address>>() {
+            @Override
+            public void onChanged(@Nullable List<Address> addresses) {
+                mAddressAdapter.notifyAdapter(addresses);
+            }
+        });
 
-        // setup recycler view
-        mAddressAdapter = new AddressAdapter(this,addresses);
-        mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAddressRecyclerView.setAdapter(mAddressAdapter);
-        getAddresses("2");
+        mAddressActivityViewModel.isLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean) showProgressBar();
+                else hideProgressBar();
+            }
+        });
+
+        initRecyclerView();
+
 
         mAddAddressFAB.setOnClickListener(this);
 
     }
 
-    public void getAddresses(String userId){
-        mProgressBar.setVisibility(View.VISIBLE);
-        Call<ArrayList<Address>> call = RetrofetClient.getApiService().getAddresses(userId);
-        call.enqueue(new Callback<ArrayList<Address>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Address>> call, retrofit2.Response<ArrayList<Address>> response) {
-                if(response.isSuccessful()){
-                    addresses = response.body();
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                    mAddressAdapter.notifyAdapter(addresses);
-                }
-            }
+    private void initRecyclerView() {
+        // setup recycler view
+        Log.d("viewmodeldemo","inside init RV");
 
-            @Override
-            public void onFailure(Call<ArrayList<Address>> call, Throwable t) {
-                Log.d(TAG,"failure "+t.getMessage());
-                mProgressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(AddressActivity.this, "error while loading data", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mAddressAdapter = new AddressAdapter(this,mAddressActivityViewModel.getAddresses("2").getValue());
+        mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAddressRecyclerView.setAdapter(mAddressAdapter);
     }
+
 
     @Override
     public void onClick(View view) {
@@ -95,25 +101,13 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(addAddressIntent);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG,"onResume method");
-        getAddresses("2");
+    public void showProgressBar(){
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("lifecycle is","onPause method");
-
+    public void hideProgressBar(){
+        mProgressBar.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("lifecycle is","onStop method");
 
-
-    }
 }

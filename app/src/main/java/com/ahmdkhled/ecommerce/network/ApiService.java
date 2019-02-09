@@ -1,4 +1,7 @@
 package com.ahmdkhled.ecommerce.network;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.CartItem;
@@ -9,6 +12,7 @@ import com.ahmdkhled.ecommerce.model.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -47,7 +51,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST(Constants.GET_ADDRESSES_URL)
-    Call<ArrayList<Address>> getAddresses(@Field("id") String userId);
+    Call<List<Address>> getAddresses(@Field("id") String userId);
 
     @FormUrlEncoded
     @POST(Constants.ADD_ADDRESS_URL)

@@ -20,6 +20,7 @@ import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,10 +30,10 @@ import retrofit2.Callback;
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     private Context mContext;
-    private ArrayList<Address> addresses;
+    private List<Address> addresses;
     private RadioButton mLastRbChecked = null;
 
-    public AddressAdapter(Context mContext, ArrayList<Address> addresses) {
+    public AddressAdapter(Context mContext, List<Address> addresses) {
         this.mContext = mContext;
         this.addresses = addresses;
     }
@@ -77,11 +78,16 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     @Override
     public int getItemCount() {
 
-        if (addresses != null && addresses.size() != 0)return addresses.size();
-        else return 0;
+        if (addresses != null && addresses.size() != 0){
+            return addresses.size();
+        }
+        else{
+            Log.d("viewmodeldemo","null list in adapter");
+            return 0;
+        }
     }
 
-    public void notifyAdapter(ArrayList<Address> mAddresses) {
+    public void notifyAdapter(List<Address> mAddresses) {
         if(mAddresses != null && mAddresses.size() != 0){
             addresses = mAddresses;
             this.notifyDataSetChanged();
