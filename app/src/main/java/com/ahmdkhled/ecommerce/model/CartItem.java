@@ -1,18 +1,30 @@
 package com.ahmdkhled.ecommerce.model;
 
-public class CartItem {
-    private int id;
-    private String name ;
-    private double price ;
-    private int quantity ;
-    private String image ;
+import com.google.gson.annotations.SerializedName;
 
-    public CartItem(int id , String name, double price, int quantity, String image) {
+import java.util.ArrayList;
+
+public class CartItem {
+    @SerializedName("product_id")
+    private int id;
+    @SerializedName("product_name")
+    private String name ;
+    @SerializedName("product_price")
+    private double price ;
+    @SerializedName("product_quantity")
+    private int quantity ;
+    @SerializedName("media")
+    private ArrayList<Media> image ;
+    private int Quantity ;
+
+
+    public CartItem(int id , String name, double price, int quantity, ArrayList<Media> image , int Quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.image = image;
+        this.Quantity=Quantity;
         }
 
     public String getName() {
@@ -31,19 +43,27 @@ public class CartItem {
         this.price = price;
     }
 
-    public int getQuantity() {
+    public int getquantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setquantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public String getImage() {
+    public int getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(int Quantity) {
+        this.Quantity = Quantity;
+    }
+
+    public ArrayList<Media> getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(ArrayList<Media> image) {
         this.image = image;
     }
 

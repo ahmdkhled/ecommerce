@@ -86,12 +86,12 @@ public class CartActivity extends AppCompatActivity {
 
     ArrayList<CartItem> fakeData(){
         ArrayList<CartItem> cartItemArrayList=new ArrayList<>();
-        CartItem toy =new CartItem(4,"toy",200,10,"");
-        cartItemArrayList.add(toy);
-        CartItem flower =new CartItem(5,"flower",20,5,"");
-        cartItemArrayList.add(flower);
-        CartItem t_shirt =new CartItem(5000,"t_shirt",150,1,"");
-        cartItemArrayList.add(t_shirt);
+//        CartItem toy =new CartItem(4,"toy",200,10,"");
+//        cartItemArrayList.add(toy);
+//        CartItem flower =new CartItem(5,"flower",20,5,"");
+//        cartItemArrayList.add(flower);
+//        CartItem t_shirt =new CartItem(5000,"t_shirt",150,1,"");
+//        cartItemArrayList.add(t_shirt);
         return cartItemArrayList;
     }
 }
