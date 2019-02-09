@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,22 +14,26 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
-import com.ahmdkhled.ecommerce.CategoriesActivity;
-import com.ahmdkhled.ecommerce.ProductsActivity;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
+import com.ahmdkhled.ecommerce.adapter.RecentlyAddedProducsAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
+import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.rd.PageIndicatorView;
+import com.rd.animation.type.AnimationType;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -43,7 +48,11 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     ViewPager mainSliderPager;
     RecyclerView categoryRecycler;
+    RecyclerView recentlyAddedRecycler;
     Button seeAllCategories;
+    Button seeAllRecentlyAdded;
+    PageIndicatorView pageIndicatorView;
+    public static final String RECENTLY_ADDED_TARGET="recently_added_target";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +63,11 @@ public class MainActivity extends AppCompatActivity
         navigationView=findViewById(R.id.mainNavView);
         mainSliderPager=findViewById(R.id.mainSliderPager);
         categoryRecycler=findViewById(R.id.mainCategoryRecycler);
+        recentlyAddedRecycler=findViewById(R.id.recentlyAddedProductsRecycler);
         seeAllCategories=findViewById(R.id.seeAllCategories);
+        seeAllRecentlyAdded=findViewById(R.id.seeAllRecentlyAdded);
+        pageIndicatorView=findViewById(R.id.mainpagerIndicatorView);
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,15 +80,46 @@ public class MainActivity extends AppCompatActivity
         toggle.getDrawerArrowDrawable().setColor(Color.WHITE);
 
         navigationView.setNavigationItemSelectedListener(this);
+        pageIndicatorView.setAnimationType(AnimationType.WORM);
+        mainSliderPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pageIndicatorView.setSelection(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         seeAllCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), CategoriesActivity.class);
+                intent.putExtra(ProductsActivity.TARGET_KEY,RECENTLY_ADDED_TARGET);
                 startActivity(intent);
             }
         });
 
+        seeAllRecentlyAdded.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), ProductsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+        handleNavHeader();
+        getRecentlyAdedProducts();
         getCategories();
         getAds();
     }
@@ -100,9 +144,32 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
+    void getRecentlyAdedProducts(){
+        RetrofetClient.getApiService()
+                .getRecentlyAdedProducts()
+                .enqueue(new Callback<ArrayList<Product>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                        if (response.isSuccessful()){
+                            ArrayList<Product> products=response.body();
+                            Log.d("RECENTLYADDD",products.get(0).getPrice()+" --- ");
+                            showRecentlyAdedProducts(products);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                        Log.d("RECENTLYADDD",t.getMessage());
+                    }
+                });
+
+    }
+
     private void showSlider(ArrayList<Ad> ads){
         MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,ads);
         mainSliderPager.setAdapter(mainSliderAdapter);
+
     }
 
     private void showCategories(ArrayList<Category> categories){
@@ -113,6 +180,14 @@ public class MainActivity extends AppCompatActivity
         categoryRecycler.setLayoutManager(linearLayoutManager);
     }
 
+    private void showRecentlyAdedProducts(ArrayList<Product> productsList){
+         RecentlyAddedProducsAdapter recentlyAddedProducsAdapter =new RecentlyAddedProducsAdapter(this,productsList);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this
+                ,LinearLayoutManager.HORIZONTAL,false);
+        recentlyAddedRecycler.setAdapter(recentlyAddedProducsAdapter);
+        recentlyAddedRecycler.setLayoutManager(linearLayoutManager);
+    }
+
     private void getAds(){
         RetrofetClient.getApiService()
                 .getAds()
@@ -121,7 +196,10 @@ public class MainActivity extends AppCompatActivity
                     public void onResponse(Call<ArrayList<Ad>> call, Response<ArrayList<Ad>> response) {
                         if (response.isSuccessful()){
                             ArrayList<Ad> ads=response.body();
-                            showSlider(ads);
+                            if (ads!=null){
+                                showSlider(ads);
+                                moveSlider(ads.size());
+                            }
                         }
                     }
 
@@ -167,6 +245,61 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void handleNavHeader(){
+        View navHeader=navigationView.getHeaderView(0);
+        TextView userName=navHeader.findViewById(R.id.nav_header_title);
+        TextView email=navHeader.findViewById(R.id.nav_header_desc);
+        ImageView img=navHeader.findViewById(R.id.nav_header_image);
+        final SessionManager sessionManager=new SessionManager(this);
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+
+            }
+        });
+
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sessionManager.sessionExist()){
+                    Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }else {
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+
+            }
+        });
+
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sessionManager.sessionExist()){
+                    Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }else {
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+
+            }
+        });
+
+        if (sessionManager.sessionExist()){
+            userName.setText(sessionManager.getUserName());
+            email.setText(sessionManager.getEmail());
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -174,6 +307,24 @@ public class MainActivity extends AppCompatActivity
         }else{
             super.onBackPressed();
         }
+    }
+
+    private void moveSlider(final int adsNum){
+        final Handler handler=new Handler();
+        Runnable runnable=new Runnable() {
+            @Override
+            public void run() {
+                int currentItem=mainSliderPager.getCurrentItem();
+                if (currentItem==adsNum-1){
+                    currentItem=0;
+                }else {
+                    currentItem++;
+                }
+                mainSliderPager.setCurrentItem(currentItem,true);
+                handler.postDelayed(this,3000);
+            }
+        };
+        handler.post(runnable);
     }
 
     ArrayList<Ad> getFakeAds(){

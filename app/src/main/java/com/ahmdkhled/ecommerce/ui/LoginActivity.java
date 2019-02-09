@@ -16,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -67,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                                         ,Toast.LENGTH_SHORT)
                                         .show();
                             }else {
+                                SessionManager sessionManager=new SessionManager(getApplicationContext());
+                                sessionManager.saveSession(r.getId(),r.getName(),r.getEmail());
                                 Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                                 startActivity(intent);
                             }
@@ -79,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(Call<Response> call, Throwable t) {
-                        Log.d("LOGINN","failed: ");
+                        Log.d("LOGINN","failed: "+t.getMessage());
                     }
                 });
     }

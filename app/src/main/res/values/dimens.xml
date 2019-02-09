@@ -1,39 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--
-Refer to App Widget Documentation for margin information
-http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
-    -->
-    <dimen name="widget_margin">8dp</dimen>
-    <dimen name="zero_width">0dp</dimen>
-    <dimen name="send_message_edit_padding">20dp</dimen>
-    <dimen name="login_layout_padding_top">90dp</dimen>
-    <dimen name="login_layout_padding_left">24dp</dimen>
-    <dimen name="login_layout_padding_right">24dp</dimen>
-    <dimen name="text_input_layout_margin_top">8dp</dimen>
-    <dimen name="text_input_layout_margin_bottom">8dp</dimen>
-    <dimen name="app_compat_margin_top">24dp</dimen>
-    <dimen name="app_compat_margin_bottom">5dp</dimen>
-    <dimen name="app_compat_padding">12dp</dimen>
-    <dimen name="text_size_16">16sp</dimen>
-    <dimen name="register_layout_padding_top">70dp</dimen>
-    <dimen name="register_layout_padding_left">24dp</dimen>
-    <dimen name="register_layout_padding_right">24dp</dimen>
-    <dimen name="setting_profile_image_width">192dp</dimen>
-    <dimen name="setting_profile_image_height">184dp</dimen>
-    <dimen name="setting_profile_image_margin_end">8dp</dimen>
-    <dimen name="setting_profile_image_margin_left">8dp</dimen>
-    <dimen name="setting_profile_image_margin_right">8dp</dimen>
-    <dimen name="setting_profile_image_margin_start">8dp</dimen>
-    <dimen name="setting_profile_image_margin_top">30dp</dimen>
-    <dimen name="setting_name_layout_margin_top">20dp</dimen>
-    <dimen name="setting_name_padding">10dp</dimen>
-    <dimen name="text_size_20">20sp</dimen>
-    <dimen name="setting_edit_padding">15dp</dimen>
-    <dimen name="text_size_18">18sp</dimen>
-    <dimen name="fab_width">50dp</dimen>
-    <dimen name="fab_height">50dp</dimen>
-    <dimen name="fab_margin">8dp</dimen>
+    <dimen name="signup_header">18sp</dimen>
 
 </resources>

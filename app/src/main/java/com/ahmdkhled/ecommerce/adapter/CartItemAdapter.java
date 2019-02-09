@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.CartItem;
+import com.ahmdkhled.ecommerce.model.Media;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         public void onBindViewHolder(@NonNull CartItemHolder holder, int position) {
             holder.name.setText(cartItemList.get(position).getName());
             holder.price.setText(String.valueOf(cartItemList.get(position).getPrice()));
-            holder.quantity.setText(String.valueOf(cartItemList.get(position).getQuantity()));
+            holder.quantity.setText(String.valueOf(cartItemList.get(position).getquantity()));
+            ArrayList<Media> image_url=cartItemList.get(position).getImage();
+            Glide.with(context).load(image_url).into(holder.image);
         }
 
         @Override
@@ -64,20 +68,20 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             increment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int Quantity=cartItemList.get(getAdapterPosition()).getQuantity();
+                    int Quantity=cartItemList.get(getAdapterPosition()).getquantity();
                     Quantity++;
                     Log.d("ADAPTERR","quantitiy "+Quantity);
-                    cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
+                    cartItemList.get(getAdapterPosition()).setquantity(Quantity);
                     quantity.setText(String.valueOf(Quantity));
                 }
             });
             decrement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int Quantity=cartItemList.get(getAdapterPosition()).getQuantity();
+                    int Quantity=cartItemList.get(getAdapterPosition()).getquantity();
                     if (Quantity>0){
                         Quantity -= 1 ;
-                        cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
+                        cartItemList.get(getAdapterPosition()).setquantity(Quantity);
                         quantity.setText(String.valueOf(Quantity));
                     }
                 }

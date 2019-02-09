@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ahmdkhled.ecommerce.ProductsActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Category;
+import com.ahmdkhled.ecommerce.ui.ProductsActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
