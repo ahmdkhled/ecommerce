@@ -1,9 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AccountActivity">
+    android:layout_height="match_parent">
+
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#efebe9"
+    tools:context=".ui.AccountActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/account_toolbar"
+        app:titleTextColor="#fff"
+        android:theme="@style/ToolbarTheme"
+        app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+        android:background="@color/colorPrimary"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/account_img"
+        app:layout_constraintTop_toBottomOf="@+id/account_toolbar"
+        android:background="@color/colorPrimary"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_userName"
+        tools:text="Ahmed Khaled"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/account_img"
+        app:layout_constraintBottom_toBottomOf="@id/account_img"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/account_email"
+        tools:text="ahmdkhled@gmail.com"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/account_userName"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accountLogin"
+        android:text="Login"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="@id/account_img"
+        app:layout_constraintEnd_toEndOf="@id/account_img"
+        app:layout_constraintTop_toTopOf="@id/account_img"
+        app:layout_constraintBottom_toBottomOf="@id/account_img"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/orders_container"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:background="@drawable/acount_item_bg"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toBottomOf="@id/account_img">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/orders_icon"
+            android:src="@drawable/ic_local_shipping_black_24dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My orders"
+            android:id="@+id/orders_label"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@id/orders_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addresses_container"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:background="@drawable/acount_item_bg"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toBottomOf="@id/orders_container">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/address_icon"
+            android:src="@drawable/ic_location_city_black_24dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My addresses"
+            android:id="@+id/favorites_label"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@id/address_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/favorites_container"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/acount_item_bg"
+        app:layout_constraintTop_toBottomOf="@id/addresses_container">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/favorites_icon"
+            android:src="@drawable/ic_favorite_border_black_24dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My favorites"
+            android:id="@+id/address_label"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@id/favorites_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp" />
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

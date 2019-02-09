@@ -15,6 +15,7 @@ public class ProductDetail extends AppCompatActivity {
     TextView textView;
     Button addToCart;
     SharedPreferences sharedPreferences;
+    public static final String PRODUCT_KEY="product_key";
 
 
     @Override

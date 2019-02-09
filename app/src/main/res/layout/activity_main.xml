@@ -48,6 +48,25 @@
             tools:background="@color/colorAccent"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <com.rd.PageIndicatorView
+            android:id="@+id/mainpagerIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:piv_animationType="scale"
+            app:piv_dynamicCount="true"
+            app:piv_interactiveAnimation="true"
+            app:piv_selectedColor="#fafafa"
+            app:piv_unselectedColor="#e0e0e0"
+            app:piv_viewPager="@id/mainSliderPager"
+            app:piv_padding="8dp"
+            app:piv_radius="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/mainSliderPager"
+            app:layout_constraintStart_toStartOf="@id/mainSliderPager"
+            app:layout_constraintEnd_toEndOf="@id/mainSliderPager"
+            android:layout_marginBottom="3dp"
+            />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -77,9 +96,10 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"
             android:id="@+id/mainCategoryRecycler"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintTop_toBottomOf="@id/categories_label"/>
 
         <TextView
@@ -97,11 +117,14 @@
 
 
 
-        <TextView
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/seeAllRecentlyAdded"
             android:text="See All"
+            android:textAllCaps="false"
             android:textSize="20sp"
+            android:background="@null"
             android:textColor="#757575"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/recentlyAddedLabel"
