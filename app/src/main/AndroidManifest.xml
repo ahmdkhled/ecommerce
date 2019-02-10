@@ -34,7 +34,8 @@
         <activity
             android:name=".ui.CategoriesActivity"
             android:exported="true" />
-        <activity android:name=".ui.ProductDetail" />
+        <activity android:name=".ui.ProductDetail"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".ui.AccountActivity" />
         <activity
             android:name=".ui.FavoritesActivity"
