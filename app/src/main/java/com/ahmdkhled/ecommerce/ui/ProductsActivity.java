@@ -1,13 +1,15 @@
-package com.ahmdkhled.ecommerce;
+package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.adapter.ProductAdapter;
+import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import retrofit2.Response;
 
 public class ProductsActivity  extends AppCompatActivity {
 
+    public static final String CATEGORY_ID_KEY="category_id";
+    public static final String TARGET_KEY="target_key";
     ArrayList<Product> productsList=new ArrayList<>();
     RecyclerView recyclerView;
 
@@ -28,16 +32,21 @@ public class ProductsActivity  extends AppCompatActivity {
         recyclerView=findViewById(R.id.recycler_view);
         productsList=new ArrayList<>();
 
+        Intent intent = getIntent();
+
+        int id = intent.getIntExtra(CATEGORY_ID_KEY,-1);
+        Log.d("checkout","id "+id);
 
 
-        getProducts();
+
+        getProducts(id);
 
 
     }
 
 
-    public void getProducts(){
-        RetrofetClient.getApiService().getProducts(null)
+    public void getProducts(int id){
+        RetrofetClient.getApiService().getProducts(String.valueOf(id))
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
@@ -46,12 +55,12 @@ public class ProductsActivity  extends AppCompatActivity {
                         recyclerView.setAdapter(productAdapter);
                         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
 
-                        Log.d("categoryyy","name "+productsList.get(0).getDate());
+                        Log.d("categoryyy","name "+productsList.get(0).getName());
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
-                        Log.d("amiraa","amira"+t.getMessage());
+                        Log.d("categoryyy","amira"+t.getMessage());
 
                     }
                 });
@@ -59,13 +68,13 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
     public void getFakeData (){
-        Product p=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p1=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p2=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p3=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p4=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p5=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
-        Product p6=new Product(25,20,25,255,115,"fgg","12/5","this is ..");
+        Product p=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p1=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p2=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p3=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p4=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p5=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
+        Product p6=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
 
 
         productsList.add(p);

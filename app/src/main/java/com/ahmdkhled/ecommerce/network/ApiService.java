@@ -1,22 +1,23 @@
 package com.ahmdkhled.ecommerce.network;
-import com.ahmdkhled.ecommerce.Product;
-
-import com.ahmdkhled.ecommerce.model.CategoryResponse;
-import com.ahmdkhled.ecommerce.model.CategoryResponse;
+import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.model.CartItem;
+import com.ahmdkhled.ecommerce.model.Ad;
+import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Response;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -32,17 +33,26 @@ public interface ApiService {
     public Call<Response> signup(@FieldMap HashMap<String,String> map);
 
     @GET(Constants.CATEGORY_URL)
-    Call<ArrayList<CategoryResponse>> getCategories();
+    Call<ArrayList<Category>> getCategories();
 
-
-
-
+    @GET("products.php")
+    Call<ArrayList<CartItem>> getCartItems(@Query("id") String ids);
 
     @GET ("products.php")
-    Call <ArrayList<Product>> getProducts(@Query("category") String category) ;
+    Call <ArrayList<Product>> getProducts(@Query("categoryId") String category) ;
 
+    @GET("ads.php")
+    Call<ArrayList<Ad>> getAds();
 
+    @GET("recentlyAdded.php")
+    Call<ArrayList<Product>> getRecentlyAdedProducts();
 
+    @GET("favorite.php")
+    Call<ArrayList<Product>> getFavoriteProducts(@Query("userId") long userId);
 
+    @FormUrlEncoded
+    @HTTP(method = "DELETE",path="favorite.php", hasBody = true)
+    Call<ResponseBody> deleteFavoriteProduct(@Field("productId")long productId,
+                                             @Field("userId") long userId );
 
 }

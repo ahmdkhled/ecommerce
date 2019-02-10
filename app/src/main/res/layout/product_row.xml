@@ -20,13 +20,16 @@
         app:layout_constraintTop_toBottomOf="@id/product_image"
         android:text="name"
 
+
         />
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="price"
-        app:layout_constraintTop_toBottomOf="@id/name"/>
+        app:layout_constraintTop_toBottomOf="@id/name"
+     />
+
 
 
 

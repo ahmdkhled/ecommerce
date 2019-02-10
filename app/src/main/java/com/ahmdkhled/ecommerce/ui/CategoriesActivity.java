@@ -1,4 +1,4 @@
-package com.ahmdkhled.ecommerce;
+package com.ahmdkhled.ecommerce.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.ahmdkhled.ecommerce.model.CategoryResponse;
+import com.ahmdkhled.ecommerce.adapter.CategoryAdapter;
+import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import retrofit2.Response;
 
 public class CategoriesActivity  extends AppCompatActivity {
 
-    ArrayList<CategoryResponse> categoriesArrayList = new ArrayList<>();
+    ArrayList<Category> categoriesArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
 
 
@@ -30,27 +32,21 @@ public class CategoriesActivity  extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         getCategories();
 
-
-
-
     }
 
     private void setAdapter() {
         CategoryAdapter adapter = new CategoryAdapter(categoriesArrayList, this);
-
-
         RecyclerView.LayoutManager layoutManage = new LinearLayoutManager(this);
-
         recyclerView.setLayoutManager(layoutManage);
-
         recyclerView.setAdapter(adapter);
     }
 
     private void getCategories() {
-        Call<ArrayList<CategoryResponse>> call = RetrofetClient.getApiService().getCategories();
-        call.enqueue(new Callback<ArrayList<CategoryResponse>>() {
+        Call<ArrayList<Category>> call = RetrofetClient.getApiService().getCategories();
+        call.enqueue(new Callback<ArrayList<Category>>() {
             @Override
-            public void onResponse(Call<ArrayList<CategoryResponse>> call, Response<ArrayList<CategoryResponse>> response) {
+            public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                Log.d("catTTTTT","on respone "+response.isSuccessful());
                 if (response.isSuccessful()) {
                     categoriesArrayList = response.body();
                     setAdapter();
@@ -59,8 +55,8 @@ public class CategoriesActivity  extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<CategoryResponse>> call, Throwable t) {
-                Log.d("cat","error is "+t.getMessage());
+            public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+                Log.d("catTTTTT","error is "+t.getMessage());
             }
         });
     }

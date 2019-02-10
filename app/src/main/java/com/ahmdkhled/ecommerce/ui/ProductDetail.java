@@ -1,5 +1,6 @@
-package com.ahmdkhled.ecommerce;
+package com.ahmdkhled.ecommerce.ui;
 
+import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,12 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ahmdkhled.ecommerce.ProductsImagesPagerAdapter;
+import com.ahmdkhled.ecommerce.R;
+
 public class ProductDetail extends AppCompatActivity {
     TextView textView;
     Button addToCart;
     Toolbar toolbar;
     ViewPager viewPager;
     ProductsImagesPagerAdapter productsImagesPagerAdapter;
+    SharedPreferences sharedPreferences;
+    public static final String PRODUCT_KEY="product_key";
 
 
     @Override
