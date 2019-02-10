@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.ui.ProductsActivity;
 
 import java.util.ArrayList;
 
@@ -57,6 +59,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
             productImage=itemView.findViewById(R.id.product_image);
             name=itemView.findViewById(R.id.name);
             price=itemView.findViewById(R.id.price);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent =new Intent(context,ProductsActivity.class);
+                    context.startActivity(intent);
+                }
+            });
 
         }
 
