@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
+import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 
@@ -49,24 +50,31 @@ public class CartActivity extends AppCompatActivity {
         CartItemsManger cartItemsManger=new CartItemsManger(this);
         ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
         if (cartItems != null) {
-            String ids = arrToString(cartItems);
-            getCartItems(ids);
+            getCartItems(cartItems);
+            Log.d("JSONN","ok "+cartItems.get(0).getProduct().getId());
+        }else {
+            Log.d("JSONN","nulllllllllllllll");
         }
     }
 
-    public void getCartItems(String ids) {
+    public void getCartItems(final ArrayList<CartItem> cartItems) {
+        String ids = arrToString(cartItems);
         RetrofetClient.getApiService().getCartItems(ids)
-                .enqueue(new Callback<ArrayList<CartItem>>() {
+                .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<CartItem>> call, Response<ArrayList<CartItem>> response) {
-                        ArrayList<CartItem> cartItems = response.body();
+                    public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                        ArrayList<Product> products = response.body();
+                        for (int i = 0; i < cartItems.size(); i++) {
+                            cartItems.get(i).setProduct(products.get(i));
+                        }
+                        Log.d("CARTTT","0 "+cartItems.get(0).getProduct().getMedia().get(0).getUrl());
                         CartItemAdapter cartItemAdapter = new CartItemAdapter(getApplicationContext(), cartItems);
                         recyclerView.setAdapter(cartItemAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<CartItem>> call, Throwable t) {
+                    public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
                         Log.d("CARTTT",t.getMessage());
                     }
                 });
@@ -76,9 +84,9 @@ public class CartActivity extends AppCompatActivity {
         StringBuilder sb=new StringBuilder();
         for (int i=0 ;i<cartItems.size(); i++){
             if (i<cartItems.size()-1){
-                sb.append(cartItems.get(i).getId()).append(",");
+                sb.append(cartItems.get(i).getProduct().getId()).append(",");
             }else {
-                sb.append(cartItems.get(i).getId());
+                sb.append(cartItems.get(i).getProduct().getId());
             }
         }
         return sb.toString();
