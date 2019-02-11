@@ -67,7 +67,6 @@ public class CartActivity extends AppCompatActivity {
                         for (int i = 0; i < cartItems.size(); i++) {
                             cartItems.get(i).setProduct(products.get(i));
                         }
-                        Log.d("CARTTT","0 "+cartItems.get(0).getProduct().getMedia().get(0).getUrl());
                         CartItemAdapter cartItemAdapter = new CartItemAdapter(getApplicationContext(), cartItems);
                         recyclerView.setAdapter(cartItemAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
