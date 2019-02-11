@@ -1,4 +1,8 @@
 package com.ahmdkhled.ecommerce.network;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+
+import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Ad;
@@ -8,6 +12,7 @@ import com.ahmdkhled.ecommerce.model.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -55,4 +60,17 @@ public interface ApiService {
     Call<ResponseBody> deleteFavoriteProduct(@Field("productId")long productId,
                                              @Field("userId") long userId );
 
+    @FormUrlEncoded
+    @POST(Constants.GET_ADDRESSES_URL)
+    Call<List<Address>> getAddresses(@Field("id") String userId);
+
+    @FormUrlEncoded
+    @POST(Constants.ADD_ADDRESS_URL)
+    Call<Response> addAddress(@Field("user_id") String userId, @Field("state") String state,
+                              @Field("city") String city, @Field("zip_code") int zipCode,
+                              @Field("address_1") String address1, @Field("address_2") String address2);
+
+    @FormUrlEncoded
+    @POST(Constants.DELETE_ADDRESS)
+    Call<Response> deleteAddress(@Field("id") int addressId);
 }
