@@ -35,6 +35,7 @@
             android:name=".ui.CategoriesActivity"
             android:exported="true" />
         <activity android:name=".ui.ProductDetail"
+            android:exported="true"
             android:theme="@style/AppTheme"/>
         <activity android:name=".ui.AccountActivity" />
         <activity
