@@ -14,23 +14,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.AddressAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
-import com.ahmdkhled.ecommerce.viewmodel.AddressActivityViewModel;
+import com.ahmdkhled.ecommerce.viewmodel.SharedAddressViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
 
-public class AddressActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class AddressActivity extends AppCompatActivity {
 
     private static final String TAG = AddressActivity.class.getSimpleName();
     @BindView(R.id.address_recycler_view)
@@ -44,7 +41,9 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
     AddressAdapter mAddressAdapter;
     ArrayList<Address> addresses = new ArrayList<>();
-    AddressActivityViewModel mAddressActivityViewModel;
+    SharedAddressViewModel mSharedAddressViewModel;
+    private String userId = "2";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,21 +55,32 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         ButterKnife.bind(this);
 
         // setup toolbar
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(R.string.address_activity_title);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupToolbar();
 
-        // link address view model with this activity
-        mAddressActivityViewModel = ViewModelProviders.of(this).get(AddressActivityViewModel.class);
-        mAddressActivityViewModel.init();
-        mAddressActivityViewModel.getAddresses("2").observe(this, new Observer<List<Address>>() {
+
+        /*
+         link address view model with this activity.
+         observe getAddress function to notify recyclerview's adapter with new list
+          */
+        mSharedAddressViewModel = ViewModelProviders.of(this).get(SharedAddressViewModel.class);
+        mSharedAddressViewModel.init();
+        mSharedAddressViewModel.getAddresses(userId).observe(this, new Observer<List<Address>>() {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
+                Log.d("mvvm","address activity on change");
                 mAddressAdapter.notifyAdapter(addresses);
             }
         });
 
-        mAddressActivityViewModel.isLoading().observe(this, new Observer<Boolean>() {
+
+        /*
+          observe isLoading function to know if loading is finish or not.
+          so that i can handle progress bar status.
+          if Loading is finished progress bar will be hidden.
+          Otherwise progress bar will be shown
+
+         */
+        mSharedAddressViewModel.isLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if(aBoolean) showProgressBar();
@@ -78,28 +88,59 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+
+
+
+        /*
+          Reload addresses again after a new address is added
+          getmIsAdding function show if there is a new successfully added address or not
+         */
+        mSharedAddressViewModel.getmIsAdding().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean){
+                    mSharedAddressViewModel.getAddresses(userId).observe(AddressActivity.this, new Observer<List<Address>>() {
+                        @Override
+                        public void onChanged(@Nullable List<Address> addresses) {
+                            mAddressAdapter.notifyAdapter(addresses);
+                        }
+                    });
+                }
+            }
+        });
         initRecyclerView();
 
 
-        mAddAddressFAB.setOnClickListener(this);
+        /*
+         if user hit FAB to add new address, add address activity will be launched
+          */
+        mAddAddressFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent addAddressIntent = new Intent(AddressActivity.this, AddAddressActivity.class);
+                startActivity(addAddressIntent);
+            }
+        });
 
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.address_activity_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initRecyclerView() {
         // setup recycler view
-        Log.d("viewmodeldemo","inside init RV");
+        Log.d("mvvm","inside init RV");
 
-        mAddressAdapter = new AddressAdapter(this,mAddressActivityViewModel.getAddresses("2").getValue());
+        mAddressAdapter = new AddressAdapter(this, mSharedAddressViewModel.getAddresses(userId).getValue());
         mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAddressRecyclerView.setAdapter(mAddressAdapter);
     }
 
 
-    @Override
-    public void onClick(View view) {
-        Intent addAddressIntent = new Intent(this,AddAddressActivity.class);
-        startActivity(addAddressIntent);
-    }
+
 
     public void showProgressBar(){
         mProgressBar.setVisibility(View.VISIBLE);

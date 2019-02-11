@@ -1,5 +1,9 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,19 +11,16 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.network.ApiService;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.viewmodel.SharedAddressViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class AddAddressActivity extends AppCompatActivity {
 
@@ -58,6 +59,10 @@ public class AddAddressActivity extends AppCompatActivity {
     AppCompatButton mAddAddressBtn;
 
 
+    SharedAddressViewModel mSharedAddressViewmodel;
+    private String userId = "2";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,43 +76,43 @@ public class AddAddressActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.add_address_activity_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //link view model to the activity
+        mSharedAddressViewmodel = ViewModelProviders.of(this).get(SharedAddressViewModel.class);
+        mSharedAddressViewmodel.init();
+
+
         mAddAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddNewAddress();
+                addNewAddress();
             }
         });
     }
 
-    private void AddNewAddress() {
-        if(isInputsValid()){
-            Call<Response> call = RetrofetClient.getApiService().addAddress("2",mStateTxt.getText()
-                    .toString(),mCityTxt.getText().toString()
-            ,Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
-            call.enqueue(new Callback<Response>() {
-                @Override
-                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                    if(response.isSuccessful()){
-                        Toast.makeText(AddAddressActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<Response> call, Throwable t) {
-                    Log.d(TAG,"failure message : "+t.getMessage());
-                    Toast.makeText(AddAddressActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
 
-    private boolean isInputsValid() {
+    private void addNewAddress() {
+
+        // first check if all field is filled out
         if(!TextUtils.isEmpty(mFnameTxt.getText()) && !TextUtils.isEmpty(mLnameTxt.getText())
                 && !TextUtils.isEmpty(mAddress1Txt.getText()) && !TextUtils.isEmpty(mAddress2Txt.getText())
                 && !TextUtils.isEmpty(mStateTxt.getText()) && !TextUtils.isEmpty(mCityTxt.getText())
                 && !TextUtils.isEmpty(mZipCodeTxt.getText())){
-            return true;
+
+            Address address = new Address(mStateTxt.getText().toString(),mCityTxt.getText().toString(),
+                    Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
+
+            /*
+                obserce add address function to make an action when this process is done
+             */
+            mSharedAddressViewmodel.addAddress(address,userId).observe(this, new Observer<Response>() {
+                @Override
+                public void onChanged(@Nullable Response response) {
+                    Toast.makeText(AddAddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddAddressActivity.this,AddressActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         if(TextUtils.isEmpty(mFnameTxt.getText()))mFnameInputLayout.setError(getString(R.string.field_is_required));
@@ -118,7 +123,8 @@ public class AddAddressActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(mCityTxt.getText()))mCityInputLayout.setError(getString(R.string.field_is_required));
         if(TextUtils.isEmpty(mZipCodeTxt.getText()))mZipCodeInputLayout.setError(getString(R.string.field_is_required));
 
-        return false;
+
+
     }
 
 
