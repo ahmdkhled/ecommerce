@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/your_details_label"
+        android:padding="15dp"
+        android:drawableLeft="@drawable/ic_perm_identity_black_24dp"
+        android:text="YOUR DETAILS"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/your_details_label">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/checkout_background"
+            android:paddingLeft="30dp"
+            android:singleLine="true"
+            android:hint="Full Name"
+            android:inputType="text"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/emailaddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/full_name">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/checkout_background"
+            android:hint="E-mail address"
+            android:paddingLeft="30dp"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/phone_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailaddress">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingLeft="30dp"
+            android:singleLine="true"
+            android:background="@drawable/checkout_background"
+            android:hint="Phone Number" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/shipping_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_local_shipping_black_24dp"
+        android:text="SHIPPING ADDRESS"
+        android:textStyle="bold"
+        android:padding="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/phone_num"/>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shipping_add">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/checkout_background"
+            android:hint="Country"
+            android:paddingLeft="30dp"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/country">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/checkout_background"
+            android:hint="city"
+            android:paddingLeft="30dp"
+            android:singleLine="true"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/address1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/city">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/checkout_background"
+            android:hint="Address 1"
+            android:paddingLeft="30dp"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/address2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/checkout_background"
+            android:hint="Address 2"
+            android:paddingLeft="30dp"
+            android:singleLine="true"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:onClick="NextActivity"
+        android:background="@drawable/checkout_background"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="15dp"/>
+
+</android.support.constraint.ConstraintLayout>
