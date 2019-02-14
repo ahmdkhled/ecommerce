@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.model.Media;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.ui.ProductDetail;
 import com.bumptech.glide.Glide;
@@ -43,8 +44,11 @@ public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAd
         Product product=productsList.get(position);
         holder.name.setText(product.getName());
         holder.price.setText(String.valueOf(product.getPrice()));
-        String imageUrl=product.getMedia().get(0).getUrl();
-        Glide.with(context).load(imageUrl).into(holder.image);
+        ArrayList<Media> media=product.getMedia();
+        if (media!=null&&media.size()>0){
+            String imageUrl=media.get(0).getUrl();
+            Glide.with(context).load(imageUrl).into(holder.image);
+        }
     }
 
     @Override
