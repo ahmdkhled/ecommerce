@@ -34,7 +34,7 @@ public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAd
     @Override
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(context).inflate(R.layout.product_row,parent,false);
-        RecyclerView.LayoutParams layoutParams=new RecyclerView.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RecyclerView.LayoutParams layoutParams=new RecyclerView.LayoutParams(300, ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(layoutParams);
         return new ProductHolder(v);
     }
@@ -48,6 +48,8 @@ public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAd
         if (media!=null&&media.size()>0){
             String imageUrl=media.get(0).getUrl();
             Glide.with(context).load(imageUrl).into(holder.image);
+        }else {
+            holder.image.setImageResource(R.drawable.placeholder);
         }
     }
 
