@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.network;
 
 import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.Checkout;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
@@ -66,4 +67,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(Constants.DELETE_ADDRESS)
     Call<Response> deleteAddress(@Field("id") int addressId);
+
+    @FormUrlEncoded
+    @GET(Constants.GET_CHECKOUT_INFO)
+    Call<Checkout> getCheckoutInfo(@Field("user_id") String userId);
 }
