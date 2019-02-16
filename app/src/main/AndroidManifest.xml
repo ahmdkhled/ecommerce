@@ -47,7 +47,6 @@
 
         <activity
             android:name=".ui.AddressActivity"
-            android:launchMode="singleTop"
             android:exported="true"/>
 
         <activity android:name=".ui.AddAddressActivity"/>

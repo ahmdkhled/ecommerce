@@ -17,7 +17,8 @@ import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.viewmodel.SharedAddressViewModel;
+import com.ahmdkhled.ecommerce.viewmodel.AddAddressViewModel;
+import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +60,7 @@ public class AddAddressActivity extends AppCompatActivity {
     AppCompatButton mAddAddressBtn;
 
 
-    SharedAddressViewModel mSharedAddressViewmodel;
+    AddAddressViewModel mAddAddressViewModel;
     private String userId = "2";
 
 
@@ -77,8 +78,8 @@ public class AddAddressActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //link view model to the activity
-        mSharedAddressViewmodel = ViewModelProviders.of(this).get(SharedAddressViewModel.class);
-        mSharedAddressViewmodel.init();
+        mAddAddressViewModel = ViewModelProviders.of(this).get(AddAddressViewModel.class);
+        mAddAddressViewModel.init();
 
 
         mAddAddressBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,12 +106,11 @@ public class AddAddressActivity extends AppCompatActivity {
             /*
                 obserce add address function to make an action when this process is done
              */
-            mSharedAddressViewmodel.addAddress(address,userId).observe(this, new Observer<Response>() {
+            mAddAddressViewModel.addAddress(address,userId).observe(this, new Observer<Response>() {
                 @Override
                 public void onChanged(@Nullable Response response) {
                     Toast.makeText(AddAddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(AddAddressActivity.this,AddressActivity.class);
-                    startActivity(intent);
+                    finish();
                 }
             });
         }
