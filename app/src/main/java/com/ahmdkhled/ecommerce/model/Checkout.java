@@ -1,15 +1,17 @@
 package com.ahmdkhled.ecommerce.model;
 
+import java.util.List;
+
 public class Checkout {
-    private Address mAddress;
+    private List<Address> mAddresses;
     private User mUser;
 
-    public Address getmAddress() {
-        return mAddress;
+    public List<Address> getmAddress() {
+        return mAddresses;
     }
 
-    public void setmAddress(Address mAddress) {
-        this.mAddress = mAddress;
+    public void setmAddress(List<Address> mAddress) {
+        this.mAddresses = mAddress;
     }
 
     public User getmUser() {
