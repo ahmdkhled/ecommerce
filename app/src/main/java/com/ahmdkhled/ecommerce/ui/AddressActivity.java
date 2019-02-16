@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.AddressAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
-import com.ahmdkhled.ecommerce.viewmodel.SharedAddressViewModel;
+import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class AddressActivity extends AppCompatActivity {
 
     AddressAdapter mAddressAdapter;
     ArrayList<Address> addresses = new ArrayList<>();
-    SharedAddressViewModel mSharedAddressViewModel;
+    AddressViewModel mAddressViewModel;
     private String userId = "2";
 
 
@@ -62,12 +62,11 @@ public class AddressActivity extends AppCompatActivity {
          link address view model with this activity.
          observe getAddress function to notify recyclerview's adapter with new list
           */
-        mSharedAddressViewModel = ViewModelProviders.of(this).get(SharedAddressViewModel.class);
-        mSharedAddressViewModel.init();
-        mSharedAddressViewModel.getAddresses(userId).observe(this, new Observer<List<Address>>() {
+        mAddressViewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
+        mAddressViewModel.init();
+        mAddressViewModel.getAddresses(userId).observe(this, new Observer<List<Address>>() {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
-                Log.d("mvvm","address activity on change");
                 mAddressAdapter.notifyAdapter(addresses);
             }
         });
@@ -80,34 +79,30 @@ public class AddressActivity extends AppCompatActivity {
           Otherwise progress bar will be shown
 
          */
-        mSharedAddressViewModel.isLoading().observe(this, new Observer<Boolean>() {
+        mAddressViewModel.isLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
+
                 if(aBoolean) showProgressBar();
                 else hideProgressBar();
             }
         });
 
 
-
-
         /*
           Reload addresses again after a new address is added
-          getmIsAdding function show if there is a new successfully added address or not
+          isAdding function show if there is a new successfully added address or not
          */
-        mSharedAddressViewModel.getmIsAdding().observe(this, new Observer<Boolean>() {
+
+        mAddressViewModel.isAdding().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if(aBoolean){
-                    mSharedAddressViewModel.getAddresses(userId).observe(AddressActivity.this, new Observer<List<Address>>() {
-                        @Override
-                        public void onChanged(@Nullable List<Address> addresses) {
-                            mAddressAdapter.notifyAdapter(addresses);
-                        }
-                    });
+                    mAddressAdapter.notifyAdapter(mAddressViewModel.getAddresses(userId).getValue());
                 }
             }
         });
+
         initRecyclerView();
 
 
@@ -134,7 +129,7 @@ public class AddressActivity extends AppCompatActivity {
         // setup recycler view
         Log.d("mvvm","inside init RV");
 
-        mAddressAdapter = new AddressAdapter(this, mSharedAddressViewModel.getAddresses(userId).getValue());
+        mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddresses(userId).getValue());
         mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAddressRecyclerView.setAdapter(mAddressAdapter);
     }

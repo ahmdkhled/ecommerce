@@ -44,7 +44,10 @@
             android:exported="true"/>
 
 
-        <activity android:name=".ui.AddressActivity"
+
+
+        <activity
+            android:name=".ui.AddressActivity"
             android:exported="true"/>
 
         <activity android:name=".ui.AddAddressActivity"/>
