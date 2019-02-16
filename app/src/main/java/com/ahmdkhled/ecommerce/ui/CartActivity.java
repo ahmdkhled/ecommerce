@@ -1,12 +1,12 @@
 package com.ahmdkhled.ecommerce.ui;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,6 +25,10 @@ import retrofit2.Response;
 public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button checkoutButton ;
+    TextView cart_subtotal;
+    TextView cartSubtotal_label;
+    ViewGroup emptyCartContainer;
+    View divider;
 
 
     @Override
@@ -34,6 +38,10 @@ public class CartActivity extends AppCompatActivity {
 
         checkoutButton = findViewById(R.id.checkout);
         recyclerView = findViewById(R.id.recycler);
+        cart_subtotal = findViewById(R.id.cart_subtotal);
+        cartSubtotal_label = findViewById(R.id.cart_subtotal_label);
+        emptyCartContainer = findViewById(R.id.emptyCartContainer);
+        divider=findViewById(R.id.cartLineDivider);
 
 
 
@@ -49,11 +57,10 @@ public class CartActivity extends AppCompatActivity {
 
         CartItemsManger cartItemsManger=new CartItemsManger(this);
         ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
+        handleVisibility(cartItems);
         if (cartItems != null) {
             getCartItems(cartItems);
             //Log.d("JSONN","ok "+cartItems.get(0).getProduct().getId());
-        }else {
-            Log.d("JSONN","nulllllllllllllll");
         }
     }
 
@@ -89,6 +96,26 @@ public class CartActivity extends AppCompatActivity {
             }
         }
         return sb.toString();
+    }
+    private void handleVisibility(ArrayList<CartItem> cartItems){
+     if (cartItems.size()==0){
+         Log.d("CARTTTT","empty");
+         emptyCartContainer.setVisibility(View.VISIBLE);
+         recyclerView.setVisibility(View.GONE);
+         checkoutButton.setVisibility(View.GONE);
+         cart_subtotal.setVisibility(View.GONE);
+         cartSubtotal_label.setVisibility(View.GONE);
+         divider.setVisibility(View.GONE);
+     }  else{
+         Log.d("CARTTTT","not empty");
+         emptyCartContainer.setVisibility(View.GONE);
+
+         recyclerView.setVisibility(View.VISIBLE);
+         checkoutButton.setVisibility(View.VISIBLE);
+         cart_subtotal.setVisibility(View.VISIBLE);
+         cartSubtotal_label.setVisibility(View.VISIBLE);
+         divider.setVisibility(View.VISIBLE);
+     }
     }
 
     ArrayList<CartItem> fakeData(){
