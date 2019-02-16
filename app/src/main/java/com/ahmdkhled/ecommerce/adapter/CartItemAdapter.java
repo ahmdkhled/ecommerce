@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Media;
+import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -22,10 +23,12 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
         private Context context;
         private ArrayList<CartItem> cartItemList;
+        CartItemsManger cartItemsManger;
 
         public CartItemAdapter(Context context, ArrayList<CartItem> cartItemList) {
             this.context = context;
             this.cartItemList = cartItemList;
+            cartItemsManger=new CartItemsManger(context);
         }
 
         @NonNull
@@ -56,7 +59,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
 
     class CartItemHolder extends RecyclerView.ViewHolder{
-        ImageView image ;
+        ImageView image ,delete;
         TextView name , price , quantity ;
         Button increment , decrement ;
 
@@ -68,6 +71,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             image=itemView.findViewById(R.id.product_image);
             increment=itemView.findViewById(R.id.Increment);
             decrement=itemView.findViewById(R.id.Decrement);
+            delete=itemView.findViewById(R.id.deleteCartItem);
 
             increment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,6 +80,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                     Quantity++;
                     Log.d("ADAPTERR","quantitiy "+Quantity);
                     cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
+                    cartItemsManger.updateQuantity(Quantity,getAdapterPosition());
                     quantity.setText(String.valueOf(Quantity));
                 }
             });
@@ -85,9 +90,19 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                     int Quantity=cartItemList.get(getAdapterPosition()).getQuantity();
                     if (Quantity>0){
                         Quantity -= 1 ;
+                        cartItemsManger.updateQuantity(Quantity,getAdapterPosition());
                         cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
                         quantity.setText(String.valueOf(Quantity));
                     }
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cartItemsManger.deleteCartItem(getAdapterPosition());
+                    cartItemList.remove(getAdapterPosition());
+                    notifyDataSetChanged();
                 }
             });
         }

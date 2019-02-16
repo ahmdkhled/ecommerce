@@ -51,7 +51,7 @@ public class CartActivity extends AppCompatActivity {
         ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
         if (cartItems != null) {
             getCartItems(cartItems);
-            Log.d("JSONN","ok "+cartItems.get(0).getProduct().getId());
+            //Log.d("JSONN","ok "+cartItems.get(0).getProduct().getId());
         }else {
             Log.d("JSONN","nulllllllllllllll");
         }
