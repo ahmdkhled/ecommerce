@@ -67,7 +67,6 @@ public class AddressActivity extends AppCompatActivity {
         mAddressViewModel.getAddresses(userId).observe(this, new Observer<List<Address>>() {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
-                Log.d("mvvm","address activity on change");
                 mAddressAdapter.notifyAdapter(addresses);
             }
         });
@@ -98,7 +97,6 @@ public class AddressActivity extends AppCompatActivity {
         mAddressViewModel.isAdding().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                Log.d("mvvm","isAdding observed and isAdding "+aBoolean);
                 if(aBoolean){
                     mAddressAdapter.notifyAdapter(mAddressViewModel.getAddresses(userId).getValue());
                 }

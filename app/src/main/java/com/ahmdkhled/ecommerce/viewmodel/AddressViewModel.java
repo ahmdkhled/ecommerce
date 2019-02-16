@@ -32,6 +32,7 @@ public class AddressViewModel extends ViewModel {
         mAddressList = mAddressActivtyRepo.getAddresses(userId);
         mIsLoading = mAddressActivtyRepo.getmIsLoading();
         mIsAdding = mAddressActivtyRepo.getmIsAdding();
+        Log.d("mvvm","isAdding is "+mIsAdding.getValue());
         return mAddressList;
     }
 
