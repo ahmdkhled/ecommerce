@@ -59,7 +59,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
 
     class CartItemHolder extends RecyclerView.ViewHolder{
-        ImageView image ;
+        ImageView image ,delete;
         TextView name , price , quantity ;
         Button increment , decrement ;
 
@@ -71,6 +71,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             image=itemView.findViewById(R.id.product_image);
             increment=itemView.findViewById(R.id.Increment);
             decrement=itemView.findViewById(R.id.Decrement);
+            delete=itemView.findViewById(R.id.deleteCartItem);
 
             increment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,6 +94,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                         cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
                         quantity.setText(String.valueOf(Quantity));
                     }
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cartItemsManger.deleteCartItem(getAdapterPosition());
+                    cartItemList.remove(getAdapterPosition());
+                    notifyDataSetChanged();
                 }
             });
         }

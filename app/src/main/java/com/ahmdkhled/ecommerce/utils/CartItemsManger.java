@@ -62,10 +62,17 @@ public class CartItemsManger {
         editor.apply();
     }
 
+    public void deleteCartItem(int pos){
+        ArrayList<CartItem> cartItems=getCartItems();
+        cartItems.remove(pos);
+        deleteCartItems();
+        Gson gson=new Gson();
+        String json=gson.toJson(cartItems);
+        editor=sharedPreferences.edit();
+        editor.putString(CART_ITEMS_LIST_KEY,json);
+        editor.apply();
 
-
-
-
+    }
 
 
 }
