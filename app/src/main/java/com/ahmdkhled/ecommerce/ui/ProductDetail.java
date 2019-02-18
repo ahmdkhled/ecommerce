@@ -1,6 +1,5 @@
 package com.ahmdkhled.ecommerce.ui;
 
-import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,17 +9,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ahmdkhled.ecommerce.ProductsImagesPagerAdapter;
+import com.ahmdkhled.ecommerce.adapter.ProductsImagesPagerAdapter;
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.adapter.SlideShowAdapter;
+import com.ahmdkhled.ecommerce.model.Media;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 
+import java.util.ArrayList;
+
 public class ProductDetail extends AppCompatActivity {
-    TextView textView;
+    TextView name,seller,price,description;
     Button addToCart;
     Toolbar toolbar;
     ViewPager viewPager;
-    ProductsImagesPagerAdapter productsImagesPagerAdapter;
+    SlideShowAdapter slideShowAdapter;
     public static final String PRODUCT_KEY="product_key";
     Product product;
 
@@ -31,14 +34,22 @@ public class ProductDetail extends AppCompatActivity {
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.productImagesPager);
-        productsImagesPagerAdapter = new ProductsImagesPagerAdapter(this);
-        viewPager.setAdapter(productsImagesPagerAdapter);
-        textView = findViewById(R.id.product_name);
+        name = findViewById(R.id.product_name);
+        seller = findViewById(R.id.seller);
+        price = findViewById(R.id.productPrice);
+        description = findViewById(R.id.Description);
         addToCart = findViewById(R.id.addToCart);
 
         if (getIntent()!=null &getIntent().hasExtra(PRODUCT_KEY)){
             product=getIntent().getParcelableExtra(PRODUCT_KEY);
+            populateData(product);
         }
+
+        dummyProduct();
+
+        slideShowAdapter = new SlideShowAdapter(this,product.getMedia());
+        viewPager.setAdapter(slideShowAdapter);
+
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +62,21 @@ public class ProductDetail extends AppCompatActivity {
                 }
             }
             });
+
+
+    }
+
+    void populateData(Product product){
+        name.setText(product.getName());
+        price.setText(String.valueOf(product.getPrice()));
+        description.setText(product.getDescription());
+    }
+    void dummyProduct(){
+        ArrayList<Media> media=new ArrayList<>();
+        media.add(new Media(1,"http://thelondonflowerlover.files.wordpress.com/2012/02/redrose-2.jpg"));
+        media.add(new Media(2,"https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Dahlia_flower_-_colour.jpg/220px-Dahlia_flower_-_colour.jpg"));
+        product=new Product(1,1,50,200,1,"flower","12-12-2012","this is a red flower ",media);
+        populateData(product);
     }
 
 
