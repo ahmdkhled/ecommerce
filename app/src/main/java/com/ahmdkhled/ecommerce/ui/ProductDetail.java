@@ -15,6 +15,9 @@ import com.ahmdkhled.ecommerce.adapter.SlideShowAdapter;
 import com.ahmdkhled.ecommerce.model.Media;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
+import com.rd.PageIndicatorView;
+import com.rd.animation.type.AnimationType;
+import com.rd.draw.data.Indicator;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class ProductDetail extends AppCompatActivity {
     Toolbar toolbar;
     ViewPager viewPager;
     SlideShowAdapter slideShowAdapter;
+    PageIndicatorView indicator;
     public static final String PRODUCT_KEY="product_key";
     Product product;
 
@@ -34,6 +38,7 @@ public class ProductDetail extends AppCompatActivity {
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.productImagesPager);
+        indicator=findViewById(R.id.productpagerIndicatorView);
         name = findViewById(R.id.product_name);
         seller = findViewById(R.id.seller);
         price = findViewById(R.id.productPrice);
@@ -49,7 +54,7 @@ public class ProductDetail extends AppCompatActivity {
 
         slideShowAdapter = new SlideShowAdapter(this,product.getMedia());
         viewPager.setAdapter(slideShowAdapter);
-
+        indicator.setAnimationType(AnimationType.WORM);
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,12 +69,30 @@ public class ProductDetail extends AppCompatActivity {
             });
 
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                indicator.setSelection(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     void populateData(Product product){
         name.setText(product.getName());
         price.setText(String.valueOf(product.getPrice()));
         description.setText(product.getDescription());
+        indicator.setCount(product.getMedia().size());
     }
     void dummyProduct(){
         ArrayList<Media> media=new ArrayList<>();
