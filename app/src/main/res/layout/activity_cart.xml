@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/recycler"
-        app:layout_constraintBottom_toTopOf="@id/cart_subtotal"
+        app:layout_constraintBottom_toTopOf="@id/cart_subtotal_label"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
 
     <TextView
-        android:id="@+id/cart_subtotal"
+        android:id="@+id/cart_subtotal_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/cart_subtotal"
+        android:id="@+id/cart_subtotal"
+        app:layout_constraintStart_toEndOf="@id/cart_subtotal_label"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="1000$"
         android:layout_marginBottom="100dp"
@@ -54,21 +55,19 @@
         android:textSize="25sp"
         android:textStyle="bold" />
     <View
-        android:id="@+id/view"
+        android:id="@+id/cartLineDivider"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        app:layout_constraintBottom_toTopOf="@id/cart_subtotal"
+        app:layout_constraintBottom_toTopOf="@id/cart_subtotal_label"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:background="#565050"/>
 
-
-
-
-
-
-
-
+    <include
+        android:id="@+id/emptyCartContainer"
+        layout="@layout/empty_cart_item"
+        android:visibility="gone"
+        />
 
 </android.support.constraint.ConstraintLayout>
