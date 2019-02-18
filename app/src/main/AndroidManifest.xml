@@ -42,7 +42,7 @@
         <activity
             android:name=".ui.FavoritesActivity"
             android:exported="true"/>
-        
+
         <activity android:name=".ui.AddressActivity"
             android:exported="true"/>
         <activity android:name=".ui.AddAddressActivity"/>

@@ -7,6 +7,8 @@ public class Address {
     private String state;
     private String city;
     private int zip_code;
+    private String address2;
+    private String address1;
 
 
     public Address(String state, String city, int zip_code, String address1, String address2) {
@@ -41,10 +43,6 @@ public class Address {
     public void setZip_code(int zip_code) {
         this.zip_code = zip_code;
     }
-
-    private String address2;
-
-    private String address1;
 
     public String getAddress2 ()
     {
