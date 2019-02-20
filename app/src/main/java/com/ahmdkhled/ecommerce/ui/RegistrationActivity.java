@@ -29,7 +29,7 @@ import retrofit2.Callback;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.viewmodel.RegistrationViewModel;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegistrationActivity extends AppCompatActivity  {
 
     @BindView(R.id.fname_edittext_reg)
     AppCompatEditText mFnameTxt;
@@ -65,38 +65,75 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
 
-        mRegisterBtn.setOnClickListener(this);
+
+
+        mRegisterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signUp();
+                updateProgressBar();
+            }
+        });
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.btn_signup){
+    public void updateProgressBar(){
+        /*
+          observe changes in isProcessing method
+          if isProcessing is true this means that sign up is processing so progress bar should be shown
+          otherwise means that sign up is finished so progress bar should be hidden
+        */
 
-            // first check if all required field are fiiled
-            String userFname = mFnameTxt.getText().toString();
-            String userLname = mLnameTxt.getText().toString();
-            String userEmail = mEmailTxt.getText().toString();
-            String userPassword = mPasswordTxt.getText().toString();
-            if(!TextUtils.isEmpty(userFname) && !TextUtils.isEmpty(userLname)
-                    && !TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword)){
+        mRegistrationViewModel.getIsProcessing().observe(RegistrationActivity.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                Log.d("reg_mvvm","isProcessing is changed to "+aBoolean);
+                if(aBoolean)showProgressBar();
+                else hideProgressBar();
+            }
+        });
+    }
 
-                // create an account and observe changes in response
-                String userName = userFname+" "+userLname;
-                mRegistrationViewModel.signUp(userName,userEmail,userPassword)
-                        .observe(this, new Observer<Response>() {
-                            @Override
-                            public void onChanged(@Nullable Response response) {
+    private void signUp() {
+        // first check if all required field are fiiled
+        String userFname = mFnameTxt.getText().toString();
+        String userLname = mLnameTxt.getText().toString();
+        String userEmail = mEmailTxt.getText().toString();
+        String userPassword = mPasswordTxt.getText().toString();
+        if(!TextUtils.isEmpty(userFname) && !TextUtils.isEmpty(userLname)
+                && !TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword)){
+
+            // create an account and observe changes in response
+            String userName = userFname+" "+userLname;
+            mRegistrationViewModel.signUp(userName,userEmail,userPassword)
+                    .observe(this, new Observer<Response>() {
+                        @Override
+                        public void onChanged(@Nullable Response response) {
+                            // check first if response is not null
+                            Log.d("reg_mvvm","response is changed");
+                            if(response != null) {
                                 Toast.makeText(RegistrationActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
+                            }else
+                                Toast.makeText(RegistrationActivity.this, R.string.error_message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
 
-            // if some or all required field are not filled
-            else {
-                Toast.makeText(this, R.string.info_lack, Toast.LENGTH_SHORT).show();
-            }
+        // if some or all required field are not filled
+        else {
+            Toast.makeText(this, R.string.info_lack, Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+    public void showProgressBar(){
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar(){
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
 
 
     }

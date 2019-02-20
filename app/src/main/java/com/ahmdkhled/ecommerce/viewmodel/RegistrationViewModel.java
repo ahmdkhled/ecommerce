@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.repository.RegistrationRepository;
@@ -10,6 +11,7 @@ public class RegistrationViewModel extends ViewModel {
 
     private MutableLiveData<Response> mResponse;
     private RegistrationRepository mRegistrationRepository;
+    private MutableLiveData<Boolean> isProcessing = new MutableLiveData<>();
 
     public void init(){
         if(mResponse == null){
@@ -21,6 +23,13 @@ public class RegistrationViewModel extends ViewModel {
 
     public MutableLiveData<Response> signUp(String name, String email, String password) {
         mResponse = mRegistrationRepository.signUp(name,email,password);
+        isProcessing = mRegistrationRepository.getIsProcessing();
+        Log.d("reg_mvvm","isProcessing in vm is "+isProcessing.getValue());
         return mResponse;
+    }
+
+    public MutableLiveData<Boolean> getIsProcessing() {
+        Log.d("reg_mvvm","getIsProcessing is "+isProcessing.getValue());
+        return isProcessing;
     }
 }

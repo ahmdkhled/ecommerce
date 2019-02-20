@@ -82,7 +82,7 @@ public class AddressActivity extends AppCompatActivity {
         mAddressViewModel.isLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-
+                Log.d("add_mvvm","isLoading is changed to "+aBoolean);
                 if(aBoolean) showProgressBar();
                 else hideProgressBar();
             }
