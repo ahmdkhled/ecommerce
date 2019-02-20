@@ -1,13 +1,31 @@
 package com.ahmdkhled.ecommerce.model;
 
 public class User {
-    private String mName;
+    private String fullname;
+    private String email;
+    private String phonenumber;
 
-    public String getmName() {
-        return mName;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
-    public void setmName(String mName) {
-        this.mName = mName;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
     }
 }

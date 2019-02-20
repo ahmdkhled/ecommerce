@@ -1,4 +1,4 @@
-package com.ahmdkhled.ecommerce;
+package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.ahmdkhled.ecommerce.R;
 
 public class ProductsImagesPagerAdapter extends PagerAdapter {
     private Context context;
