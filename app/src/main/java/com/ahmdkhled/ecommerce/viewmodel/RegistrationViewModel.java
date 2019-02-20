@@ -14,11 +14,11 @@ public class RegistrationViewModel extends ViewModel {
     private MutableLiveData<Boolean> isProcessing = new MutableLiveData<>();
 
     public void init(){
-        if(mResponse == null){
-            mResponse = new MutableLiveData<>();
+        if(mResponse != null){
+            return;
         }
-
         mRegistrationRepository = RegistrationRepository.getInstance();
+
     }
 
     public MutableLiveData<Response> signUp(String name, String email, String password) {

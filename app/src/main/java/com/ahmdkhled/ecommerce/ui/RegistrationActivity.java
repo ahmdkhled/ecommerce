@@ -47,6 +47,7 @@ public class RegistrationActivity extends AppCompatActivity  {
     ProgressBar mProgressBar;
 
     RegistrationViewModel mRegistrationViewModel;
+    Toast mToast;
 
 
     public static final String TAG = RegistrationActivity.class.getSimpleName();
@@ -64,14 +65,13 @@ public class RegistrationActivity extends AppCompatActivity  {
         mRegistrationViewModel.init();
 
 
-
+        updateProgressBar();
 
 
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signUp();
-                updateProgressBar();
             }
         });
     }
@@ -111,16 +111,16 @@ public class RegistrationActivity extends AppCompatActivity  {
                             // check first if response is not null
                             Log.d("reg_mvvm","response is changed");
                             if(response != null) {
-                                Toast.makeText(RegistrationActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                                showToast(response.getMessage());
                             }else
-                                Toast.makeText(RegistrationActivity.this, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                showToast(getString(R.string.error_message));
                         }
                     });
         }
 
         // if some or all required field are not filled
         else {
-            Toast.makeText(this, R.string.info_lack, Toast.LENGTH_SHORT).show();
+            showToast(getString(R.string.info_lack));
         }
     }
 
@@ -132,6 +132,12 @@ public class RegistrationActivity extends AppCompatActivity  {
 
     public void hideProgressBar(){
         mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    public void showToast(String message){
+        if(mToast != null) mToast.cancel();
+        mToast = Toast.makeText(this,message,Toast.LENGTH_SHORT);
+        mToast.show();
     }
 
 

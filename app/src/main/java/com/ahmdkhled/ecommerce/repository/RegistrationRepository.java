@@ -19,7 +19,6 @@ public class RegistrationRepository {
 
 
     private static RegistrationRepository instance;
-    private MutableLiveData<Response> mResponse = new MutableLiveData<>();
     private MutableLiveData<Boolean> isProcessing = new MutableLiveData<>();
 
     public static RegistrationRepository getInstance(){
@@ -31,6 +30,7 @@ public class RegistrationRepository {
     }
 
     public MutableLiveData<Response> signUp(final String name, String email, String password) {
+        final MutableLiveData<Response> mResponse = new MutableLiveData<>();
         isProcessing.setValue(true);
         Call<Response> call = RetrofetClient.getApiService()
                 .signup(name, email, password);
