@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.ahmdkhled.ecommerce.EndlessRecyclerViewScrollListener;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ProductAdapter;
 import com.ahmdkhled.ecommerce.model.Product;
@@ -22,38 +24,53 @@ public class ProductsActivity  extends AppCompatActivity {
 
     public static final String CATEGORY_ID_KEY="category_id";
     public static final String TARGET_KEY="target_key";
-    ArrayList<Product> productsList=new ArrayList<>();
+    ArrayList<Product> productsList;
     RecyclerView recyclerView;
-
+    ProductAdapter productAdapter;
+    GridLayoutManager gridLayoutManager;
+    int categoryid=-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
         recyclerView=findViewById(R.id.recycler_view);
         productsList=new ArrayList<>();
+        gridLayoutManager =new GridLayoutManager(this,2);
 
         Intent intent = getIntent();
+        final int categoryid = intent.getIntExtra(CATEGORY_ID_KEY,-1);
+        Log.d("checkout","id "+categoryid);
 
-        int id = intent.getIntExtra(CATEGORY_ID_KEY,-1);
-        Log.d("checkout","id "+id);
+        if (categoryid>-1)
+        getProducts(String.valueOf(categoryid),1);
 
+        productAdapter=new ProductAdapter(productsList,getApplicationContext());
+        recyclerView.setAdapter(productAdapter);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                page++;
+                Log.d("ENDLESSSCROLL","page "+page);
+                if (categoryid>-1)
+                getProducts(String.valueOf(categoryid),page);
 
-        getProducts(id);
+            }
+        });
+
 
 
     }
 
 
-    public void getProducts(int id){
-        RetrofetClient.getApiService().getProducts(String.valueOf(id))
+    public void getProducts(String categoryid,int page){
+        RetrofetClient.getApiService().getProducts(categoryid,page)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                         ArrayList<Product> productsList= response.body();
-                        ProductAdapter productAdapter=new ProductAdapter(productsList,getApplicationContext());
-                        recyclerView.setAdapter(productAdapter);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+                        productAdapter.addItems(productsList);
 
                         Log.d("categoryyy","name "+productsList.get(0).getName());
                     }

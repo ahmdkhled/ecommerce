@@ -59,6 +59,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
         return productsList.size();
     }
 
+    public void addItems(ArrayList<Product> productsList){
+        this.productsList.addAll(productsList);
+        notifyDataSetChanged();
+    }
+
     class ProductsHolder extends RecyclerView.ViewHolder {
         TextView name,price;
         ImageView productImage;
