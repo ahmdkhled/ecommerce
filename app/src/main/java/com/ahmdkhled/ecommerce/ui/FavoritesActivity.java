@@ -26,13 +26,11 @@ import retrofit2.Response;
 public class FavoritesActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    DividerItemDecoration dividerItemDecoration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
         recyclerView=findViewById(R.id.favorites_recyclerView);
-        dividerItemDecoration=new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
 
         FavProductsViewModel favProductsViewModel= ViewModelProviders.of(this).get(FavProductsViewModel.class);
         favProductsViewModel.getFavProducts(this).observe(this, new Observer<ArrayList<Product>>() {
@@ -50,7 +48,7 @@ public class FavoritesActivity extends AppCompatActivity {
         recyclerView.setAdapter(favoriteProductsAdapter);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.removeItemDecoration(dividerItemDecoration);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+
+
     }
 }
