@@ -20,8 +20,8 @@ public class AddressViewModel extends ViewModel {
 
     public void init(){
         Log.d("mvvm","inside init");
-        if(mAddressList == null){
-            mAddressList = new MutableLiveData<>();
+        if(mAddressList != null){
+            return;
         }
         mAddressActivtyRepo = SharedAddressRepository.getInstance();
     }

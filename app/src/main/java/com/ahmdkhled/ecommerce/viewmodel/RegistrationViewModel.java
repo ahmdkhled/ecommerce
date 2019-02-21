@@ -11,25 +11,27 @@ public class RegistrationViewModel extends ViewModel {
 
     private MutableLiveData<Response> mResponse;
     private RegistrationRepository mRegistrationRepository;
-    private MutableLiveData<Boolean> isProcessing = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsProcessing = new MutableLiveData<>();
+
 
     public void init(){
-        if(mResponse != null){
-            return;
+        if(mResponse == null) {
+            mResponse = new MutableLiveData<>();
         }
         mRegistrationRepository = RegistrationRepository.getInstance();
-
     }
 
     public MutableLiveData<Response> signUp(String name, String email, String password) {
         mResponse = mRegistrationRepository.signUp(name,email,password);
-        isProcessing = mRegistrationRepository.getIsProcessing();
-        Log.d("reg_mvvm","isProcessing in vm is "+isProcessing.getValue());
+        mIsProcessing = mRegistrationRepository.isProcessing();
         return mResponse;
+
     }
 
-    public MutableLiveData<Boolean> getIsProcessing() {
-        Log.d("reg_mvvm","getIsProcessing is "+isProcessing.getValue());
-        return isProcessing;
+
+
+    public MutableLiveData<Boolean> isProcessing() {
+        Log.d("reg_mvvm","getmIsProcessing is "+ mIsProcessing.getValue());
+        return mIsProcessing;
     }
 }

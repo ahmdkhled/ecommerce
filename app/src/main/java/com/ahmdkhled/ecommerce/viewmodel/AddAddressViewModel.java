@@ -19,8 +19,8 @@ public class AddAddressViewModel extends ViewModel {
 
     public void init(){
         Log.d("mvvm","inside init");
-        if(response == null){
-            response = new MutableLiveData<>();
+        if(response != null){
+            return;
         }
         mAddressActivtyRepo = SharedAddressRepository.getInstance();
     }

@@ -1,9 +1,7 @@
 package com.ahmdkhled.ecommerce.ui;
 
-import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,20 +10,15 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
+
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.viewmodel.RegistrationViewModel;
 
@@ -65,33 +58,32 @@ public class RegistrationActivity extends AppCompatActivity  {
         mRegistrationViewModel.init();
 
 
-        updateProgressBar();
-
-
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signUp();
+                updateProgressBar();
             }
         });
     }
 
-    public void updateProgressBar(){
-        /*
-          observe changes in isProcessing method
-          if isProcessing is true this means that sign up is processing so progress bar should be shown
-          otherwise means that sign up is finished so progress bar should be hidden
-        */
+    private void updateProgressBar() {
+        /**
+         * observe changes in isProcessing method
+         *if isProcessing is true this means that sign up is processing so progress bar should be shown
+         * otherwise means that sign up is finished so progress bar should be hidden
+         */
 
-        mRegistrationViewModel.getIsProcessing().observe(RegistrationActivity.this, new Observer<Boolean>() {
+        mRegistrationViewModel.isProcessing().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                Log.d("reg_mvvm","isProcessing is changed to "+aBoolean);
-                if(aBoolean)showProgressBar();
+                Log.d("reg_mvvm","isProcessing is "+aBoolean);
+                if (aBoolean)showProgressBar();
                 else hideProgressBar();
             }
         });
     }
+
 
     private void signUp() {
         // first check if all required field are fiiled
@@ -104,18 +96,18 @@ public class RegistrationActivity extends AppCompatActivity  {
 
             // create an account and observe changes in response
             String userName = userFname+" "+userLname;
-            mRegistrationViewModel.signUp(userName,userEmail,userPassword)
-                    .observe(this, new Observer<Response>() {
-                        @Override
-                        public void onChanged(@Nullable Response response) {
-                            // check first if response is not null
-                            Log.d("reg_mvvm","response is changed");
-                            if(response != null) {
-                                showToast(response.getMessage());
-                            }else
-                                showToast(getString(R.string.error_message));
-                        }
-                    });
+            mRegistrationViewModel.signUp(userName,userEmail,userPassword).observe(this, new Observer<Response>() {
+                @Override
+                public void onChanged(@Nullable Response response) {
+                    if(response != null) {
+                        showToast(response.getMessage());
+                    }
+                    // if there is failure
+                    else showToast(getString(R.string.error_message));
+                }
+            });
+
+
         }
 
         // if some or all required field are not filled
