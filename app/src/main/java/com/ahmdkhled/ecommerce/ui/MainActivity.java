@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -29,6 +31,7 @@ import com.ahmdkhled.ecommerce.adapter.RecentlyAddedProducsAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.rd.PageIndicatorView;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     Button seeAllCategories;
     Button seeAllRecentlyAdded;
     PageIndicatorView pageIndicatorView;
+    ConstraintLayout container;
     public static final String RECENTLY_ADDED_TARGET="recently_added_target";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         seeAllCategories=findViewById(R.id.seeAllCategories);
         seeAllRecentlyAdded=findViewById(R.id.seeAllRecentlyAdded);
         pageIndicatorView=findViewById(R.id.mainpagerIndicatorView);
+        container=findViewById(R.id.mainActivityContainer);
 
 
         setSupportActionBar(toolbar);
@@ -117,11 +122,15 @@ public class MainActivity extends AppCompatActivity
 
 
 
+        if (Network.isConnected(this)){
+            handleNavHeader();
+            getRecentlyAdedProducts();
+            getCategories();
+            getAds();
+        }else {
+            showSnackBar();
+        }
 
-        handleNavHeader();
-        getRecentlyAdedProducts();
-        getCategories();
-        getAds();
     }
 
     void getCategories(){
@@ -186,6 +195,25 @@ public class MainActivity extends AppCompatActivity
                 ,LinearLayoutManager.HORIZONTAL,false);
         recentlyAddedRecycler.setAdapter(recentlyAddedProducsAdapter);
         recentlyAddedRecycler.setLayoutManager(linearLayoutManager);
+    }
+
+    private void showSnackBar(){
+        Snackbar snackbar=Snackbar.make(container
+                ,"no internet access",
+                Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("try again", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Network.isConnected(getApplicationContext())){
+                    handleNavHeader();
+                    getRecentlyAdedProducts();
+                    getCategories();
+                    getAds();
+                }else {
+                    showSnackBar();
+                }
+            }
+        }).show();
     }
 
     private void getAds(){
