@@ -9,6 +9,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.FavoriteProductsAdapter;
@@ -26,17 +28,29 @@ import retrofit2.Response;
 public class FavoritesActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
         recyclerView=findViewById(R.id.favorites_recyclerView);
+        progressBar=findViewById(R.id.fav_ProgressBar);
 
         FavProductsViewModel favProductsViewModel= ViewModelProviders.of(this).get(FavProductsViewModel.class);
         favProductsViewModel.getFavProducts(this).observe(this, new Observer<ArrayList<Product>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Product> products) {
                 showProducts(products);
+            }
+        });
+
+        favProductsViewModel.isLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLoading) {
+                if (isLoading!=null&&isLoading)
+                    progressBar.setVisibility(View.VISIBLE);
+                else
+                    progressBar.setVisibility(View.GONE);
             }
         });
     }
