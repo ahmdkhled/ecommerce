@@ -70,9 +70,8 @@ public class ProductsActivity  extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                         ArrayList<Product> productsList= response.body();
+                        if (productsList!=null&&productsList.size()>0)
                         productAdapter.addItems(productsList);
-
-                        Log.d("categoryyy","name "+productsList.get(0).getName());
                     }
 
                     @Override
