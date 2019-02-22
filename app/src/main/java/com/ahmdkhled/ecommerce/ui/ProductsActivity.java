@@ -1,12 +1,17 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import com.ahmdkhled.ecommerce.FilterDialogFragment;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ProductAdapter;
 import com.ahmdkhled.ecommerce.model.Product;
@@ -23,13 +28,16 @@ public class ProductsActivity  extends AppCompatActivity {
     public static final String CATEGORY_ID_KEY="category_id";
     public static final String TARGET_KEY="target_key";
     ArrayList<Product> productsList=new ArrayList<>();
+    FloatingActionButton floatingActionButton;
     RecyclerView recyclerView;
-
+    Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
         recyclerView=findViewById(R.id.recycler_view);
+        spinner=findViewById(R.id.sortBySpinner);
+        floatingActionButton=findViewById(R.id.fab);
         productsList=new ArrayList<>();
 
         Intent intent = getIntent();
@@ -40,6 +48,16 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
         getProducts(id);
+        setUpSpinner();
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilterDialogFragment filterDialogFragment=new FilterDialogFragment();
+                filterDialogFragment.show(getSupportFragmentManager(),"tag");
+            }
+        });
+
 
 
     }
@@ -66,6 +84,15 @@ public class ProductsActivity  extends AppCompatActivity {
                 });
     }
 
+    private void setUpSpinner(){
+        ArrayList<String> sortList=new ArrayList<>();
+        sortList.add("date");
+        sortList.add("price(Low)");
+        sortList.add("price(High)");
+        sortList.add("Rating");
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,sortList);
+        spinner.setAdapter(adapter);
+    }
 
     public void getFakeData (){
         Product p=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
