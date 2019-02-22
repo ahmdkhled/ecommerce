@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ahmdkhled.ecommerce.EndlessRecyclerViewScrollListener;
 import com.ahmdkhled.ecommerce.R;
@@ -28,21 +29,23 @@ public class ProductsActivity  extends AppCompatActivity {
     RecyclerView recyclerView;
     ProductAdapter productAdapter;
     GridLayoutManager gridLayoutManager;
-    int categoryid=-1;
+    ProgressBar loadMorePB;
+    int categoryId =-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
-        recyclerView=findViewById(R.id.recycler_view);
+        recyclerView=findViewById(R.id.products_recyclerView);
+        loadMorePB=findViewById(R.id.fav_loadMore_PB);
         productsList=new ArrayList<>();
         gridLayoutManager =new GridLayoutManager(this,2);
 
         Intent intent = getIntent();
-        final int categoryid = intent.getIntExtra(CATEGORY_ID_KEY,-1);
-        Log.d("checkout","id "+categoryid);
+        categoryId = intent.getIntExtra(CATEGORY_ID_KEY,-1);
+        Log.d("checkout","id "+ categoryId);
 
-        if (categoryid>-1)
-        getProducts(String.valueOf(categoryid),1);
+        if (categoryId >-1)
+        getProducts(String.valueOf(categoryId),1);
 
         productAdapter=new ProductAdapter(productsList,getApplicationContext());
         recyclerView.setAdapter(productAdapter);
@@ -52,9 +55,10 @@ public class ProductsActivity  extends AppCompatActivity {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 page++;
+                loadMorePB.setVisibility(View.VISIBLE);
                 Log.d("ENDLESSSCROLL","page "+page);
-                if (categoryid>-1)
-                getProducts(String.valueOf(categoryid),page);
+                if (categoryId >-1)
+                getProducts(String.valueOf(categoryId),page);
 
             }
         });
@@ -72,10 +76,12 @@ public class ProductsActivity  extends AppCompatActivity {
                         ArrayList<Product> productsList= response.body();
                         if (productsList!=null&&productsList.size()>0)
                         productAdapter.addItems(productsList);
+                        loadMorePB.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                        loadMorePB.setVisibility(View.GONE);
                         Log.d("categoryyy","amira"+t.getMessage());
 
                     }
