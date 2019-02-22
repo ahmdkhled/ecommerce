@@ -18,7 +18,9 @@ public class FavProductsRepository {
 
 
     private MutableLiveData<ArrayList<Product>> favProducts=new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoading=new MutableLiveData<>();
     private static FavProductsRepository favProductsRepository;
+
 
     public static FavProductsRepository getInstance(){
         if (favProductsRepository==null)
@@ -27,9 +29,9 @@ public class FavProductsRepository {
     }
 
     public MutableLiveData<ArrayList<Product>> getFavProducts(Context context){
-        Log.d("FAVORITEE","quering products");
         long userId=new SessionManager(context).getId();
         if (userId>-1) {
+            isLoading.setValue(true);
             RetrofetClient.getApiService()
                     .getFavoriteProducts(userId)
                     .enqueue(new Callback<ArrayList<Product>>() {
@@ -38,6 +40,7 @@ public class FavProductsRepository {
                             if (response.isSuccessful()){
                                 ArrayList<Product> products = response.body();
                                 favProducts.setValue(products);
+                                isLoading.setValue(false);
                             }
 
                         }
@@ -45,9 +48,16 @@ public class FavProductsRepository {
                         @Override
                         public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
                             Log.d("FAVORITEE", "error " + t.getMessage());
+                            isLoading.setValue(false);
                         }
                     });
+        }else {
+            isLoading.setValue(false);
         }
         return favProducts;
+    }
+
+    public MutableLiveData<Boolean> isLoading() {
+        return isLoading;
     }
 }
