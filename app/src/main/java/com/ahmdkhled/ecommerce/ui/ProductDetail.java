@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ahmdkhled.ecommerce.adapter.DetailsPageAdapter;
 import com.ahmdkhled.ecommerce.adapter.ProductsImagesPagerAdapter;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.SlideShowAdapter;
@@ -22,10 +24,11 @@ import com.rd.draw.data.Indicator;
 import java.util.ArrayList;
 
 public class ProductDetail extends AppCompatActivity {
-    TextView name,seller,price,description;
+    TextView name,seller,price;
     Button addToCart;
     Toolbar toolbar;
-    ViewPager viewPager;
+    ViewPager viewPager,detailsViewpager;
+    TabLayout tabLayout;
     SlideShowAdapter slideShowAdapter;
     PageIndicatorView indicator;
     public static final String PRODUCT_KEY="product_key";
@@ -38,11 +41,12 @@ public class ProductDetail extends AppCompatActivity {
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.productImagesPager);
+        detailsViewpager = findViewById(R.id.productDetail_viewPager);
+        tabLayout=findViewById(R.id.product_tabLayout);
         indicator=findViewById(R.id.productpagerIndicatorView);
         name = findViewById(R.id.product_name);
         seller = findViewById(R.id.seller);
         price = findViewById(R.id.productPrice);
-        description = findViewById(R.id.Description);
         addToCart = findViewById(R.id.addToCart);
 
         if (getIntent()!=null &getIntent().hasExtra(PRODUCT_KEY)){
@@ -67,7 +71,9 @@ public class ProductDetail extends AppCompatActivity {
                 }
             }
             });
-
+        DetailsPageAdapter detailsPageAdapter=new DetailsPageAdapter(getSupportFragmentManager());
+        detailsViewpager.setAdapter(detailsPageAdapter);
+        tabLayout.setupWithViewPager(detailsViewpager);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -91,7 +97,6 @@ public class ProductDetail extends AppCompatActivity {
     void populateData(Product product){
         name.setText(product.getName());
         price.setText(String.valueOf(product.getPrice()));
-        description.setText(product.getDescription());
         indicator.setCount(product.getMedia().size());
     }
     void dummyProduct(){
