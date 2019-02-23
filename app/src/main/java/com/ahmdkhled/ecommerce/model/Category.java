@@ -4,11 +4,15 @@ public class Category {
     private int id ;
     private String name;
     private String image;
-    public Category(int id, String name, String image) {
+    private String icon;
+
+    public Category(int id, String name, String image, String icon) {
         this.id = id;
         this.name = name;
         this.image = image;
+        this.icon = icon;
     }
+
     public int getId() {
         return id;
     }
@@ -26,5 +30,13 @@ public class Category {
     }
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

@@ -2,9 +2,13 @@ package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -29,8 +33,16 @@ import com.ahmdkhled.ecommerce.adapter.RecentlyAddedProducsAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.rd.PageIndicatorView;
 import com.rd.animation.type.AnimationType;
 
@@ -52,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     Button seeAllCategories;
     Button seeAllRecentlyAdded;
     PageIndicatorView pageIndicatorView;
+    ConstraintLayout container;
     public static final String RECENTLY_ADDED_TARGET="recently_added_target";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         seeAllCategories=findViewById(R.id.seeAllCategories);
         seeAllRecentlyAdded=findViewById(R.id.seeAllRecentlyAdded);
         pageIndicatorView=findViewById(R.id.mainpagerIndicatorView);
+        container=findViewById(R.id.mainActivityContainer);
 
 
         setSupportActionBar(toolbar);
@@ -117,11 +131,15 @@ public class MainActivity extends AppCompatActivity
 
 
 
+        if (Network.isConnected(this)){
+            handleNavHeader();
+            getRecentlyAdedProducts();
+            getCategories();
+            getAds();
+        }else {
+            showSnackBar();
+        }
 
-        handleNavHeader();
-        getRecentlyAdedProducts();
-        getCategories();
-        getAds();
     }
 
     void getCategories(){
@@ -188,6 +206,25 @@ public class MainActivity extends AppCompatActivity
         recentlyAddedRecycler.setLayoutManager(linearLayoutManager);
     }
 
+    private void showSnackBar(){
+        Snackbar snackbar=Snackbar.make(container
+                ,"no internet access",
+                Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("try again", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Network.isConnected(getApplicationContext())){
+                    handleNavHeader();
+                    getRecentlyAdedProducts();
+                    getCategories();
+                    getAds();
+                }else {
+                    showSnackBar();
+                }
+            }
+        }).show();
+    }
+
     private void getAds(){
         RetrofetClient.getApiService()
                 .getAds()
@@ -212,13 +249,25 @@ public class MainActivity extends AppCompatActivity
 
     private void populateMenu(ArrayList<Category> categoriesList){
         Menu menu=navigationView.getMenu();
-        SubMenu subMenu=menu.addSubMenu("categories");
+        final SubMenu subMenu=menu.addSubMenu("Categories");
+
+        Log.d("MENUU","menuu ");
         for (int i = 0; i < categoriesList.size(); i++) {
             Category c=categoriesList.get(i);
             //(categoryId,itemId,order,itemTitle)
             subMenu.add(0,c.getId(),0,c.getName());
-        }
+
+            final int finalI = i;
+            Glide.with(this).load(c.getIcon()).into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                    subMenu.getItem(finalI).setIcon(resource);
+                }
+            });
+
+
         navigationView.invalidate();
+    }
     }
 
     @Override

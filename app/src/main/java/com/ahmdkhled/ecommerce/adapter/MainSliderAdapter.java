@@ -27,7 +27,7 @@ public class MainSliderAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View v= LayoutInflater.from(context).inflate(R.layout.main_slider_layout,container,false);
+        View v= LayoutInflater.from(context).inflate(R.layout.slider_layout,container,false);
         ImageView image=v.findViewById(R.id.mainSliderImage);
         Glide.with(context).load(ads.get(position).getImage())
                 .into(image);

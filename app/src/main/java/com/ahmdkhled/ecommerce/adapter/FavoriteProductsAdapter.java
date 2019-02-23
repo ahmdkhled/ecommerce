@@ -54,6 +54,8 @@ public class FavoriteProductsAdapter  extends RecyclerView.Adapter<FavoriteProdu
             Glide.with(context)
                     .load(url)
                     .into(holder.img);
+        }else {
+            holder.img.setImageResource(R.drawable.placeholder);
         }
 
     }
@@ -84,6 +86,14 @@ public class FavoriteProductsAdapter  extends RecyclerView.Adapter<FavoriteProdu
                 }
             });
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(context,ProductDetail.class);
+                    intent.putExtra(ProductDetail.PRODUCT_KEY,productsList.get(getAdapterPosition()));
+                    context.startActivity(intent);
+                }
+            });
 
         }
     }
@@ -94,7 +104,7 @@ public class FavoriteProductsAdapter  extends RecyclerView.Adapter<FavoriteProdu
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.code()==200){
+                        if (response.isSuccessful()){
                             Product p=new Product((int) productId);
                             productsList.remove(p);
                             notifyDataSetChanged();

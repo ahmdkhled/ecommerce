@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.ahmdkhled.ecommerce.FilterDialogFragment;
+import android.widget.ProgressBar;
+import com.ahmdkhled.ecommerce.EndlessRecyclerViewScrollListener;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ProductAdapter;
 import com.ahmdkhled.ecommerce.model.Product;
@@ -27,27 +29,49 @@ public class ProductsActivity  extends AppCompatActivity {
 
     public static final String CATEGORY_ID_KEY="category_id";
     public static final String TARGET_KEY="target_key";
-    ArrayList<Product> productsList=new ArrayList<>();
     FloatingActionButton floatingActionButton;
-    RecyclerView recyclerView;
     Spinner spinner;
+    ArrayList<Product> productsList;
+    RecyclerView recyclerView;
+    ProductAdapter productAdapter;
+    GridLayoutManager gridLayoutManager;
+    ProgressBar loadMorePB;
+    int categoryId =-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
-        recyclerView=findViewById(R.id.recycler_view);
         spinner=findViewById(R.id.sortBySpinner);
         floatingActionButton=findViewById(R.id.fab);
+        recyclerView=findViewById(R.id.products_recyclerView);
+        loadMorePB=findViewById(R.id.fav_loadMore_PB);
         productsList=new ArrayList<>();
+        gridLayoutManager =new GridLayoutManager(this,2);
 
         Intent intent = getIntent();
+        categoryId = intent.getIntExtra(CATEGORY_ID_KEY,-1);
+        Log.d("checkout","id "+ categoryId);
 
-        int id = intent.getIntExtra(CATEGORY_ID_KEY,-1);
-        Log.d("checkout","id "+id);
+        if (categoryId >-1)
+        getProducts(String.valueOf(categoryId),1);
+
+        productAdapter=new ProductAdapter(productsList,getApplicationContext());
+        recyclerView.setAdapter(productAdapter);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                page++;
+                loadMorePB.setVisibility(View.VISIBLE);
+                Log.d("ENDLESSSCROLL","page "+page);
+                if (categoryId >-1)
+                getProducts(String.valueOf(categoryId),page);
+
+            }
+        });
 
 
-
-        getProducts(id);
         setUpSpinner();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -60,24 +84,24 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
 
+
     }
 
 
-    public void getProducts(int id){
-        RetrofetClient.getApiService().getProducts(String.valueOf(id))
+    public void getProducts(String categoryid,int page){
+        RetrofetClient.getApiService().getProducts(categoryid,page)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                         ArrayList<Product> productsList= response.body();
-                        ProductAdapter productAdapter=new ProductAdapter(productsList,getApplicationContext());
-                        recyclerView.setAdapter(productAdapter);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
-
-                        Log.d("categoryyy","name "+productsList.get(0).getName());
+                        if (productsList!=null&&productsList.size()>0)
+                        productAdapter.addItems(productsList);
+                        loadMorePB.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                        loadMorePB.setVisibility(View.GONE);
                         Log.d("categoryyy","amira"+t.getMessage());
 
                     }

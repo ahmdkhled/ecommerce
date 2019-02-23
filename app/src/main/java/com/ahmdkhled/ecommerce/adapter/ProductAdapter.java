@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.model.Media;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.ui.ProductsActivity;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -40,7 +42,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
     public void onBindViewHolder(@NonNull ProductAdapter.ProductsHolder holder, int position) {
         holder.price.setText(String.valueOf(productsList.get(position).getPrice()));
         holder.name.setText(productsList.get(position).getName());
-
+        ArrayList<Media> media=productsList.get(position).getMedia();
+        if (media!=null&&media.size()>0){
+            String imageUrl=media.get(0).getUrl();
+            Glide.with(context).load(imageUrl).into(holder.productImage);
+        }else {
+            holder.productImage.setImageResource(R.drawable.placeholder);
+        }
 
 
     }
@@ -49,6 +57,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
     @Override
     public int getItemCount() {
         return productsList.size();
+    }
+
+    public void addItems(ArrayList<Product> productsList){
+        this.productsList.addAll(productsList);
+        notifyDataSetChanged();
     }
 
     class ProductsHolder extends RecyclerView.ViewHolder {

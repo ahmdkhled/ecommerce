@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,19 +15,23 @@ import android.widget.TextView;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Media;
+import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.ui.ProductDetail;
+import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemHolder>{
 
-
-        Context context;
-        ArrayList<CartItem> cartItemList;
+        private Context context;
+        private ArrayList<CartItem> cartItemList;
+        CartItemsManger cartItemsManger;
 
         public CartItemAdapter(Context context, ArrayList<CartItem> cartItemList) {
             this.context = context;
             this.cartItemList = cartItemList;
+            cartItemsManger=new CartItemsManger(context);
         }
 
         @NonNull
@@ -38,11 +43,16 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
         @Override
         public void onBindViewHolder(@NonNull CartItemHolder holder, int position) {
-            holder.name.setText(cartItemList.get(position).getName());
-            holder.price.setText(String.valueOf(cartItemList.get(position).getPrice()));
-            holder.quantity.setText(String.valueOf(cartItemList.get(position).getquantity()));
-            ArrayList<Media> image_url=cartItemList.get(position).getImage();
-            Glide.with(context).load(image_url).into(holder.image);
+            holder.name.setText(cartItemList.get(position).getProduct().getName());
+            holder.price.setText(String.valueOf(cartItemList.get(position).getProduct().getPrice()));
+            holder.quantity.setText(String.valueOf(cartItemList.get(position).getQuantity()));
+            ArrayList<Media> imagesList=cartItemList.get(position).getProduct().getMedia();
+            if (imagesList!=null&&imagesList.size()>0){
+                Glide.with(context).load(imagesList.get(0).getUrl()).into(holder.image);
+            }else{
+                Log.d("CARTTT","no image");
+            }
+
         }
 
         @Override
@@ -52,7 +62,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
 
     class CartItemHolder extends RecyclerView.ViewHolder{
-        ImageView image ;
+        ImageView image ,delete;
         TextView name , price , quantity ;
         Button increment , decrement ;
 
@@ -64,26 +74,49 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             image=itemView.findViewById(R.id.product_image);
             increment=itemView.findViewById(R.id.Increment);
             decrement=itemView.findViewById(R.id.Decrement);
+            delete=itemView.findViewById(R.id.deleteCartItem);
 
             increment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int Quantity=cartItemList.get(getAdapterPosition()).getquantity();
+                    int Quantity=cartItemList.get(getAdapterPosition()).getQuantity();
                     Quantity++;
                     Log.d("ADAPTERR","quantitiy "+Quantity);
-                    cartItemList.get(getAdapterPosition()).setquantity(Quantity);
+                    cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
+                    cartItemsManger.updateQuantity(Quantity,getAdapterPosition());
                     quantity.setText(String.valueOf(Quantity));
                 }
             });
             decrement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int Quantity=cartItemList.get(getAdapterPosition()).getquantity();
+                    int Quantity=cartItemList.get(getAdapterPosition()).getQuantity();
                     if (Quantity>0){
                         Quantity -= 1 ;
-                        cartItemList.get(getAdapterPosition()).setquantity(Quantity);
+                        cartItemsManger.updateQuantity(Quantity,getAdapterPosition());
+                        cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
                         quantity.setText(String.valueOf(Quantity));
                     }
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cartItemsManger.deleteCartItem(getAdapterPosition());
+                    cartItemList.remove(getAdapterPosition());
+                    notifyDataSetChanged();
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context,ProductDetail.class);
+                    Product product=cartItemList.get(getAdapterPosition()).getProduct();
+                    intent.putExtra(ProductDetail.PRODUCT_KEY,product);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
         }

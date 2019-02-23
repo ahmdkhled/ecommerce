@@ -1,17 +1,16 @@
 package com.ahmdkhled.ecommerce.network;
+
+import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.Checkout;
 import com.ahmdkhled.ecommerce.model.Product;
-import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Response;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 
 import retrofit2.http.FieldMap;
@@ -36,10 +35,10 @@ public interface ApiService {
     Call<ArrayList<Category>> getCategories();
 
     @GET("products.php")
-    Call<ArrayList<CartItem>> getCartItems(@Query("id") String ids);
+    Call<ArrayList<Product>> getCartItems(@Query("id") String ids);
 
     @GET ("products.php")
-    Call <ArrayList<Product>> getProducts(@Query("categoryId") String category) ;
+    Call <ArrayList<Product>> getProducts(@Query("categoryId") String categoryId,@Query("page") int page) ;
 
     @GET("ads.php")
     Call<ArrayList<Ad>> getAds();
@@ -55,4 +54,21 @@ public interface ApiService {
     Call<ResponseBody> deleteFavoriteProduct(@Field("productId")long productId,
                                              @Field("userId") long userId );
 
+    @FormUrlEncoded
+    @POST(Constants.GET_ADDRESSES_URL)
+    Call<List<Address>> getAddresses(@Field("id") String userId);
+
+    @FormUrlEncoded
+    @POST(Constants.ADD_ADDRESS_URL)
+    Call<Response> addAddress(@Field("user_id") String userId, @Field("state") String state,
+                              @Field("city") String city, @Field("zip_code") int zipCode,
+                              @Field("address_1") String address1, @Field("address_2") String address2);
+
+    @FormUrlEncoded
+    @POST(Constants.DELETE_ADDRESS)
+    Call<Response> deleteAddress(@Field("id") int addressId);
+
+    @FormUrlEncoded
+    @GET(Constants.GET_CHECKOUT_INFO)
+    Call<Checkout> getCheckoutInfo(@Field("user_id") String userId);
 }
