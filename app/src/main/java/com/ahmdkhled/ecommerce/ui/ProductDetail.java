@@ -54,8 +54,6 @@ public class ProductDetail extends AppCompatActivity {
             populateData(product);
         }
 
-        dummyProduct();
-
         slideShowAdapter = new SlideShowAdapter(this,product.getMedia());
         viewPager.setAdapter(slideShowAdapter);
         indicator.setAnimationType(AnimationType.WORM);
@@ -104,7 +102,7 @@ public class ProductDetail extends AppCompatActivity {
         media.add(new Media(1,"http://thelondonflowerlover.files.wordpress.com/2012/02/redrose-2.jpg"));
         media.add(new Media(2,"https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Dahlia_flower_-_colour.jpg/220px-Dahlia_flower_-_colour.jpg"));
         product=new Product(1,1,50,200,1,"flower","12-12-2012","this is a red flower ",media);
-        populateData(product);
+
     }
 
 

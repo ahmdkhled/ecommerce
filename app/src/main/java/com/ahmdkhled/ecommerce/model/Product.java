@@ -54,6 +54,7 @@ public class Product implements Parcelable {
         categoryId = in.readInt();
         date = in.readString();
         description = in.readString();
+        media=in.readArrayList(Media.class.getClassLoader());
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -163,5 +164,6 @@ public class Product implements Parcelable {
         parcel.writeInt(categoryId);
         parcel.writeString(date);
         parcel.writeString(description);
+        parcel.writeList(media);
     }
 }
