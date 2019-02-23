@@ -32,7 +32,7 @@ public class ProductDetail extends AppCompatActivity {
     SlideShowAdapter slideShowAdapter;
     PageIndicatorView indicator;
     public static final String PRODUCT_KEY="product_key";
-    Product product;
+    public Product product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
