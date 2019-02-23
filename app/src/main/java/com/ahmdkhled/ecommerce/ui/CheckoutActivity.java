@@ -86,7 +86,9 @@ public class CheckoutActivity extends AppCompatActivity {
         long userId=sessionManager.getId();
         if (userId==-1){
             Intent intent=new Intent(this,LoginActivity.class);
+            intent.putExtra("source",this.getClass().getSimpleName());
             startActivity(intent);
+            finish();
             return;
         }
         RetrofetClient.getApiService()

@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout passIL;
     Button loginBu;
     ProgressBar progressBar;
+    String source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         emailIL=findViewById(R.id.loginEmail_IL);
         passIL=findViewById(R.id.loginPass_IL);
         progressBar=findViewById(R.id.loginProgressBar);
+
+        source=getIntent().getStringExtra("source");
 
         loginBu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +73,17 @@ public class LoginActivity extends AppCompatActivity {
                             }else {
                                 SessionManager sessionManager=new SessionManager(getApplicationContext());
                                 sessionManager.saveSession(r.getId(),r.getName(),r.getEmail());
-                                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-                                startActivity(intent);
+                                if (source.equals(CheckoutActivity.class.getSimpleName())){
+                                    Intent intent=new Intent(getApplicationContext(),CheckoutActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                }else{
+                                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
                             }
                         }else {
                             Toast.makeText(getApplicationContext(),
