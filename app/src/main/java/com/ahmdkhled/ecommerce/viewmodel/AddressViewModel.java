@@ -20,8 +20,8 @@ public class AddressViewModel extends ViewModel {
 
     public void init(){
         Log.d("mvvm","inside init");
-        if(mAddressList == null){
-            mAddressList = new MutableLiveData<>();
+        if(mAddressList != null){
+            return;
         }
         mAddressActivtyRepo = SharedAddressRepository.getInstance();
     }
@@ -31,8 +31,8 @@ public class AddressViewModel extends ViewModel {
     public MutableLiveData<List<Address>> getAddresses(String userId){
         mAddressList = mAddressActivtyRepo.getAddresses(userId);
         mIsLoading = mAddressActivtyRepo.getmIsLoading();
+        Log.d("add_mvvm","isLoading in vm is "+mIsLoading.getValue());
         mIsAdding = mAddressActivtyRepo.getmIsAdding();
-        Log.d("mvvm","isAdding is "+mIsAdding.getValue());
         return mAddressList;
     }
 
@@ -47,6 +47,7 @@ public class AddressViewModel extends ViewModel {
     if mIsLoading is true, addresses are successfully fetched
      */
     public MutableLiveData<Boolean> isLoading(){
+        Log.d("add_mvvm","isLoading method in vm");
         return mIsLoading;
     }
 
