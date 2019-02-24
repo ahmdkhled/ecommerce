@@ -66,7 +66,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         holder.mDeleteAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteAddress(mAddress.getId(),holder.getAdapterPosition());
+//                delete(mAddress.getId(),holder.getAdapterPosition());
             }
         });
 
@@ -95,36 +95,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     }
 
 
-    public void deleteAddress(final int addressId, final int position){
-        // first show an alert dialog to confirm this action
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("You are about delete this address");
-        builder.setNegativeButton("cancel",null);
-        builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // delete selected address from DB
-                Call<Response> call = RetrofetClient.getApiService().deleteAddress(addressId);
-                call.enqueue(new Callback<Response>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
-                        if(response.isSuccessful() && response.body() != null){
-                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            notifyItemRemoved(position);
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(@NonNull Call<Response> call, @NonNull Throwable t) {
-                        Log.d("fromAddressAdapter","delete address fail "+t.getMessage());
-                        Toast.makeText(mContext, mContext.getString(R.string.error_message), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
 
-        builder.show();
-    }
 
     class AddressHolder extends RecyclerView.ViewHolder{
 

@@ -63,13 +63,17 @@ public class AddressActivity extends AppCompatActivity {
          observe getAddress function to notify recyclerview's adapter with new list
           */
         mAddressViewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
-        mAddressViewModel.init();
-        mAddressViewModel.getAddresses(userId).observe(this, new Observer<List<Address>>() {
+        mAddressViewModel.init(userId);
+
+        // observe changes in address list
+        mAddressViewModel.getAddressList().observe(this, new Observer<List<Address>>() {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
+                Log.d("add_mvvm","address list is changed");
                 mAddressAdapter.notifyAdapter(addresses);
             }
         });
+
 
 
         /*
@@ -89,16 +93,17 @@ public class AddressActivity extends AppCompatActivity {
         });
 
 
-        /*
-          Reload addresses again after a new address is added
-          isAdding function show if there is a new successfully added address or not
+        /**
+         * Reload addresses again after a new address is added
+         * isAdding function show if there is a new successfully added address or not
          */
 
         mAddressViewModel.isAdding().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
+                Log.d("add_mvvm","isAdding cahnged");
                 if(aBoolean){
-                    mAddressAdapter.notifyAdapter(mAddressViewModel.getAddresses(userId).getValue());
+                    mAddressViewModel.setAddressList(userId);
                 }
             }
         });
@@ -127,9 +132,9 @@ public class AddressActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         // setup recycler view
-        Log.d("mvvm","inside init RV");
+        Log.d("add_mvvm","inside init RV");
 
-        mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddresses(userId).getValue());
+        mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddressList().getValue());
         mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAddressRecyclerView.setAdapter(mAddressAdapter);
     }

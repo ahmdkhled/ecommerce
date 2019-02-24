@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.repository.SharedAddressRepository;
 
 import java.util.List;
@@ -15,41 +16,50 @@ public class AddressViewModel extends ViewModel {
 
     private SharedAddressRepository mAddressActivtyRepo;
     private MutableLiveData<List<Address>> mAddressList;
+    private MutableLiveData<Response> mDeleteResponse;
     private MutableLiveData<Boolean> mIsLoading,mIsAdding = new MutableLiveData<>();
 
 
-    public void init(){
+    public void init(String userId){
         Log.d("mvvm","inside init");
-        if(mAddressList == null){
-            mAddressList = new MutableLiveData<>();
+        if(mAddressList != null){
+            return;
         }
         mAddressActivtyRepo = SharedAddressRepository.getInstance();
+        setAddressList(userId);
+
     }
 
-
-    // get list of addresses
-    public MutableLiveData<List<Address>> getAddresses(String userId){
+    public void setAddressList(String userId){
         mAddressList = mAddressActivtyRepo.getAddresses(userId);
         mIsLoading = mAddressActivtyRepo.getmIsLoading();
         mIsAdding = mAddressActivtyRepo.getmIsAdding();
-        Log.d("mvvm","isAdding is "+mIsAdding.getValue());
-        return mAddressList;
     }
 
-    /*
-    if mIsAdding is true, there is a new address has successfully added
+
+
+
+    /**
+     * if mIsAdding is true, there is a new address has successfully added
      */
     public MutableLiveData<Boolean> isAdding() {
         return mIsAdding;
     }
 
-    /*
-    if mIsLoading is true, addresses are successfully fetched
+    /**
+     * if mIsLoading is true, addresses are successfully fetched
      */
     public MutableLiveData<Boolean> isLoading(){
+        Log.d("add_mvvm","vm isLoading");
         return mIsLoading;
+
     }
 
+
+    public MutableLiveData<List<Address>> getAddressList() {
+        Log.d("add_mvvm","vm getAddressList");
+        return mAddressList;
+    }
 
     @Override
     protected void onCleared() {
