@@ -62,24 +62,8 @@ public class RegistrationActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 signUp();
-                updateProgressBar();
-            }
-        });
-    }
-
-    private void updateProgressBar() {
-        /**
-         * observe changes in isProcessing method
-         *if isProcessing is true this means that sign up is processing so progress bar should be shown
-         * otherwise means that sign up is finished so progress bar should be hidden
-         */
-
-        mRegistrationViewModel.isProcessing().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                Log.d("reg_mvvm","isProcessing is "+aBoolean);
-                if (aBoolean)showProgressBar();
-                else hideProgressBar();
+                observeRegistrationResponse();
+                observeRegistrationStatus();
             }
         });
     }
@@ -96,18 +80,7 @@ public class RegistrationActivity extends AppCompatActivity  {
 
             // create an account and observe changes in response
             String userName = userFname+" "+userLname;
-            mRegistrationViewModel.signUp(userName,userEmail,userPassword).observe(this, new Observer<Response>() {
-                @Override
-                public void onChanged(@Nullable Response response) {
-                    if(response != null) {
-                        showToast(response.getMessage());
-                    }
-                    // if there is failure
-                    else showToast(getString(R.string.error_message));
-                }
-            });
-
-
+            mRegistrationViewModel.signUp(userName,userEmail,userPassword);
         }
 
         // if some or all required field are not filled
@@ -115,6 +88,39 @@ public class RegistrationActivity extends AppCompatActivity  {
             showToast(getString(R.string.info_lack));
         }
     }
+
+
+    private void observeRegistrationResponse(){
+        /**
+         * observe response of sign up process to update UI
+         */
+        mRegistrationViewModel.getSignUpResponse().observe(this, new Observer<Response>() {
+            @Override
+            public void onChanged(@Nullable Response response) {
+                if(response != null) {
+                    showToast(response.getMessage());
+                }else showToast(getString(R.string.error_message));
+            }
+        });
+    }
+
+    private void observeRegistrationStatus() {
+        /**
+         * observe changes in isProcessing method
+         *if isProcessing is true this means that sign up is processing so progress bar should be shown
+         * otherwise means that sign up is finished so progress bar should be hidden
+         */
+
+        mRegistrationViewModel.isProcessing().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                Log.d("reg_mvvm","isProcessing is "+aBoolean);
+                if (aBoolean)showProgressBar();
+                else hideProgressBar();
+            }
+        });
+    }
+
 
 
 

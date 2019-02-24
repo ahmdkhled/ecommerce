@@ -13,7 +13,7 @@ public class RegistrationRepository {
 
 
     private static RegistrationRepository instance;
-    private MutableLiveData<Boolean> mIsProcessing = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsProcessing;
 
     public static RegistrationRepository getInstance(){
         if(instance == null){
@@ -25,6 +25,7 @@ public class RegistrationRepository {
 
     public MutableLiveData<Response> signUp(final String name, String email, String password) {
         final MutableLiveData<Response> mResponse = new MutableLiveData<>();
+        mIsProcessing = new MutableLiveData<>();
         mIsProcessing.setValue(true);
         Call<Response> call = RetrofetClient.getApiService()
                 .signup(name, email, password);
@@ -32,10 +33,8 @@ public class RegistrationRepository {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if (response.isSuccessful()) {
-                    Log.d("reg_mvvm","response is successful");
                     mIsProcessing.setValue(false);
                     mResponse.setValue(response.body());
-                    Log.d("reg_mvvm","response in repo is "+mResponse.getValue().getMessage());
                 }
 
             }
@@ -45,7 +44,6 @@ public class RegistrationRepository {
             public void onFailure(Call<Response> call, Throwable t) {
                 mIsProcessing.setValue(false);
                 mResponse.setValue(null);
-                Log.d("reg_mvvm", "onFailure " + t.getMessage());
             }
         });
 

@@ -21,17 +21,19 @@ public class RegistrationViewModel extends ViewModel {
         mRegistrationRepository = RegistrationRepository.getInstance();
     }
 
-    public MutableLiveData<Response> signUp(String name, String email, String password) {
+    public void signUp(String name, String email, String password) {
         mResponse = mRegistrationRepository.signUp(name,email,password);
         mIsProcessing = mRegistrationRepository.isProcessing();
-        return mResponse;
+
 
     }
 
 
+    public MutableLiveData<Response> getSignUpResponse() {
+        return mResponse;
+    }
 
     public MutableLiveData<Boolean> isProcessing() {
-        Log.d("reg_mvvm","getmIsProcessing is "+ mIsProcessing.getValue());
         return mIsProcessing;
     }
 }
