@@ -2,8 +2,10 @@ package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -34,6 +36,13 @@ import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.rd.PageIndicatorView;
 import com.rd.animation.type.AnimationType;
 
@@ -240,13 +249,25 @@ public class MainActivity extends AppCompatActivity
 
     private void populateMenu(ArrayList<Category> categoriesList){
         Menu menu=navigationView.getMenu();
-        SubMenu subMenu=menu.addSubMenu("categories");
+        final SubMenu subMenu=menu.addSubMenu("Categories");
+
+        Log.d("MENUU","menuu ");
         for (int i = 0; i < categoriesList.size(); i++) {
             Category c=categoriesList.get(i);
             //(categoryId,itemId,order,itemTitle)
             subMenu.add(0,c.getId(),0,c.getName());
-        }
+
+            final int finalI = i;
+            Glide.with(this).load(c.getIcon()).into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                    subMenu.getItem(finalI).setIcon(resource);
+                }
+            });
+
+
         navigationView.invalidate();
+    }
     }
 
     @Override

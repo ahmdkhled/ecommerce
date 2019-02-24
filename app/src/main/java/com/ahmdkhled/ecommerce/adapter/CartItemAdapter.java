@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Media;
+import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.ui.ProductDetail;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.bumptech.glide.Glide;
 
@@ -103,6 +106,17 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                     cartItemsManger.deleteCartItem(getAdapterPosition());
                     cartItemList.remove(getAdapterPosition());
                     notifyDataSetChanged();
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context,ProductDetail.class);
+                    Product product=cartItemList.get(getAdapterPosition()).getProduct();
+                    intent.putExtra(ProductDetail.PRODUCT_KEY,product);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
         }

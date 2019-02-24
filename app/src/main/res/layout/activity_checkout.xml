@@ -13,6 +13,9 @@
         tools:context=".MainActivity">
 
         <TextView
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/your_details_label"

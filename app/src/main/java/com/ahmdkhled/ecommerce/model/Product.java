@@ -25,20 +25,25 @@ public class Product implements Parcelable {
     private String date;
     @SerializedName("product_description")
     private String description;
+    @SerializedName("marketName")
+    private String sellerName;
     @SerializedName("media")
     private ArrayList<Media> media;
 
-    public Product(int id, int marketId, int quantity, int price, int categoryId,
-                   String name, String date, String description,ArrayList<Media> media) {
+    public Product(int id, String name, int marketId, int quantity,
+                   int price, int categoryId, String date,
+                   String description, String sellerName,
+                   ArrayList<Media> media) {
         this.id = id;
+        this.name = name;
         this.marketId = marketId;
         this.quantity = quantity;
         this.price = price;
         this.categoryId = categoryId;
-        this.name = name;
         this.date = date;
         this.description = description;
-        this.media=media;
+        this.sellerName = sellerName;
+        this.media = media;
     }
 
     public Product(int id) {
@@ -54,6 +59,8 @@ public class Product implements Parcelable {
         categoryId = in.readInt();
         date = in.readString();
         description = in.readString();
+        sellerName=in.readString();
+        media=in.readArrayList(Media.class.getClassLoader());
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -132,6 +139,14 @@ public class Product implements Parcelable {
         this.description = description;
     }
 
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
     public ArrayList<Media> getMedia() {
         return media;
     }
@@ -163,5 +178,7 @@ public class Product implements Parcelable {
         parcel.writeInt(categoryId);
         parcel.writeString(date);
         parcel.writeString(description);
+        parcel.writeString(sellerName);
+        parcel.writeList(media);
     }
 }

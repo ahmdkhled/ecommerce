@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,8 +49,8 @@ public class CartActivity extends AppCompatActivity {
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//             Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
-//             startActivity(intent);
+             Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
+             startActivity(intent);
             }
         });
 
@@ -98,7 +99,7 @@ public class CartActivity extends AppCompatActivity {
         return sb.toString();
     }
     private void handleVisibility(ArrayList<CartItem> cartItems){
-     if (cartItems.size()==0){
+     if (cartItems!=null&&cartItems.size()==0){
          Log.d("CARTTTT","empty");
          emptyCartContainer.setVisibility(View.VISIBLE);
          recyclerView.setVisibility(View.GONE);
