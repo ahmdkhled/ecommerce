@@ -16,11 +16,9 @@ public class SharedAddressRepository {
 
     private static final String TAG = SharedAddressRepository.class.getSimpleName();
 
-    private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsLoading = new MutableLiveData<>();
     private static SharedAddressRepository mInstance;
     private MutableLiveData<Boolean> mIsAdding = new MutableLiveData<>();
-    private MutableLiveData<Response> mResponse = new MutableLiveData<>();
 
 
     public static SharedAddressRepository getInstance(){
@@ -34,6 +32,8 @@ public class SharedAddressRepository {
 
     // get list of user addresses
     public MutableLiveData<List<Address>> getAddresses(String userId){
+        final MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
+
         /*
         Fetching data is processing so mIsLoading will be true
          */
@@ -70,6 +70,8 @@ public class SharedAddressRepository {
 
     // To add new address
     public MutableLiveData<Response> addAddress(Address address,String userId) {
+        final MutableLiveData<Response> mResponse = new MutableLiveData<>();
+
         Call<Response> call = RetrofetClient.getApiService().addAddress(userId,address.getState(),address.getCity(),
                 address.getZip_code(),address.getAddress1(),address.getAddress2());
 
