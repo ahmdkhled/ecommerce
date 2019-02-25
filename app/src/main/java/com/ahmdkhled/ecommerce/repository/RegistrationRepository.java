@@ -54,4 +54,5 @@ public class RegistrationRepository {
     public MutableLiveData<Boolean> isProcessing() {
         return mIsProcessing;
     }
+
 }
