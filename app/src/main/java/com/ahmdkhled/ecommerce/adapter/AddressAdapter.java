@@ -67,7 +67,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
             @Override
             public void onClick(View view) {
                 // delete address from adapter
-                Log.d("delete_add","postion wanna delete is "+position);
                 wannaDelete.setValue(new AddressItem(mAddress,position));
             }
         });
