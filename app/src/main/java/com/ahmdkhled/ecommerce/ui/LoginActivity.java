@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
 import retrofit2.Call;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText loginPass;
     TextInputLayout emailIL;
     TextInputLayout passIL;
+    TextView createNewAccount;
     Button loginBu;
     ProgressBar progressBar;
     String source;
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         loginPass=findViewById(R.id.loginPass);
         emailIL=findViewById(R.id.loginEmail_IL);
         passIL=findViewById(R.id.loginPass_IL);
+        createNewAccount=findViewById(R.id.createNewAccount);
         progressBar=findViewById(R.id.loginProgressBar);
 
         source=getIntent().getStringExtra("source");
@@ -51,6 +54,14 @@ public class LoginActivity extends AppCompatActivity {
                     login(email,password);
                 }
 
+            }
+        });
+
+        createNewAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),RegistrationActivity.class);
+                startActivity(intent);
             }
         });
 
