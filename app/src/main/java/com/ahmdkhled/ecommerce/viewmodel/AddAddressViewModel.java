@@ -26,11 +26,11 @@ public class AddAddressViewModel extends ViewModel {
     }
 
     // To add new address
-    public MutableLiveData<Response> addAddress(Address address,String userId){
-        Log.d("mvvm","add address view model");
-        response = mAddressActivtyRepo.addAddress(address,userId);
-        return response;
-    }
+//    public MutableLiveData<Response> addAddress(Address address,String userId){
+//        Log.d("mvvm","add address view model");
+//        response = mAddressActivtyRepo.addAddress(address,userId);
+//        return response;
+//    }
 
     @Override
     protected void onCleared() {

@@ -66,42 +66,42 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             String userPassword = mPasswordTxt.getText().toString();
             if(!TextUtils.isEmpty(userFname) && !TextUtils.isEmpty(userLname)
                     && !TextUtils.isEmpty(userEmail) && !TextUtils.isEmpty(userPassword)){
-                signup(userFname,userLname,userEmail,userPassword);
+//                signup(userFname,userLname,userEmail,userPassword);
             }else {
                 Toast.makeText(this, R.string.info_lack, Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-    public void signup(String fName, String lName, String email, String password){
-        mProgressBar.setVisibility(View.VISIBLE);
-        HashMap<String,String> map = new HashMap<>();
-        map.put("firstname",fName);
-        map.put("lastname",lName);
-        map.put("email",email);
-        map.put("password",password);
-
-        Call<Response> call = RetrofetClient.getApiService().signup(map);
-        call.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                mProgressBar.setVisibility(View.INVISIBLE);
-                Response regesterationResponse = response.body();
-                Log.d(TAG,"message is "+regesterationResponse.getMessage());
-                if (!regesterationResponse.isError()){
-                    Toast.makeText(RegistrationActivity.this,
-                            regesterationResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                }else Toast.makeText(RegistrationActivity.this,
-                        regesterationResponse.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                mProgressBar.setVisibility(View.INVISIBLE);
-                Log.d(TAG,"onFailure "+t.getMessage());
-            }
-        });
-    }
+//
+//    public void signup(String fName, String lName, String email, String password){
+//        mProgressBar.setVisibility(View.VISIBLE);
+//        HashMap<String,String> map = new HashMap<>();
+//        map.put("firstname",fName);
+//        map.put("lastname",lName);
+//        map.put("email",email);
+//        map.put("password",password);
+//
+//        Call<Response> call = RetrofetClient.getApiService().signup(map);
+//        call.enqueue(new Callback<Response>() {
+//            @Override
+//            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+//                mProgressBar.setVisibility(View.INVISIBLE);
+//                Response regesterationResponse = response.body();
+//                Log.d(TAG,"message is "+regesterationResponse.getMessage());
+//                if (!regesterationResponse.isError()){
+//                    Toast.makeText(RegistrationActivity.this,
+//                            regesterationResponse.getMessage(), Toast.LENGTH_SHORT).show();
+//                }else Toast.makeText(RegistrationActivity.this,
+//                        regesterationResponse.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Response> call, Throwable t) {
+//                mProgressBar.setVisibility(View.INVISIBLE);
+//                Log.d(TAG,"onFailure "+t.getMessage());
+//            }
+//        });
+//    }
 
 
 }

@@ -100,19 +100,19 @@ public class AddAddressActivity extends AppCompatActivity {
                 && !TextUtils.isEmpty(mStateTxt.getText()) && !TextUtils.isEmpty(mCityTxt.getText())
                 && !TextUtils.isEmpty(mZipCodeTxt.getText())){
 
-            Address address = new Address(mStateTxt.getText().toString(),mCityTxt.getText().toString(),
-                    Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
+//            Address address = new Address(mStateTxt.getText().toString(),mCityTxt.getText().toString(),
+//                    Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
 
             /*
                 obserce add address function to make an action when this process is done
              */
-            mAddAddressViewModel.addAddress(address,userId).observe(this, new Observer<Response>() {
-                @Override
-                public void onChanged(@Nullable Response response) {
-                    Toast.makeText(AddAddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            });
+//            mAddAddressViewModel.addAddress(address,userId).observe(this, new Observer<Response>() {
+//                @Override
+//                public void onChanged(@Nullable Response response) {
+//                    Toast.makeText(AddAddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+//                    finish();
+//                }
+//            });
         }
 
         if(TextUtils.isEmpty(mFnameTxt.getText()))mFnameInputLayout.setError(getString(R.string.field_is_required));

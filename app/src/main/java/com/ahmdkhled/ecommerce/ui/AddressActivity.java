@@ -14,10 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.AddressAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.AddressItem;
+import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
 
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class AddressActivity extends AppCompatActivity {
     ArrayList<Address> addresses = new ArrayList<>();
     AddressViewModel mAddressViewModel;
     private String userId = "2";
+    private int mAddressPosition;
 
 
     @Override
@@ -58,30 +62,29 @@ public class AddressActivity extends AppCompatActivity {
         setupToolbar();
 
 
-        /*
-         link address view model with this activity.
-         observe getAddress function to notify recyclerview's adapter with new list
+        /**
+         * link address view model with this activity.
+         * observe getAddress function to notify recyclerview's adapter with new list.
           */
         mAddressViewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
-        mAddressViewModel.init(userId);
+        mAddressViewModel.init();
+        mAddressViewModel.loadAddresses(userId);
 
         // observe changes in address list
         mAddressViewModel.getAddressList().observe(this, new Observer<List<Address>>() {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
-                Log.d("add_mvvm","address list is changed");
                 mAddressAdapter.notifyAdapter(addresses);
             }
         });
 
 
 
-        /*
-          observe isLoading function to know if loading is finish or not.
-          so that i can handle progress bar status.
-          if Loading is finished progress bar will be hidden.
-          Otherwise progress bar will be shown
-
+        /**
+         * observe isLoading function to know if loading is finish or not.
+         * so that i can handle progress bar status.
+         * if Loading is finished progress bar will be hidden.
+         * Otherwise progress bar will be shown.
          */
         mAddressViewModel.isLoading().observe(this, new Observer<Boolean>() {
             @Override
@@ -93,27 +96,22 @@ public class AddressActivity extends AppCompatActivity {
         });
 
 
-        /**
-         * Reload addresses again after a new address is added
-         * isAdding function show if there is a new successfully added address or not
-         */
+        initRecyclerView();
 
-        mAddressViewModel.isAdding().observe(this, new Observer<Boolean>() {
+        // observe if user wanna delete an address
+        mAddressAdapter.getWannaDelete().observe(this, new Observer<AddressItem>() {
             @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                Log.d("add_mvvm","isAdding cahnged");
-                if(aBoolean){
-                    mAddressViewModel.setAddressList(userId);
-                }
+            public void onChanged(@Nullable AddressItem address) {
+                mAddressViewModel.deleteAddress(address.getmAddress());
+                mAddressPosition = address.getPosition();
+                observeAddressDeletion();
             }
         });
 
-        initRecyclerView();
 
 
-        /*
-         if user hit FAB to add new address, add address activity will be launched
-          */
+        // if user hit FAB to add new address, add address activity will be launched
+
         mAddAddressFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,8 +130,6 @@ public class AddressActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         // setup recycler view
-        Log.d("add_mvvm","inside init RV");
-
         mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddressList().getValue());
         mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAddressRecyclerView.setAdapter(mAddressAdapter);
@@ -141,6 +137,17 @@ public class AddressActivity extends AppCompatActivity {
 
 
 
+    // observe address's deletion process
+    public void observeAddressDeletion(){
+        mAddressViewModel.getDeleteResponse().observe(this, new Observer<Response>() {
+            @Override
+            public void onChanged(@Nullable Response response) {
+                mAddressAdapter.notifyAddressHasRemoved(mAddressPosition);
+                Toast.makeText(AddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 
     public void showProgressBar(){
         mProgressBar.setVisibility(View.VISIBLE);

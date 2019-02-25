@@ -16,50 +16,43 @@ public class AddressViewModel extends ViewModel {
 
     private SharedAddressRepository mAddressActivtyRepo;
     private MutableLiveData<List<Address>> mAddressList;
+    private MutableLiveData<Boolean> mIsLoading = new MutableLiveData<>();
     private MutableLiveData<Response> mDeleteResponse;
-    private MutableLiveData<Boolean> mIsLoading,mIsAdding = new MutableLiveData<>();
 
 
-    public void init(String userId){
-        Log.d("mvvm","inside init");
+    public void init(){
+        mAddressActivtyRepo = SharedAddressRepository.getInstance();
+    }
+
+    public void loadAddresses(String userId){
         if(mAddressList != null){
             return;
         }
-        mAddressActivtyRepo = SharedAddressRepository.getInstance();
-        setAddressList(userId);
-
-    }
-
-    public void setAddressList(String userId){
         mAddressList = mAddressActivtyRepo.getAddresses(userId);
         mIsLoading = mAddressActivtyRepo.getmIsLoading();
-        mIsAdding = mAddressActivtyRepo.getmIsAdding();
+
     }
 
 
 
-
-    /**
-     * if mIsAdding is true, there is a new address has successfully added
-     */
-    public MutableLiveData<Boolean> isAdding() {
-        return mIsAdding;
+    public MutableLiveData<List<Address>> getAddressList() {
+        return mAddressList;
     }
 
-    /**
-     * if mIsLoading is true, addresses are successfully fetched
-     */
+    public void deleteAddress(Address mAddress){
+        mDeleteResponse = mAddressActivtyRepo.deleteAddress(mAddress.getId());
+    }
+
+    public MutableLiveData<Response> getDeleteResponse() {
+        if(mDeleteResponse == null)mDeleteResponse = new MutableLiveData<>();
+        return mDeleteResponse;
+    }
+
     public MutableLiveData<Boolean> isLoading(){
-        Log.d("add_mvvm","vm isLoading");
         return mIsLoading;
 
     }
 
-
-    public MutableLiveData<List<Address>> getAddressList() {
-        Log.d("add_mvvm","vm getAddressList");
-        return mAddressList;
-    }
 
     @Override
     protected void onCleared() {

@@ -20,10 +20,10 @@ public class SharedAddressRepository {
     private static final String TAG = SharedAddressRepository.class.getSimpleName();
 
     private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mIsLoading = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsLoading;
     private static SharedAddressRepository mInstance;
     private MutableLiveData<Boolean> mIsAdding = new MutableLiveData<>();
-    private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse = new MutableLiveData<>();
+    private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse;
 
 
     public static SharedAddressRepository getInstance(){
@@ -40,10 +40,8 @@ public class SharedAddressRepository {
         /*
         Fetching data is processing so mIsLoading will be true
          */
+        mIsLoading = new MutableLiveData<>();
         mIsLoading.setValue(true);
-        Log.d("mvvm","inside get address in  repo");
-
-
         Call<List<Address>> call = RetrofetClient.getApiService().getAddresses(userId);
         call.enqueue(new Callback<List<Address>>() {
             @Override
@@ -54,7 +52,6 @@ public class SharedAddressRepository {
                      */
                     mIsLoading.setValue(false);
                     mAddressList.setValue(response.body());
-                    Log.d("add_mvvm","succeccfully loaded");
 
                 }
             }
@@ -72,38 +69,39 @@ public class SharedAddressRepository {
 
 
     // To add new address
-    public MutableLiveData<Response> addAddress(Address address,String userId) {
-        Call<Response> call = RetrofetClient.getApiService().addAddress(userId,address.getState(),address.getCity(),
-                address.getZip_code(),address.getAddress1(),address.getAddress2());
-
-        call.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                if(response.isSuccessful()){
-                    /*
-                    new address is successfully added, so mIsAdding will be true
-                     */
-                    mIsAdding.setValue(true);
-                    mAddAddressResponse.setValue(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                Log.d(TAG,"failure message : "+t.getMessage());
-                /*
-                  Adding address process is failed, so mIsAdding will be false
-                 */
-                mIsAdding.setValue(false);
-            }
-        });
-
-        return mAddAddressResponse;
-    }
+//    public MutableLiveData<Response> addAddress(Address address,String userId) {
+//        Call<Response> call = RetrofetClient.getApiService().addAddress(userId,address.getState(),address.getCity(),
+//                address.getZip_code(),address.getAddress1(),address.getAddress2());
+//
+//        call.enqueue(new Callback<Response>() {
+//            @Override
+//            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+//                if(response.isSuccessful()){
+//                    /*
+//                    new address is successfully added, so mIsAdding will be true
+//                     */
+//                    mIsAdding.setValue(true);
+//                    mAddAddressResponse.setValue(response.body());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Response> call, Throwable t) {
+//                Log.d(TAG,"failure message : "+t.getMessage());
+//                /*
+//                  Adding address process is failed, so mIsAdding will be false
+//                 */
+//                mIsAdding.setValue(false);
+//            }
+//        });
+//
+//        return mAddAddressResponse;
+//    }
 
 
 
     public MutableLiveData<Response> deleteAddress(int addressId){
+        mDeleteResponse = new MutableLiveData<>();
         Call<Response> call = RetrofetClient.getApiService().deleteAddress(addressId);
         call.enqueue(new Callback<Response>() {
             @Override

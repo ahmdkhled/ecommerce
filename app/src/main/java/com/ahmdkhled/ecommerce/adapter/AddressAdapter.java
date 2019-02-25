@@ -1,8 +1,7 @@
 package com.ahmdkhled.ecommerce.adapter;
 
-import android.app.AlertDialog;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,10 +15,10 @@ import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.AddressItem;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,6 +31,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     private Context mContext;
     private List<Address> addresses;
     private RadioButton mLastRbChecked = null;
+    private MutableLiveData<AddressItem> wannaDelete;
 
     public AddressAdapter(Context mContext, List<Address> addresses) {
         this.mContext = mContext;
@@ -46,7 +46,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final AddressHolder holder,  int position) {
+    public void onBindViewHolder(@NonNull final AddressHolder holder, final int position) {
         final Address mAddress = addresses.get(position);
         holder.mAddressDetail.setText(mContext.getString(R.string.address_details,
                 mAddress.getAddress1(),mAddress.getAddress2()));
@@ -66,13 +66,40 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         holder.mDeleteAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                delete(mAddress.getId(),holder.getAdapterPosition());
+                // delete address from adapter
+//                delete(mAddress.getId(),position);
+                wannaDelete.setValue(new AddressItem(mAddress,position));
             }
         });
 
 
 
 
+    }
+
+    public MutableLiveData<AddressItem> getWannaDelete() {
+        if(wannaDelete == null)wannaDelete = new MutableLiveData<>();
+        return wannaDelete;
+    }
+
+    private void delete(int addressId, final int position) {
+        Call<Response> call = RetrofetClient.getApiService().deleteAddress(addressId);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    addresses.remove(position);
+                    notifyItemRemoved(position);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Log.d("address_adapter","failed "+t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -94,8 +121,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         }
     }
 
-
-
+    public void notifyAddressHasRemoved(int position) {
+        addresses.remove(position);
+        notifyItemRemoved(position);
+    }
 
 
     class AddressHolder extends RecyclerView.ViewHolder{

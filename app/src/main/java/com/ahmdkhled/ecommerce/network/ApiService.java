@@ -29,7 +29,8 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST(Constants.SIGNUP_URL)
-    public Call<Response> signup(@FieldMap HashMap<String,String> map);
+    public Call<Response> signup(@Field("name") String name, @Field("email") String email,
+                                 @Field("password") String password);
 
     @GET(Constants.CATEGORY_URL)
     Call<ArrayList<Category>> getCategories();
