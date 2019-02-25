@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
@@ -30,6 +31,7 @@ public class CartActivity extends AppCompatActivity {
     TextView cartSubtotal_label;
     ViewGroup emptyCartContainer;
     View divider;
+    ProgressBar cartProgressBar ;
 
 
     @Override
@@ -43,6 +45,7 @@ public class CartActivity extends AppCompatActivity {
         cartSubtotal_label = findViewById(R.id.cart_subtotal_label);
         emptyCartContainer = findViewById(R.id.emptyCartContainer);
         divider=findViewById(R.id.cartLineDivider);
+        cartProgressBar = findViewById(R.id.cart_progress_bar);
 
 
 
@@ -78,6 +81,7 @@ public class CartActivity extends AppCompatActivity {
                         CartItemAdapter cartItemAdapter = new CartItemAdapter(getApplicationContext(), cartItems);
                         recyclerView.setAdapter(cartItemAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        cartProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
