@@ -67,7 +67,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
             @Override
             public void onClick(View view) {
                 // delete address from adapter
-//                delete(mAddress.getId(),position);
+                Log.d("delete_add","postion wanna delete is "+position);
                 wannaDelete.setValue(new AddressItem(mAddress,position));
             }
         });
@@ -82,25 +82,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         return wannaDelete;
     }
 
-    private void delete(int addressId, final int position) {
-        Call<Response> call = RetrofetClient.getApiService().deleteAddress(addressId);
-        call.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                if(response.isSuccessful()) {
-                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    addresses.remove(position);
-                    notifyItemRemoved(position);
-                }
 
-            }
-
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                Log.d("address_adapter","failed "+t.getMessage());
-            }
-        });
-    }
 
     @Override
     public int getItemCount() {
@@ -122,8 +104,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     }
 
     public void notifyAddressHasRemoved(int position) {
+        Log.d("delete_add","position deleted "+position);
         addresses.remove(position);
-        notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
 

@@ -16,7 +16,8 @@ public class AddressViewModel extends ViewModel {
 
     private SharedAddressRepository mAddressActivtyRepo;
     private MutableLiveData<List<Address>> mAddressList;
-    private MutableLiveData<Boolean> mIsLoading = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsLoading;
+    private MutableLiveData<Boolean> mIsDeleting;
     private MutableLiveData<Response> mDeleteResponse;
 
 
@@ -41,6 +42,7 @@ public class AddressViewModel extends ViewModel {
 
     public void deleteAddress(Address mAddress){
         mDeleteResponse = mAddressActivtyRepo.deleteAddress(mAddress.getId());
+        mIsDeleting = mAddressActivtyRepo.getIsDeleting();
     }
 
     public MutableLiveData<Response> getDeleteResponse() {
@@ -48,7 +50,13 @@ public class AddressViewModel extends ViewModel {
         return mDeleteResponse;
     }
 
+    public MutableLiveData<Boolean> getIsDeleting() {
+        if(mIsDeleting == null)mIsDeleting = new MutableLiveData<>();
+        return mIsDeleting;
+    }
+
     public MutableLiveData<Boolean> isLoading(){
+        if(mIsLoading == null)mIsLoading = new MutableLiveData<>();
         return mIsLoading;
 
     }

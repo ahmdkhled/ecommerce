@@ -20,7 +20,7 @@ public class SharedAddressRepository {
     private static final String TAG = SharedAddressRepository.class.getSimpleName();
 
     private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mIsLoading;
+    private MutableLiveData<Boolean> mIsLoading,mIsDeleting;
     private static SharedAddressRepository mInstance;
     private MutableLiveData<Boolean> mIsAdding = new MutableLiveData<>();
     private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse;
@@ -102,12 +102,15 @@ public class SharedAddressRepository {
 
     public MutableLiveData<Response> deleteAddress(int addressId){
         mDeleteResponse = new MutableLiveData<>();
+        mIsDeleting = new MutableLiveData<>();
+        mIsDeleting.setValue(true);
         Call<Response> call = RetrofetClient.getApiService().deleteAddress(addressId);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
                 if(response.isSuccessful()){
                     Log.d("add_mvvm","onResponse");
+                    mIsDeleting.setValue(false);
                     mDeleteResponse.setValue(response.body());
 
                 }
@@ -116,6 +119,7 @@ public class SharedAddressRepository {
             @Override
             public void onFailure(@NonNull Call<Response> call, @NonNull Throwable t) {
                 Log.d("fromAddressAdapter","delete address fail "+t.getMessage());
+                mIsDeleting.setValue(false);
             }
         });
 
@@ -131,5 +135,9 @@ public class SharedAddressRepository {
 
     public MutableLiveData<Boolean> getmIsLoading() {
         return mIsLoading;
+    }
+
+    public MutableLiveData<Boolean> getIsDeleting() {
+        return mIsDeleting;
     }
 }

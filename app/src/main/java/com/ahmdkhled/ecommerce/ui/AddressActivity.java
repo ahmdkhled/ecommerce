@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -104,7 +103,8 @@ public class AddressActivity extends AppCompatActivity {
             public void onChanged(@Nullable AddressItem address) {
                 mAddressViewModel.deleteAddress(address.getmAddress());
                 mAddressPosition = address.getPosition();
-                observeAddressDeletion();
+                observeAddressDeletionResponse();
+                observeAddressDeletionStatus();
             }
         });
 
@@ -137,13 +137,26 @@ public class AddressActivity extends AppCompatActivity {
 
 
 
-    // observe address's deletion process
-    public void observeAddressDeletion(){
+    // observe address's deletion process response
+    public void observeAddressDeletionResponse(){
         mAddressViewModel.getDeleteResponse().observe(this, new Observer<Response>() {
             @Override
             public void onChanged(@Nullable Response response) {
                 mAddressAdapter.notifyAddressHasRemoved(mAddressPosition);
                 Toast.makeText(AddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    // observe address's deletion process status
+    public void observeAddressDeletionStatus(){
+        mAddressViewModel.getIsDeleting().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean)showProgressBar();
+                else hideProgressBar();
 
             }
         });
