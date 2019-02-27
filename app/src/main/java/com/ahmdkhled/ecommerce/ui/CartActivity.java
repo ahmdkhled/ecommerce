@@ -66,6 +66,8 @@ public class CartActivity extends AppCompatActivity {
             getCartItems(cartItems);
             //Log.d("JSONN","ok "+cartItems.get(0).getProduct().getId());
         }
+
+
     }
 
     public void getCartItems(final ArrayList<CartItem> cartItems) {
@@ -82,6 +84,11 @@ public class CartActivity extends AppCompatActivity {
                         recyclerView.setAdapter(cartItemAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         cartProgressBar.setVisibility(View.GONE);
+                        int total=0;
+                        for(int i=0;i<cartItems.size();i++){
+                            total+=cartItems.get(i).getQuantity()*cartItems.get(i).getProduct().getPrice();
+                        }
+                        cart_subtotal.setText(String.valueOf(total));
                     }
 
                     @Override
@@ -90,6 +97,8 @@ public class CartActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 
     private String arrToString(ArrayList<CartItem> cartItems){
         StringBuilder sb=new StringBuilder();
