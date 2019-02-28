@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
@@ -24,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements CartItemAdapter.OnCartItemsChange{
     RecyclerView recyclerView;
     Button checkoutButton ;
     TextView cart_subtotal;
@@ -32,10 +33,10 @@ public class CartActivity extends AppCompatActivity {
     ViewGroup emptyCartContainer;
     View divider;
     ProgressBar cartProgressBar ;
-
+    CartItemAdapter.OnCartItemsChange onCartItemsChange;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
@@ -47,7 +48,7 @@ public class CartActivity extends AppCompatActivity {
         divider=findViewById(R.id.cartLineDivider);
         cartProgressBar = findViewById(R.id.cart_progress_bar);
 
-
+        onCartItemsChange=this;
 
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +67,8 @@ public class CartActivity extends AppCompatActivity {
             getCartItems(cartItems);
             //Log.d("JSONN","ok "+cartItems.get(0).getProduct().getId());
         }
+
+
     }
 
     public void getCartItems(final ArrayList<CartItem> cartItems) {
@@ -78,10 +81,12 @@ public class CartActivity extends AppCompatActivity {
                         for (int i = 0; i < cartItems.size(); i++) {
                             cartItems.get(i).setProduct(products.get(i));
                         }
-                        CartItemAdapter cartItemAdapter = new CartItemAdapter(getApplicationContext(), cartItems);
+                        CartItemAdapter cartItemAdapter = new CartItemAdapter(getApplicationContext(),cartItems,
+                                onCartItemsChange);
                         recyclerView.setAdapter(cartItemAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         cartProgressBar.setVisibility(View.GONE);
+                        updateTotal(cartItems);
                     }
 
                     @Override
@@ -90,6 +95,8 @@ public class CartActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 
     private String arrToString(ArrayList<CartItem> cartItems){
         StringBuilder sb=new StringBuilder();
@@ -102,6 +109,15 @@ public class CartActivity extends AppCompatActivity {
         }
         return sb.toString();
     }
+
+    private void updateTotal(ArrayList<CartItem> cartItems){
+        int total=0;
+        for(int i=0;i<cartItems.size();i++){
+            total+=cartItems.get(i).getQuantity()*cartItems.get(i).getProduct().getPrice();
+        }
+        cart_subtotal.setText(String.valueOf(total));
+    }
+
     private void handleVisibility(ArrayList<CartItem> cartItems){
      if (cartItems!=null&&cartItems.size()==0){
          Log.d("CARTTTT","empty");
@@ -132,5 +148,20 @@ public class CartActivity extends AppCompatActivity {
 //        CartItem t_shirt =new CartItem(5000,"t_shirt",150,1,"");
 //        cartItemArrayList.add(t_shirt);
         return cartItemArrayList;
+    }
+
+    @Override
+    public void onQuantityIncreased(int total) {
+        cart_subtotal.setText(String.valueOf(total));
+    }
+
+    @Override
+    public void onQuantityDecreased(int total) {
+        cart_subtotal.setText(String.valueOf(total));
+    }
+
+    @Override
+    public void onCartItemDeleted(int total) {
+        cart_subtotal.setText(String.valueOf(total));
     }
 }
