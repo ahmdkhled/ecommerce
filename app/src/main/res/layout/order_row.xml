@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ORDER NUMBER"
+        android:id="@+id/order_number"
+        android:layout_margin="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/order_date"
+        android:text="ORDER DATE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/order_number1"
+        android:text="54545454"
+        app:layout_constraintTop_toBottomOf="@+id/order_number"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date"
+        android:text="25 nov 2016"
+        app:layout_constraintTop_toBottomOf="@+id/order_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/pending"
+        android:background="@drawable/circular_green_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/order_number1"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/processing"
+        android:background="@drawable/circular_green_bg"
+        app:layout_constraintTop_toBottomOf="@+id/date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/delivered"
+        android:background="@drawable/circular_green_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pending"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:id="@+id/line1"
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toEndOf="@id/pending"
+        app:layout_constraintEnd_toStartOf="@id/processing"
+        app:layout_constraintTop_toTopOf="@id/processing"
+        app:layout_constraintBottom_toBottomOf="@id/processing"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:id="@+id/line2"
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toEndOf="@id/processing"
+        app:layout_constraintEnd_toStartOf="@id/delivered"
+        app:layout_constraintTop_toTopOf="@id/delivered"
+        app:layout_constraintBottom_toBottomOf="@id/delivered"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pending"
+        app:layout_constraintTop_toBottomOf="@+id/pending"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="processing"
+        app:layout_constraintTop_toBottomOf="@id/processing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="delivered"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/delivered"/>
+
+
+
+</android.support.constraint.ConstraintLayout>
