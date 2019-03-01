@@ -22,7 +22,7 @@ public class SharedAddressRepository {
     private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsLoading,mIsDeleting;
     private static SharedAddressRepository mInstance;
-    private MutableLiveData<Boolean> mIsAdding = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsAdding;
     private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse;
 
 
@@ -50,6 +50,7 @@ public class SharedAddressRepository {
                     /*
                     fetching data is done so mIsloading will be false
                      */
+                    Log.d("add_address","assas");
                     mIsLoading.setValue(false);
                     mAddressList.setValue(response.body());
 
@@ -69,34 +70,28 @@ public class SharedAddressRepository {
 
 
     // To add new address
-//    public MutableLiveData<Response> addAddress(Address address,String userId) {
-//        Call<Response> call = RetrofetClient.getApiService().addAddress(userId,address.getState(),address.getCity(),
-//                address.getZip_code(),address.getAddress1(),address.getAddress2());
-//
-//        call.enqueue(new Callback<Response>() {
-//            @Override
-//            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-//                if(response.isSuccessful()){
-//                    /*
-//                    new address is successfully added, so mIsAdding will be true
-//                     */
-//                    mIsAdding.setValue(true);
-//                    mAddAddressResponse.setValue(response.body());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Response> call, Throwable t) {
-//                Log.d(TAG,"failure message : "+t.getMessage());
-//                /*
-//                  Adding address process is failed, so mIsAdding will be false
-//                 */
-//                mIsAdding.setValue(false);
-//            }
-//        });
-//
-//        return mAddAddressResponse;
-//    }
+    public MutableLiveData<Response> addAddress(Address address,String userId) {
+        mAddAddressResponse = new MutableLiveData<>();
+        Call<Response> call = RetrofetClient.getApiService().addAddress(userId,address.getState(),address.getCity(),
+                address.getZip_code(),address.getAddress1(),address.getAddress2());
+
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                if(response.isSuccessful()){
+                    mAddAddressResponse.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Log.d(TAG,"failure message : "+t.getMessage());
+                mAddAddressResponse.setValue(new Response(true,400));
+            }
+        });
+
+        return mAddAddressResponse;
+    }
 
 
 

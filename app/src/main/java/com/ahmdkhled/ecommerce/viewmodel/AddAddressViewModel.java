@@ -18,19 +18,20 @@ public class AddAddressViewModel extends ViewModel {
 
 
     public void init(){
-        Log.d("mvvm","inside init");
-        if(response == null){
-            response = new MutableLiveData<>();
-        }
+
         mAddressActivtyRepo = SharedAddressRepository.getInstance();
     }
 
     // To add new address
-//    public MutableLiveData<Response> addAddress(Address address,String userId){
-//        Log.d("mvvm","add address view model");
-//        response = mAddressActivtyRepo.addAddress(address,userId);
-//        return response;
-//    }
+    public void addAddress(Address address,String userId){
+        response = mAddressActivtyRepo.addAddress(address,userId);
+
+    }
+
+    public MutableLiveData<Response> getResponse() {
+        if(response == null)response = new MutableLiveData<>();
+        return response;
+    }
 
     @Override
     protected void onCleared() {

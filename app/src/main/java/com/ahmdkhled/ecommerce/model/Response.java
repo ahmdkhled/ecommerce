@@ -3,6 +3,8 @@ package com.ahmdkhled.ecommerce.model;
 public class Response {
     private boolean error;
     private String message;
+    private int address_id;
+    private int tag;
     private long id;
     private String name;
     private String email;
@@ -13,6 +15,27 @@ public class Response {
         this.id = id;
         this.name = name;
         this.email = email;
+    }
+
+    public int getAddress_id() {
+        return address_id;
+    }
+
+    public void setAddress_id(int address_id) {
+        this.address_id = address_id;
+    }
+
+    public Response(boolean error, int tag) {
+        this.error = error;
+        this.tag = tag;
+    }
+
+    public int getTag() {
+        return tag;
+    }
+
+    public void setTag(int tag) {
+        this.tag = tag;
     }
 
     public boolean isError() {

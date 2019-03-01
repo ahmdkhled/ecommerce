@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -21,7 +22,10 @@ import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.AddressItem;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,8 @@ import butterknife.ButterKnife;
 public class AddressActivity extends AppCompatActivity {
 
     private static final String TAG = AddressActivity.class.getSimpleName();
+    private static final int ADD_ADDRESS_REQUEST_CODE = 1000;
+
     @BindView(R.id.address_recycler_view)
     RecyclerView mAddressRecyclerView;
     @BindView(R.id.toolbar)
@@ -116,10 +122,25 @@ public class AddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent addAddressIntent = new Intent(AddressActivity.this, AddAddressActivity.class);
-                startActivity(addAddressIntent);
+                startActivityForResult(addAddressIntent,ADD_ADDRESS_REQUEST_CODE);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == ADD_ADDRESS_REQUEST_CODE && resultCode == RESULT_OK && data !=  null){
+            if(data.hasExtra("new_address")) {
+                String newAddressAsString = data.getStringExtra("new_address");
+                Gson gson=new Gson();
+                Type type = new TypeToken<Address>() {}.getType();
+                Address newAddress =  gson.fromJson(newAddressAsString,type);
+
+                mAddressAdapter.addAddress(newAddress);
+            }
+
+        }
     }
 
     private void setupToolbar() {

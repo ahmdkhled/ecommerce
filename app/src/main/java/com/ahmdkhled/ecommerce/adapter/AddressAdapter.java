@@ -108,6 +108,13 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         notifyDataSetChanged();
     }
 
+    public void addAddress(Address newAddress) {
+        if(newAddress != null){
+            addresses.add(newAddress);
+            this.notifyDataSetChanged();
+        }
+    }
+
 
     class AddressHolder extends RecyclerView.ViewHolder{
 
