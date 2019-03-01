@@ -8,17 +8,15 @@ import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.repository.SharedAddressRepository;
 
-import java.util.List;
 
 public class AddAddressViewModel extends ViewModel {
 
     private SharedAddressRepository mAddressActivtyRepo;
     private MutableLiveData<Response> response;
-    private MutableLiveData<Boolean> mIsAdding = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsAdding;
 
 
     public void init(){
-        Log.d("mvvm","inside init");
         if(response != null){
             return;
         }
@@ -26,10 +24,20 @@ public class AddAddressViewModel extends ViewModel {
     }
 
     // To add new address
-    public MutableLiveData<Response> addAddress(Address address,String userId){
-        Log.d("mvvm","add address view model");
+    public void addAddress(Address address,String userId){
         response = mAddressActivtyRepo.addAddress(address,userId);
+        mIsAdding = mAddressActivtyRepo.getmIsAdding();
+
+    }
+
+    public MutableLiveData<Response> getResponse() {
+        if(response == null)response = new MutableLiveData<>();
         return response;
+    }
+
+    public MutableLiveData<Boolean> getIsAdding() {
+        if(mIsAdding == null)mIsAdding = new MutableLiveData<>();
+        return mIsAdding;
     }
 
     @Override

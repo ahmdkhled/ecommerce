@@ -1,8 +1,7 @@
 package com.ahmdkhled.ecommerce.adapter;
 
-import android.app.AlertDialog;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,10 +15,10 @@ import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.AddressItem;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,6 +31,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     private Context mContext;
     private List<Address> addresses;
     private RadioButton mLastRbChecked = null;
+    private MutableLiveData<AddressItem> wannaDelete;
 
     public AddressAdapter(Context mContext, List<Address> addresses) {
         this.mContext = mContext;
@@ -46,7 +46,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final AddressHolder holder,  int position) {
+    public void onBindViewHolder(@NonNull final AddressHolder holder, final int position) {
         final Address mAddress = addresses.get(position);
         holder.mAddressDetail.setText(mContext.getString(R.string.address_details,
                 mAddress.getAddress1(),mAddress.getAddress2()));
@@ -66,7 +66,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         holder.mDeleteAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteAddress(mAddress.getId(),holder.getAdapterPosition());
+                // delete address from adapter
+                wannaDelete.setValue(new AddressItem(mAddress,position));
             }
         });
 
@@ -74,6 +75,13 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
 
 
     }
+
+    public MutableLiveData<AddressItem> getWannaDelete() {
+        if(wannaDelete == null)wannaDelete = new MutableLiveData<>();
+        return wannaDelete;
+    }
+
+
 
     @Override
     public int getItemCount() {
@@ -94,37 +102,19 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         }
     }
 
-
-    public void deleteAddress(final int addressId, final int position){
-        // first show an alert dialog to confirm this action
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("You are about delete this address");
-        builder.setNegativeButton("cancel",null);
-        builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // delete selected address from DB
-                Call<Response> call = RetrofetClient.getApiService().deleteAddress(addressId);
-                call.enqueue(new Callback<Response>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
-                        if(response.isSuccessful() && response.body() != null){
-                            Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            notifyItemRemoved(position);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<Response> call, @NonNull Throwable t) {
-                        Log.d("fromAddressAdapter","delete address fail "+t.getMessage());
-                        Toast.makeText(mContext, mContext.getString(R.string.error_message), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-        builder.show();
+    public void notifyAddressHasRemoved(int position) {
+        Log.d("delete_add","position deleted "+position);
+        addresses.remove(position);
+        notifyDataSetChanged();
     }
+
+    public void addAddress(Address newAddress) {
+        if(newAddress != null){
+            addresses.add(newAddress);
+            this.notifyDataSetChanged();
+        }
+    }
+
 
     class AddressHolder extends RecyclerView.ViewHolder{
 

@@ -1,8 +1,11 @@
 package com.ahmdkhled.ecommerce.repository;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
@@ -16,9 +19,11 @@ public class SharedAddressRepository {
 
     private static final String TAG = SharedAddressRepository.class.getSimpleName();
 
-    private MutableLiveData<Boolean> mIsLoading = new MutableLiveData<>();
     private static SharedAddressRepository mInstance;
-    private MutableLiveData<Boolean> mIsAdding = new MutableLiveData<>();
+    private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsLoading,mIsDeleting;
+    private MutableLiveData<Boolean> mIsAdding;
+    private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse;
 
 
     public static SharedAddressRepository getInstance(){
@@ -37,10 +42,8 @@ public class SharedAddressRepository {
         /*
         Fetching data is processing so mIsLoading will be true
          */
+        mIsLoading = new MutableLiveData<>();
         mIsLoading.setValue(true);
-        Log.d("mvvm","inside get address in  repo");
-
-
         Call<List<Address>> call = RetrofetClient.getApiService().getAddresses(userId);
         call.enqueue(new Callback<List<Address>>() {
             @Override
@@ -49,8 +52,8 @@ public class SharedAddressRepository {
                     /*
                     fetching data is done so mIsloading will be false
                      */
+                    Log.d("add_address","assas");
                     mIsLoading.setValue(false);
-                    Log.d("mvvm","succeccfully loaded");
                     mAddressList.setValue(response.body());
 
                 }
@@ -71,7 +74,9 @@ public class SharedAddressRepository {
     // To add new address
     public MutableLiveData<Response> addAddress(Address address,String userId) {
         final MutableLiveData<Response> mResponse = new MutableLiveData<>();
-
+        mAddAddressResponse = new MutableLiveData<>();
+        mIsAdding = new MutableLiveData<>();
+        mIsAdding.setValue(true);
         Call<Response> call = RetrofetClient.getApiService().addAddress(userId,address.getState(),address.getCity(),
                 address.getZip_code(),address.getAddress1(),address.getAddress2());
 
@@ -79,26 +84,52 @@ public class SharedAddressRepository {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if(response.isSuccessful()){
-                    /*
-                    new address is successfully added, so mIsAdding will be true
-                     */
-                    mIsAdding.setValue(true);
-                    mResponse.postValue(response.body());
+                    mIsAdding.setValue(false);
+                    mAddAddressResponse.setValue(response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 Log.d(TAG,"failure message : "+t.getMessage());
-                /*
-                  Adding address process is failed, so mIsAdding will be false
-                 */
                 mIsAdding.setValue(false);
+                mAddAddressResponse.setValue(new Response(true,400));
             }
         });
 
-        return mResponse;
+        return mAddAddressResponse;
     }
+
+
+
+    public MutableLiveData<Response> deleteAddress(int addressId){
+        mDeleteResponse = new MutableLiveData<>();
+        mIsDeleting = new MutableLiveData<>();
+        mIsDeleting.setValue(true);
+        Call<Response> call = RetrofetClient.getApiService().deleteAddress(addressId);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
+                if(response.isSuccessful()){
+                    Log.d("add_mvvm","onResponse");
+                    mIsDeleting.setValue(false);
+                    mDeleteResponse.setValue(response.body());
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Response> call, @NonNull Throwable t) {
+                Log.d("fromAddressAdapter","delete address fail "+t.getMessage());
+                mIsDeleting.setValue(false);
+            }
+        });
+
+        return mDeleteResponse;
+
+
+    }
+
 
     public MutableLiveData<Boolean> getmIsAdding() {
         return mIsAdding;
@@ -106,5 +137,9 @@ public class SharedAddressRepository {
 
     public MutableLiveData<Boolean> getmIsLoading() {
         return mIsLoading;
+    }
+
+    public MutableLiveData<Boolean> getIsDeleting() {
+        return mIsDeleting;
     }
 }
