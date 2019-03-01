@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,13 +49,18 @@ public class ProductsActivity  extends AppCompatActivity {
         loadMorePB=findViewById(R.id.fav_loadMore_PB);
         loadProducts =findViewById(R.id.load_Products);
         productsList=new ArrayList<>();
-        gridLayoutManager =new GridLayoutManager(this,2);
 
         Intent intent = getIntent();
         categoryId = intent.getIntExtra(CATEGORY_ID_KEY,-1);
         Log.d("checkout","id "+ categoryId);
 
-        if (categoryId >-1)
+        if (getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT)
+                gridLayoutManager =new GridLayoutManager(this,2);
+            else
+            gridLayoutManager =new GridLayoutManager(this,4);
+
+
+            if (categoryId >-1)
         getProducts(String.valueOf(categoryId),1);
 
         productAdapter=new ProductAdapter(productsList,getApplicationContext());
