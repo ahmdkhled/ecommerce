@@ -66,7 +66,11 @@ public class RegistrationActivity extends AppCompatActivity  {
                 observeRegistrationStatus();
             }
         });
+
     }
+
+
+
 
 
     private void signUp() {
@@ -120,8 +124,6 @@ public class RegistrationActivity extends AppCompatActivity  {
             }
         });
     }
-
-
 
 
     public void showProgressBar(){

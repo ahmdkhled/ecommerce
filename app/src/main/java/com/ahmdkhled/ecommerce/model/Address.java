@@ -1,9 +1,12 @@
 package com.ahmdkhled.ecommerce.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class Address {
 
 
-    private int addressId;
+    private int id;
     private String state;
     private String city;
     private int zip_code;
@@ -18,6 +21,7 @@ public class Address {
         this.address2 = address2;
         this.address1 = address1;
     }
+
 
     public String getState() {
 
@@ -65,10 +69,14 @@ public class Address {
     }
 
     public int getId() {
-        return addressId;
+        return id;
     }
 
     public void setId(int id) {
-        this.addressId = id;
+        this.id = id;
     }
+
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -11,7 +12,9 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
@@ -19,6 +22,10 @@ import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.viewmodel.AddAddressViewModel;
 import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,10 +65,13 @@ public class AddAddressActivity extends AppCompatActivity {
     TextInputLayout mZipCodeInputLayout;
     @BindView(R.id.add_address_btn)
     AppCompatButton mAddAddressBtn;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
 
     AddAddressViewModel mAddAddressViewModel;
     private String userId = "2";
+    private Address newAddress;
 
 
     @Override
@@ -100,19 +110,15 @@ public class AddAddressActivity extends AppCompatActivity {
                 && !TextUtils.isEmpty(mStateTxt.getText()) && !TextUtils.isEmpty(mCityTxt.getText())
                 && !TextUtils.isEmpty(mZipCodeTxt.getText())){
 
-            Address address = new Address(mStateTxt.getText().toString(),mCityTxt.getText().toString(),
+            newAddress = new Address(mStateTxt.getText().toString(),mCityTxt.getText().toString(),
                     Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
 
             /*
                 obserce add address function to make an action when this process is done
              */
-            mAddAddressViewModel.addAddress(address,userId).observe(this, new Observer<Response>() {
-                @Override
-                public void onChanged(@Nullable Response response) {
-                    Toast.makeText(AddAddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            });
+            mAddAddressViewModel.addAddress(newAddress,userId);
+            observeAddressAddingResponse();
+            observeAddingAddressStatus();
         }
 
         if(TextUtils.isEmpty(mFnameTxt.getText()))mFnameInputLayout.setError(getString(R.string.field_is_required));
@@ -125,6 +131,60 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
 
+    }
+
+    // observe response of adding new address
+    private void observeAddressAddingResponse() {
+        mAddAddressViewModel.getResponse().observe(this, new Observer<Response>() {
+            @Override
+            public void onChanged(@Nullable Response response) {
+                if(response != null) {
+                    if (response.isError() && response.getTag() == 400) {
+                        // response is failure
+                        Toast.makeText(AddAddressActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
+                    } else {
+                        newAddress.setId(response.getAddress_id());
+                        returnToAddressActivity(newAddress);
+                    }
+                }
+
+            }
+        });
+    }
+
+
+    // return to address activity with address added
+    private void returnToAddressActivity(Address newAddress) {
+        Gson gson=new Gson();
+        Type type = new TypeToken<Address>() {}.getType();
+        String newAddressAsString =  gson.toJson(newAddress,type);
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("new_address",newAddressAsString);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
+    }
+
+    /**
+     * observe adding address process status.
+     * To display progress bar until address is added.
+     */
+    private void observeAddingAddressStatus() {
+        mAddAddressViewModel.getIsAdding().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean)showProgressBar();
+                else hideProgressBar();
+            }
+        });
+    }
+
+    private void hideProgressBar() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
 
