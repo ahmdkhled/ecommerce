@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Media;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.ui.ProductDetail;
 import com.ahmdkhled.ecommerce.ui.ProductsActivity;
 import com.bumptech.glide.Glide;
 
@@ -75,7 +76,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent =new Intent(context,ProductsActivity.class);
+                    Intent intent =new Intent(context,ProductDetail.class);
+                    Product product = productsList.get(getAdapterPosition());
+                    intent.putExtra(ProductDetail.PRODUCT_KEY,product);
                     context.startActivity(intent);
                 }
             });

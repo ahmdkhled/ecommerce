@@ -37,6 +37,7 @@ public class ProductsActivity  extends AppCompatActivity {
     ProductAdapter productAdapter;
     GridLayoutManager gridLayoutManager;
     ProgressBar loadMorePB;
+    ProgressBar loadProducts ;
     int categoryId =-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class ProductsActivity  extends AppCompatActivity {
         floatingActionButton=findViewById(R.id.fab);
         recyclerView=findViewById(R.id.products_recyclerView);
         loadMorePB=findViewById(R.id.fav_loadMore_PB);
+        loadProducts =findViewById(R.id.load_Products);
         productsList=new ArrayList<>();
 
         Intent intent = getIntent();
@@ -78,6 +80,8 @@ public class ProductsActivity  extends AppCompatActivity {
         });
 
 
+
+
         setUpSpinner();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +99,7 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
     public void getProducts(String categoryid,int page){
+        loadProducts.setVisibility(View.VISIBLE);
         RetrofetClient.getApiService().getProducts(categoryid,page)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
@@ -103,12 +108,14 @@ public class ProductsActivity  extends AppCompatActivity {
                         if (productsList!=null&&productsList.size()>0)
                         productAdapter.addItems(productsList);
                         loadMorePB.setVisibility(View.GONE);
+                        loadProducts.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
                         loadMorePB.setVisibility(View.GONE);
                         Log.d("categoryyy","amira"+t.getMessage());
+                        loadProducts.setVisibility(View.GONE);
 
                     }
                 });

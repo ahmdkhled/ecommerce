@@ -1,10 +1,12 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,6 +50,7 @@ public class ProductDetail extends AppCompatActivity {
         seller = findViewById(R.id.seller);
         price = findViewById(R.id.productPrice);
         addToCart = findViewById(R.id.addToCart);
+
 
         if (getIntent()!=null &getIntent().hasExtra(PRODUCT_KEY)){
             product=getIntent().getParcelableExtra(PRODUCT_KEY);
