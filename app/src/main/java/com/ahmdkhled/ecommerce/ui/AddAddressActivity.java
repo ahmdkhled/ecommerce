@@ -138,10 +138,14 @@ public class AddAddressActivity extends AppCompatActivity {
         mAddAddressViewModel.getResponse().observe(this, new Observer<Response>() {
             @Override
             public void onChanged(@Nullable Response response) {
-                if(response.getTag() == 400){
-                }else{
-                    newAddress.setId(response.getAddress_id());
-                    returnToAddressActivity(newAddress);
+                if(response != null) {
+                    if (response.isError() && response.getTag() == 400) {
+                        // response is failure
+                        Toast.makeText(AddAddressActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
+                    } else {
+                        newAddress.setId(response.getAddress_id());
+                        returnToAddressActivity(newAddress);
+                    }
                 }
 
             }
