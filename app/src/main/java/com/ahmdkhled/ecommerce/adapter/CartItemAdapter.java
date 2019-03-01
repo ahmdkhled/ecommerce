@@ -62,8 +62,11 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             return cartItemList.size();
         }
 
+    public ArrayList<CartItem> getCartItemList() {
+        return cartItemList;
+    }
 
-        private int getTotal (){
+    private int getTotal (){
             int total=0;
             for(int i=0;i<cartItemList.size();i++){
                 total+=cartItemList.get(i).getQuantity()*cartItemList.get(i).getProduct().getPrice();

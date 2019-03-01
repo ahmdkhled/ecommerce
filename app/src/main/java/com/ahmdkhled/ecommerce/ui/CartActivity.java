@@ -32,6 +32,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     TextView cartSubtotal_label;
     ViewGroup emptyCartContainer;
     View divider;
+    CartItemAdapter cartItemAdapter;
     ProgressBar cartProgressBar ;
     CartItemAdapter.OnCartItemsChange onCartItemsChange;
 
@@ -63,9 +64,11 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         CartItemsManger cartItemsManger=new CartItemsManger(this);
         ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
         handleVisibility(cartItems);
-        if (cartItems != null) {
+
+        if (cartItems != null&&!cartItems.isEmpty()) {
+            cartProgressBar.setVisibility(View.VISIBLE);
             getCartItems(cartItems);
-            //Log.d("JSONN","ok "+cartItems.get(0).getProduct().getId());
+            Log.d("CARTTT","getting cartItems ");
         }
 
 
@@ -81,7 +84,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                         for (int i = 0; i < cartItems.size(); i++) {
                             cartItems.get(i).setProduct(products.get(i));
                         }
-                        CartItemAdapter cartItemAdapter = new CartItemAdapter(getApplicationContext(),cartItems,
+                         cartItemAdapter = new CartItemAdapter(getApplicationContext(),cartItems,
                                 onCartItemsChange);
                         recyclerView.setAdapter(cartItemAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -91,6 +94,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
                     @Override
                     public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                        cartProgressBar.setVisibility(View.GONE);
                         Log.d("CARTTT",t.getMessage());
                     }
                 });
@@ -119,7 +123,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     }
 
     private void handleVisibility(ArrayList<CartItem> cartItems){
-     if (cartItems!=null&&cartItems.size()==0){
+     if (cartItems==null||cartItems.isEmpty()){
          Log.d("CARTTTT","empty");
          emptyCartContainer.setVisibility(View.VISIBLE);
          recyclerView.setVisibility(View.GONE);
@@ -163,5 +167,6 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     @Override
     public void onCartItemDeleted(int total) {
         cart_subtotal.setText(String.valueOf(total));
+        handleVisibility(cartItemAdapter.getCartItemList());
     }
 }
