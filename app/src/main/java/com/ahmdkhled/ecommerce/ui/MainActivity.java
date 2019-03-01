@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity
     Button seeAllRecentlyAdded;
     PageIndicatorView pageIndicatorView;
     ConstraintLayout container;
-    public static final String RECENTLY_ADDED_TARGET="recently_added_target";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +115,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), CategoriesActivity.class);
-                intent.putExtra(ProductsActivity.TARGET_KEY,RECENTLY_ADDED_TARGET);
                 startActivity(intent);
             }
         });
@@ -125,6 +123,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), ProductsActivity.class);
+                intent.putExtra(ProductsActivity.TARGET_KEY,ProductsActivity.RA_TARGET);
                 startActivity(intent);
             }
         });
@@ -164,7 +163,7 @@ public class MainActivity extends AppCompatActivity
 
     void getRecentlyAdedProducts(){
         RetrofetClient.getApiService()
-                .getRecentlyAdedProducts()
+                .getRecentlyAddedProducts(1)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {

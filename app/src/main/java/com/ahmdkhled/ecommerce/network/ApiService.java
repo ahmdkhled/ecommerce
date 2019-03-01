@@ -45,7 +45,7 @@ public interface ApiService {
     Call<ArrayList<Ad>> getAds();
 
     @GET("recentlyAdded.php")
-    Call<ArrayList<Product>> getRecentlyAdedProducts();
+    Call<ArrayList<Product>> getRecentlyAddedProducts(@Query("page") int page);
 
     @GET("favorite.php")
     Call<ArrayList<Product>> getFavoriteProducts(@Query("userId") long userId);
