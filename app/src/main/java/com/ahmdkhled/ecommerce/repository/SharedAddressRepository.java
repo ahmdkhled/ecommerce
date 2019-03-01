@@ -72,6 +72,8 @@ public class SharedAddressRepository {
     // To add new address
     public MutableLiveData<Response> addAddress(Address address,String userId) {
         mAddAddressResponse = new MutableLiveData<>();
+        mIsAdding = new MutableLiveData<>();
+        mIsAdding.setValue(true);
         Call<Response> call = RetrofetClient.getApiService().addAddress(userId,address.getState(),address.getCity(),
                 address.getZip_code(),address.getAddress1(),address.getAddress2());
 
@@ -79,6 +81,7 @@ public class SharedAddressRepository {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if(response.isSuccessful()){
+                    mIsAdding.setValue(false);
                     mAddAddressResponse.setValue(response.body());
                 }
             }
@@ -86,6 +89,7 @@ public class SharedAddressRepository {
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 Log.d(TAG,"failure message : "+t.getMessage());
+                mIsAdding.setValue(false);
                 mAddAddressResponse.setValue(new Response(true,400));
             }
         });

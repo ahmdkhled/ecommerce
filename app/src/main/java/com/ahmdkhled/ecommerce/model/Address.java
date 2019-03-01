@@ -3,7 +3,7 @@ package com.ahmdkhled.ecommerce.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Address implements Parcelable{
+public class Address {
 
 
     private int id;
@@ -22,26 +22,6 @@ public class Address implements Parcelable{
         this.address1 = address1;
     }
 
-    protected Address(Parcel in) {
-        id = in.readInt();
-        state = in.readString();
-        city = in.readString();
-        zip_code = in.readInt();
-        address2 = in.readString();
-        address1 = in.readString();
-    }
-
-    public static final Creator<Address> CREATOR = new Creator<Address>() {
-        @Override
-        public Address createFromParcel(Parcel in) {
-            return new Address(in);
-        }
-
-        @Override
-        public Address[] newArray(int size) {
-            return new Address[size];
-        }
-    };
 
     public String getState() {
 
@@ -96,18 +76,7 @@ public class Address implements Parcelable{
         this.id = id;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(state);
-        parcel.writeString(city);
-        parcel.writeString(address1);
-        parcel.writeString(address2);
-        parcel.writeInt(id);
-        parcel.writeInt(zip_code);
-    }
+
+
 }

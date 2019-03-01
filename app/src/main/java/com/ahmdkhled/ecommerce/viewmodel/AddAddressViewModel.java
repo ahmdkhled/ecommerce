@@ -14,7 +14,7 @@ public class AddAddressViewModel extends ViewModel {
 
     private SharedAddressRepository mAddressActivtyRepo;
     private MutableLiveData<Response> response;
-    private MutableLiveData<Boolean> mIsAdding = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsAdding;
 
 
     public void init(){
@@ -25,12 +25,18 @@ public class AddAddressViewModel extends ViewModel {
     // To add new address
     public void addAddress(Address address,String userId){
         response = mAddressActivtyRepo.addAddress(address,userId);
+        mIsAdding = mAddressActivtyRepo.getmIsAdding();
 
     }
 
     public MutableLiveData<Response> getResponse() {
         if(response == null)response = new MutableLiveData<>();
         return response;
+    }
+
+    public MutableLiveData<Boolean> getIsAdding() {
+        if(mIsAdding == null)mIsAdding = new MutableLiveData<>();
+        return mIsAdding;
     }
 
     @Override

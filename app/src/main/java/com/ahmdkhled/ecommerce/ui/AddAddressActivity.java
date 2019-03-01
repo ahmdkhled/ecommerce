@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
@@ -64,6 +65,8 @@ public class AddAddressActivity extends AppCompatActivity {
     TextInputLayout mZipCodeInputLayout;
     @BindView(R.id.add_address_btn)
     AppCompatButton mAddAddressBtn;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
 
     AddAddressViewModel mAddAddressViewModel;
@@ -115,6 +118,7 @@ public class AddAddressActivity extends AppCompatActivity {
              */
             mAddAddressViewModel.addAddress(newAddress,userId);
             observeAddressAddingResponse();
+            observeAddingAddressStatus();
         }
 
         if(TextUtils.isEmpty(mFnameTxt.getText()))mFnameInputLayout.setError(getString(R.string.field_is_required));
@@ -135,9 +139,7 @@ public class AddAddressActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Response response) {
                 if(response.getTag() == 400){
-                    Log.d("add_address","failure");
                 }else{
-                    Log.d("add_address","response is "+response.getMessage());
                     newAddress.setId(response.getAddress_id());
                     returnToAddressActivity(newAddress);
                 }
@@ -157,6 +159,28 @@ public class AddAddressActivity extends AppCompatActivity {
         returnIntent.putExtra("new_address",newAddressAsString);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
+    }
+
+    /**
+     * observe adding address process status.
+     * To display progress bar until address is added.
+     */
+    private void observeAddingAddressStatus() {
+        mAddAddressViewModel.getIsAdding().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean)showProgressBar();
+                else hideProgressBar();
+            }
+        });
+    }
+
+    private void hideProgressBar() {
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
 
