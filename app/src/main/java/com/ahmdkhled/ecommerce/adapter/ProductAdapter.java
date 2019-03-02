@@ -79,6 +79,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
                     Intent intent =new Intent(context,ProductDetail.class);
                     Product product = productsList.get(getAdapterPosition());
                     intent.putExtra(ProductDetail.PRODUCT_KEY,product);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
             });
