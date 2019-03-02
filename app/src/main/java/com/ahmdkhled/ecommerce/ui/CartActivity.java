@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     TextView cart_subtotal;
     TextView cartSubtotal_label;
     ViewGroup emptyCartContainer;
-    View divider;
+    TextView LE;
     CartItemAdapter cartItemAdapter;
     ProgressBar cartProgressBar ;
     CartItemAdapter.OnCartItemsChange onCartItemsChange;
@@ -46,24 +47,26 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         cart_subtotal = findViewById(R.id.cart_subtotal);
         cartSubtotal_label = findViewById(R.id.cart_subtotal_label);
         emptyCartContainer = findViewById(R.id.emptyCartContainer);
-        divider=findViewById(R.id.cartLineDivider);
+        LE = findViewById(R.id.L_E);
         cartProgressBar = findViewById(R.id.cart_progress_bar);
 
         onCartItemsChange=this;
+
+        CartItemsManger cartItemsManger=new CartItemsManger(this);
+        final ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
+        handleVisibility(cartItems);
 
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
              Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
+             intent.putParcelableArrayListExtra("items", cartItems);
              startActivity(intent);
             }
         });
 
 
 
-        CartItemsManger cartItemsManger=new CartItemsManger(this);
-        ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
-        handleVisibility(cartItems);
 
         if (cartItems != null&&!cartItems.isEmpty()) {
             cartProgressBar.setVisibility(View.VISIBLE);
@@ -130,7 +133,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
          checkoutButton.setVisibility(View.GONE);
          cart_subtotal.setVisibility(View.GONE);
          cartSubtotal_label.setVisibility(View.GONE);
-         divider.setVisibility(View.GONE);
+         LE.setVisibility(View.GONE);
      }  else{
          Log.d("CARTTTT","not empty");
          emptyCartContainer.setVisibility(View.GONE);
@@ -139,7 +142,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
          checkoutButton.setVisibility(View.VISIBLE);
          cart_subtotal.setVisibility(View.VISIBLE);
          cartSubtotal_label.setVisibility(View.VISIBLE);
-         divider.setVisibility(View.VISIBLE);
+         LE.setVisibility(View.VISIBLE);
      }
     }
 

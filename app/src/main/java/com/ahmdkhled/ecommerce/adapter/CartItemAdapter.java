@@ -105,7 +105,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                 @Override
                 public void onClick(View view) {
                     int Quantity=cartItemList.get(getAdapterPosition()).getQuantity();
-                    if (Quantity>0){
+                    if (Quantity>1){
                         Quantity -= 1 ;
                         cartItemsManger.updateQuantity(Quantity,getAdapterPosition());
                         cartItemList.get(getAdapterPosition()).setQuantity(Quantity);
