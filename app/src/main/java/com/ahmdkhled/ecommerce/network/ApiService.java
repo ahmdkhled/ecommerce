@@ -69,7 +69,7 @@ public interface ApiService {
     @POST(Constants.DELETE_ADDRESS)
     Call<Response> deleteAddress(@Field("id") int addressId);
 
-    @FormUrlEncoded
+
     @GET(Constants.GET_CHECKOUT_INFO)
-    Call<Checkout> getCheckoutInfo(@Field("user_id") String userId);
+    Call<Checkout> getCheckoutInfo(@Query("user_id") String userId);
 }
