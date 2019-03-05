@@ -53,6 +53,10 @@ public interface ApiService {
     Call<ArrayList<Product>> getFavoriteProducts(@Query("userId") long userId);
 
     @FormUrlEncoded
+    @POST("favorite.php")
+    Call<ResponseBody> addToFavorite(@Field("productId") int productId,@Field("userId") long userId);
+
+    @FormUrlEncoded
     @HTTP(method = "DELETE",path="favorite.php", hasBody = true)
     Call<ResponseBody> deleteFavoriteProduct(@Field("productId")long productId,
                                              @Field("userId") long userId );
