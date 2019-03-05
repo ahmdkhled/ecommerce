@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Checkout;
 import com.ahmdkhled.ecommerce.model.User;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
@@ -52,6 +53,8 @@ public class CheckoutActivity extends AppCompatActivity {
         Address2 = findViewById(R.id.address2);
         next =  findViewById(R.id.next_button);
 
+        ArrayList<CartItem> cartItems = getIntent().getParcelableArrayListExtra("items");
+        Log.d("CHECKOUTT","cartItem "+cartItems.get(0).getProduct().getName());
 
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
