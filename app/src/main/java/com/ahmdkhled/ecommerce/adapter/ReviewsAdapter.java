@@ -56,8 +56,8 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsH
             author=itemView.findViewById(R.id.review_author);
             comment=itemView.findViewById(R.id.review_content);
             ratingBar=itemView.findViewById(R.id.review_rating);
-            Drawable stars =  ratingBar.getProgressDrawable();
-            stars.setColorFilter(Color.parseColor("#FFEBDB24"), PorterDuff.Mode.SRC_ATOP);
+            //Drawable stars =  ratingBar.getProgressDrawable();
+            //stars.setColorFilter(Color.parseColor("#FFEBDB24"), PorterDuff.Mode.SRC_ATOP);
         }
     }
 }

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -28,17 +29,20 @@ public class ReviewsFrag extends Fragment {
 
     ReviewsAdapter reviewsAdapter;
     RecyclerView recyclerView;
+    ProgressBar progressBar;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.reviews_frag,container,false);
         recyclerView=v.findViewById(R.id.reviews_RecyclerView);
+        progressBar=v.findViewById(R.id.reviews_progressbar);
 
         getReviews();
         return v;
     }
 
     void getReviews(){
+        progressBar.setVisibility(View.VISIBLE);
         RetrofetClient.getApiService()
                 .getReviews()
                 .enqueue(new Callback<ArrayList<Review>>() {
@@ -48,11 +52,12 @@ public class ReviewsFrag extends Fragment {
                         reviewsAdapter=new ReviewsAdapter(getContext(),reviews);
                         recyclerView.setAdapter(reviewsAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<Review>> call, Throwable t) {
-
+                        progressBar.setVisibility(View.GONE);
                     }
 
                 });
