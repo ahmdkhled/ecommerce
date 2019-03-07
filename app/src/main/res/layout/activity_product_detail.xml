@@ -92,10 +92,10 @@
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout_height="150dp"
+        android:layout_height="0dp"
         android:id="@+id/productDetail_viewPager"
         tools:background="#990c57"
+        app:layout_constraintBottom_toTopOf="@id/addToCart"
         app:layout_constraintTop_toBottomOf="@id/product_tabLayout"/>
 
 
@@ -104,9 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add to Cart"
-        app:layout_constraintTop_toBottomOf="@+id/productDetail_viewPager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="1"
         android:background="#6b2f57"
         android:textColor="#fff"
         android:textAllCaps="false"/>

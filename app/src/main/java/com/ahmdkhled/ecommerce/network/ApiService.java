@@ -6,6 +6,8 @@ import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Response;
+import com.ahmdkhled.ecommerce.model.Review;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,4 +74,7 @@ public interface ApiService {
     @FormUrlEncoded
     @GET(Constants.GET_CHECKOUT_INFO)
     Call<Checkout> getCheckoutInfo(@Field("user_id") String userId);
+
+    @GET("reviews.php")
+    Call<ArrayList<Review>> getReviews();
 }
