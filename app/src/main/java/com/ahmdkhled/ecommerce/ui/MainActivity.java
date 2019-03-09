@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-
+                        Log.d("CATTT",t.getMessage());
                     }
                 });
     }
