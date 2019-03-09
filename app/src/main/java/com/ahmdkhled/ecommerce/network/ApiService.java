@@ -6,6 +6,8 @@ import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Response;
+import com.ahmdkhled.ecommerce.model.Review;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +53,10 @@ public interface ApiService {
     Call<ArrayList<Product>> getFavoriteProducts(@Query("userId") long userId);
 
     @FormUrlEncoded
+    @POST("favorite.php")
+    Call<ResponseBody> addToFavorite(@Field("productId") int productId,@Field("userId") long userId);
+
+    @FormUrlEncoded
     @HTTP(method = "DELETE",path="favorite.php", hasBody = true)
     Call<ResponseBody> deleteFavoriteProduct(@Field("productId")long productId,
                                              @Field("userId") long userId );
@@ -72,4 +78,6 @@ public interface ApiService {
 
     @GET(Constants.GET_CHECKOUT_INFO)
     Call<Checkout> getCheckoutInfo(@Query("user_id") String userId);
+    @GET("reviews.php")
+    Call<ArrayList<Review>> getReviews();
 }

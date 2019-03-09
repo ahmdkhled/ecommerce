@@ -26,7 +26,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
+public class
+AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     private Context mContext;
     private List<Address> addresses;

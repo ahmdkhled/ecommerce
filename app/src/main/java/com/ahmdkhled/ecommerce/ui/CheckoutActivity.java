@@ -126,7 +126,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Checkout> call, Throwable t) {
-                        Toast.makeText(CheckoutActivity.this, "error getting address", Toast.LENGTH_SHORT).show();.
+                        Toast.makeText(CheckoutActivity.this, "error getting address", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
