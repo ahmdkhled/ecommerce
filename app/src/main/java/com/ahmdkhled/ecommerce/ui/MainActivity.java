@@ -10,6 +10,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,10 +32,12 @@ import com.ahmdkhled.ecommerce.adapter.MainCategoriesAdapter;
 import com.ahmdkhled.ecommerce.adapter.MainSliderAdapter;
 import com.ahmdkhled.ecommerce.adapter.RecentlyAddedProducsAdapter;
 import com.ahmdkhled.ecommerce.model.Ad;
+import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.Request;
@@ -65,7 +68,6 @@ public class MainActivity extends AppCompatActivity
     Button seeAllRecentlyAdded;
     PageIndicatorView pageIndicatorView;
     ConstraintLayout container;
-    public static final String RECENTLY_ADDED_TARGET="recently_added_target";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +118,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), CategoriesActivity.class);
-                intent.putExtra(ProductsActivity.TARGET_KEY,RECENTLY_ADDED_TARGET);
                 startActivity(intent);
             }
         });
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), ProductsActivity.class);
+                intent.putExtra(ProductsActivity.TARGET_KEY,ProductsActivity.RA_TARGET);
                 startActivity(intent);
             }
         });
@@ -157,14 +159,14 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-
+                        Log.d("CATTT",t.getMessage());
                     }
                 });
     }
 
     void getRecentlyAdedProducts(){
         RetrofetClient.getApiService()
-                .getRecentlyAdedProducts()
+                .getRecentlyAddedProducts(1)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
@@ -273,6 +275,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
+        final MenuItem menuItem = menu.findItem(R.id.cart);
+        View actionView = menuItem.getActionView();
+        TextView badgeTV=actionView.findViewById(R.id.cartCount);
+        setupBadge(badgeTV);
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
         return true;
     }
 
@@ -355,6 +369,17 @@ public class MainActivity extends AppCompatActivity
             drawerLayout.closeDrawer(GravityCompat.START);
         }else{
             super.onBackPressed();
+        }
+    }
+
+    void setupBadge(TextView countTV){
+        CartItemsManger cartItemsManger=new CartItemsManger(this);
+        ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
+        if (cartItems==null||cartItems.isEmpty()){
+            countTV.setVisibility(View.GONE);
+        }else{
+            countTV.setVisibility(View.VISIBLE);
+            countTV.setText(String.valueOf(cartItems.size()));
         }
     }
 

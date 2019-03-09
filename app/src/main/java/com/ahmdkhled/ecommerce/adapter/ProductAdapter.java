@@ -16,6 +16,7 @@ import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.ui.ProductDetail;
 import com.ahmdkhled.ecommerce.ui.ProductsActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideType;
 
 import java.util.ArrayList;
 
@@ -47,6 +48,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
         if (media!=null&&media.size()>0){
             String imageUrl=media.get(0).getUrl();
             Glide.with(context).load(imageUrl).into(holder.productImage);
+
+
+
         }else {
             holder.productImage.setImageResource(R.drawable.placeholder);
         }
@@ -79,12 +83,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
                     Intent intent =new Intent(context,ProductDetail.class);
                     Product product = productsList.get(getAdapterPosition());
                     intent.putExtra(ProductDetail.PRODUCT_KEY,product);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
             });
 
         }
-
 
 
     }

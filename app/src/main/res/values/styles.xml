@@ -24,7 +24,8 @@
         <item name="android:textColor">@android:color/holo_red_light</item>
     </style>
 
-    <style name="customRatingBar" parent="@android:style/Widget.Material.RatingBar.Indicator">
+    <style name="customRatingBar" parent="@android:style/Widget.Holo.RatingBar.Small">
+        <item name="colorControlActivated">#c51162</item>
 
     </style>
 

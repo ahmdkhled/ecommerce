@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +19,19 @@ import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.SlideShowAdapter;
 import com.ahmdkhled.ecommerce.model.Media;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.rd.PageIndicatorView;
 import com.rd.animation.type.AnimationType;
 import com.rd.draw.data.Indicator;
 
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductDetail extends AppCompatActivity {
     TextView name,seller,price;
@@ -33,6 +41,7 @@ public class ProductDetail extends AppCompatActivity {
     TabLayout tabLayout;
     SlideShowAdapter slideShowAdapter;
     PageIndicatorView indicator;
+    FloatingActionButton favorite;
     public static final String PRODUCT_KEY="product_key";
     public Product product;
 
@@ -50,9 +59,10 @@ public class ProductDetail extends AppCompatActivity {
         seller = findViewById(R.id.seller);
         price = findViewById(R.id.productPrice);
         addToCart = findViewById(R.id.addToCart);
+        favorite= findViewById(R.id.fav_fab);
 
 
-        if (getIntent()!=null &getIntent().hasExtra(PRODUCT_KEY)){
+        if (getIntent()!=null && getIntent().hasExtra(PRODUCT_KEY)){
             product=getIntent().getParcelableExtra(PRODUCT_KEY);
             populateData(product);
         }
@@ -76,6 +86,16 @@ public class ProductDetail extends AppCompatActivity {
         detailsViewpager.setAdapter(detailsPageAdapter);
         tabLayout.setupWithViewPager(detailsViewpager);
 
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (product!=null){
+                    SessionManager sessionManager=new SessionManager(getApplicationContext());
+                    addToFavorite(product.getId(),sessionManager.getId());
+                }
+            }
+        });
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -95,12 +115,34 @@ public class ProductDetail extends AppCompatActivity {
 
     }
 
+    void addToFavorite(int productId,long userId){
+        RetrofetClient.getApiService()
+                .addToFavorite(productId,userId)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()){
+                            Toast.makeText(ProductDetail.this, "added to favorite",
+                                    Toast.LENGTH_SHORT).show();
+                            favorite.setBackgroundResource(R.drawable.ic_star_black_24dp);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(ProductDetail.this, "error adding to favorite"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     void populateData(Product product){
         name.setText(product.getName());
         price.setText(String.valueOf(product.getPrice()));
         seller.setText(product.getSellerName());
         indicator.setCount(product.getMedia().size());
     }
+
     void dummyProduct(){
         ArrayList<Media> media=new ArrayList<>();
         media.add(new Media(1,"http://thelondonflowerlover.files.wordpress.com/2012/02/redrose-2.jpg"));

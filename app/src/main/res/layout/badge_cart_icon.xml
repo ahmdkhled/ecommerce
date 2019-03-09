@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/colorPrimary">
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        tools:layout_width="200dp"
+        tools:layout_height="200dp"
+        android:id="@+id/cartIcon"
+        android:src="@drawable/ic_shopping_cart"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+         />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/cartCount"
+        tools:text="0"
+        android:padding="2dp"
+        android:text="0"
+        android:textColor="#fff"
+        tools:textSize="30sp"
+        android:background="@drawable/badge_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp" />
+
+
+</android.support.constraint.ConstraintLayout>

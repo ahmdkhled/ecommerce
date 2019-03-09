@@ -8,10 +8,7 @@
     android:id="@+id/mainDrawerLayout"
     tools:context=".ui.MainActivity">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,6 +21,7 @@
             android:background="@color/colorPrimary"
             android:id="@+id/mainToolbar"
             app:title="@string/app_name"
+            app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="#fff">
 
         </android.support.v7.widget.Toolbar>
@@ -79,8 +77,8 @@
             android:textColor="#757575"
             app:layout_constraintTop_toBottomOf="@+id/mainSliderPager"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp" />
 
         <Button
             android:layout_width="wrap_content"
@@ -91,16 +89,18 @@
             android:textAllCaps="false"
             android:textColor="#757575"
             android:background="@null"
+            android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/categories_label"
-            app:layout_constraintBottom_toBottomOf="@id/categories_label"/>
+            app:layout_constraintBottom_toBottomOf="@id/categories_label"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="150dp"
             android:id="@+id/mainCategoryRecycler"
-            android:layout_marginTop="5dp"
             app:layout_constraintTop_toBottomOf="@id/categories_label"/>
 
         <TextView
@@ -130,8 +130,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/recentlyAddedLabel"
             app:layout_constraintBottom_toBottomOf="@id/recentlyAddedLabel"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp" />
+            android:gravity="end"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

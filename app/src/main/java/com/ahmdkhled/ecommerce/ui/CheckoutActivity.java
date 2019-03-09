@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Checkout;
 import com.ahmdkhled.ecommerce.model.User;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
@@ -37,11 +39,19 @@ public class CheckoutActivity extends AppCompatActivity {
     TextInputLayout Address1;
     TextInputLayout Address2;
     Button next;
+    EditText name;
+    EditText email;
+    EditText phonenum;
+    EditText countryEditText;
+    EditText cityEditText;
+    EditText add1;
+    EditText add2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checkout);
+        setContentView(R.layout.add_address);
 
         fullName = findViewById(R.id.full_name);
         emailAddress = findViewById(R.id.emailaddress);
@@ -51,7 +61,16 @@ public class CheckoutActivity extends AppCompatActivity {
         Address1 = findViewById(R.id.address1);
         Address2 = findViewById(R.id.address2);
         next =  findViewById(R.id.next_button);
+         name = (EditText) findViewById(R.id.name_Edittext);
+         email = (EditText) findViewById(R.id.email_Edittext);
+         phonenum = (EditText) findViewById(R.id.phone_num_edittext);
+         countryEditText = (EditText) findViewById(R.id.country_edittext);
+         cityEditText = (EditText) findViewById(R.id.city_edittext);
+         add1 = (EditText) findViewById(R.id.add1_edittext);
+         add2 = (EditText) findViewById(R.id.add2_edittext);
 
+        ArrayList<CartItem> cartItems = getIntent().getParcelableArrayListExtra("items");
+        Log.d("CHECKOUTT","cartItem "+cartItems.get(0).getProduct().getName());
 
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -78,10 +97,10 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
-        getAddress();
+        getCheckoutDetails();
     }
 
-    private void getAddress(){
+    private void getCheckoutDetails(){
         SessionManager sessionManager=new SessionManager(this);
         long userId=sessionManager.getId();
         if (userId==-1){
@@ -92,27 +111,39 @@ public class CheckoutActivity extends AppCompatActivity {
             return;
         }
         RetrofetClient.getApiService()
-                .getAddresses(String.valueOf(userId))
-                .enqueue(new Callback<List<Address>>() {
+                .getCheckoutInfo(String.valueOf(userId))
+                .enqueue(new Callback<Checkout>() {
                     @Override
-                    public void onResponse(Call<List<Address>> call, Response<List<Address>> response) {
-                        List<Address> addresses=response.body();
-                        if (addresses!=null&&addresses.size()>0){
-                            populateAddress(addresses.get(0));
+                    public void onResponse(Call<Checkout> call, Response<Checkout> response) {
+                        Checkout checkout =response.body();
+                        Log.d("string",checkout.getmUser().getName());
+                        if (checkout!=null){
+                            populatecheckout(checkout);
                         }else{
                             Toast.makeText(CheckoutActivity.this, "there is no address", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<Address>> call, Throwable t) {
-                        Toast.makeText(CheckoutActivity.this, "error getting address", Toast.LENGTH_SHORT);
+                    public void onFailure(Call<Checkout> call, Throwable t) {
+                        Log.d("ADDRESSS",t.getMessage());
+                        Toast.makeText(CheckoutActivity.this, "error getting address", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void populateAddress(Address addreses){
-        Address1.getEditText().setText(addreses.getAddress1());
+    private void populatecheckout(Checkout checkout) {
+        name.setText(checkout.getmUser().getName());
+        email.setText(checkout.getmUser().getEmail());
+        if(checkout.getmAddress().size() == 0){
+            Toast.makeText(CheckoutActivity.this,"there is no address",Toast.LENGTH_SHORT).show();
+        }else {
+            countryEditText.setText(checkout.getmAddress().get(0).getState());
+            cityEditText.setText(checkout.getmAddress().get(0).getCity());
+            add1.setText(checkout.getmAddress().get(0).getAddress1());
+            add2.setText(checkout.getmAddress().get(0).getAddress2());
+        }
+
     }
 
     private void hideKeyboard() {
