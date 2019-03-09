@@ -9,129 +9,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#f5f5f5">
-
         <TextView
-            android:id="@+id/payment_method"
+            android:id="@+id/tv_delivery_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="CHOSEE PAYMENT METHOD"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-       <android.support.v7.widget.CardView
-           android:id="@+id/card_view"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           xmlns:card_view="http://schemas.android.com/apk/res-auto"
-           card_view:cardBackgroundColor="@color/colorPrimary"
-           card_view:cardCornerRadius="10dp"
-           card_view:cardElevation="5dp"
-           card_view:cardUseCompatPadding="true"
-           app:layout_constraintTop_toBottomOf="@+id/payment_method"
-           android:layout_margin="50dp">
-
-        <RadioGroup
-            android:id="@+id/cash_on"
+            android:text="Delivery option"/>
+         <android.support.v7.widget.CardView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#fff">
+             <android.support.constraint.ConstraintLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content">
+                 <TextView
+                     android:id="@+id/tv_full_name"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="full name"/>
+                 <TextView
+                     android:id="@+id/tv_address"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="address"/>
+                 <TextView
+                     android:id="@+id/tv_phone_number"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="phone number"/>
+                 <TextView
+                     android:id="@+id/tv_change_address"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Change address"/>
+             </android.support.constraint.ConstraintLayout>
+         </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/tv_shipment1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shipment 1"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_shipment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/cash_on_delivery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cash On Delivery"
-                android:textSize="25sp"
-                android:padding="20dp"/>
-        </RadioGroup>
-       </android.support.v7.widget.CardView>
-        <TextView
-            android:id="@+id/shipping"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="80dp"
-            android:text="SHIPPING"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_view"
-            app:layout_constraintVertical_bias="0.35000002" />
-
-        <TextView
-            android:id="@+id/subtotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="SUBTOTAL"
-            android:textSize="20sp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginStart="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/shipping"/>
-
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TOTAL"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginStart="40dp"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintBottom_toTopOf="@id/place_order"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subtotal"/>
-
-        <TextView
-            android:id="@+id/shipping_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5.0 L.E"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@id/shipping"
-            app:layout_constraintBottom_toBottomOf="@id/shipping"
-            app:layout_constraintHorizontal_bias=".7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/shipping" />
-
-        <TextView
-            android:id="@+id/subtotal_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="290 L.E"
-            android:textSize="20sp"
-            app:layout_constraintTop_toTopOf="@id/subtotal"
-            app:layout_constraintBottom_toBottomOf="@+id/subtotal"
-            app:layout_constraintStart_toStartOf="@id/shipping_price"
-            app:layout_constraintTop_toBottomOf="@+id/shipping_price"/>
-
-        <TextView
-            android:id="@+id/total_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="295 L.E"
-            android:textSize="20sp"
-            app:layout_constraintTop_toTopOf="@+id/total"
-            app:layout_constraintBottom_toBottomOf="@+id/total"
-            app:layout_constraintStart_toEndOf="@id/total"
-            app:layout_constraintStart_toStartOf="@id/shipping_price"
-            app:layout_constraintTop_toBottomOf="@+id/subtotal_price"/>
-
-        <Button
-            android:id="@+id/place_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="PLACE ORDER"
-            android:textSize="20sp"
-            android:layout_marginBottom="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
+        </android.support.v7.widget.RecyclerView>
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

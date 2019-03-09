@@ -51,7 +51,7 @@ public class CheckoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checkout);
+        setContentView(R.layout.add_address);
 
         fullName = findViewById(R.id.full_name);
         emailAddress = findViewById(R.id.emailaddress);
@@ -126,6 +126,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Checkout> call, Throwable t) {
+                        Log.d("ADDRESSS",t.getMessage());
                         Toast.makeText(CheckoutActivity.this, "error getting address", Toast.LENGTH_SHORT).show();
                     }
                 });
