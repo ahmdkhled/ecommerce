@@ -1,14 +1,10 @@
 package com.ahmdkhled.ecommerce.repository;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
+
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
-import com.ahmdkhled.ecommerce.ui.CheckoutActivity;
-import com.ahmdkhled.ecommerce.ui.MainActivity;
-import com.ahmdkhled.ecommerce.utils.SessionManager;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 

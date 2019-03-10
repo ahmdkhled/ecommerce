@@ -1,7 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
@@ -64,8 +62,6 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
              startActivity(intent);
             }
         });
-
-
 
 
         if (cartItems != null&&!cartItems.isEmpty()) {
@@ -137,7 +133,6 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
      }  else{
          Log.d("CARTTTT","not empty");
          emptyCartContainer.setVisibility(View.GONE);
-
          recyclerView.setVisibility(View.VISIBLE);
          checkoutButton.setVisibility(View.VISIBLE);
          cart_subtotal.setVisibility(View.VISIBLE);

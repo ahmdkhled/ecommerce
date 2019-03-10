@@ -16,10 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
-import retrofit2.Call;
-import retrofit2.Callback;
 import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.ahmdkhled.ecommerce.viewmodel.LoginViewModel;
 
@@ -95,8 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                     }else {
                         SessionManager sessionManager=new SessionManager(getApplicationContext());
                         sessionManager.saveSession(response.getId(),response.getName(),response.getEmail());
-                        if (source!=null&&source.equals(CheckoutActivity.class.getSimpleName())){
-                            Intent intent=new Intent(getApplicationContext(),CheckoutActivity.class);
+                        if (source!=null&&source.equals(ChangeAddressActivity.class.getSimpleName())){
+                            Intent intent=new Intent(getApplicationContext(),ChangeAddressActivity.class);
                             startActivity(intent);
                             finish();
 
