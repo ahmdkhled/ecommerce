@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -73,6 +74,23 @@ public class ProductsActivity  extends AppCompatActivity {
 
         showProducts();
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("spinner","i "+l);
+                if(l==0){
+                    orderProductsByDate();
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -113,6 +131,7 @@ public class ProductsActivity  extends AppCompatActivity {
                             productAdapter.addItems(productsList);
                         loadMorePB.setVisibility(View.GONE);
                         loadProductsPB.setVisibility(View.GONE);
+
 
                     }
 
@@ -173,6 +192,32 @@ public class ProductsActivity  extends AppCompatActivity {
         sortList.add("Rating");
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,sortList);
         spinner.setAdapter(adapter);
+    }
+
+
+    private void orderProductsByDate(){
+        RetrofetClient.getApiService().getProducts(null,1,"date",null).enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                ArrayList<Product> products = response.body();
+                if(products!=null){
+                    productsList=products;
+                    showProducts();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+    private void orderProductsByPriceLow(){
+
+
     }
 
     public void getFakeData (){
