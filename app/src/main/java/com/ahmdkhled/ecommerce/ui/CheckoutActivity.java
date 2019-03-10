@@ -26,7 +26,7 @@ public class CheckoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
         TextView changeAddress=findViewById(R.id.tv_change_address);
-        ArrayList<CartItem> cartItems= getIntent().getParcelableArrayListExtra("items");
+        final ArrayList<CartItem> cartItems= getIntent().getParcelableArrayListExtra("items");
         ArrayList<Shipment> data = new ArrayList();
         for (int i = 0; i < cartItems.size(); i++) {
             CartItem cartItem = cartItems.get(i);
@@ -52,21 +52,16 @@ public class CheckoutActivity extends AppCompatActivity {
         subtotal_value = findViewById(R.id.subtotal_price);
         total_value = findViewById(R.id.total_price);
         next_button = findViewById(R.id.continue_button);
+         int total = getIntent().getIntExtra("total",-1);
+         subtotal_value.setText(String.valueOf(total));
         next_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
                 startActivity(intent);
+                intent.putParcelableArrayListExtra("items",cartItems);
             }
         });
 
-    }
-
-    private void updateTotal(ArrayList<CartItem> cartItems){
-        int total=0;
-        for(int i=0;i<cartItems.size();i++){
-            total+=cartItems.get(i).getQuantity()*cartItems.get(i).getProduct().getPrice();
-        }
-        subtotal_value.setText(String.valueOf(total));
     }
 }
