@@ -78,7 +78,7 @@ public class ProductsActivity  extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("spinner","i "+l);
-                if(l==1){
+                if(l==0){
                     orderProductsByDate();
 
                 }
