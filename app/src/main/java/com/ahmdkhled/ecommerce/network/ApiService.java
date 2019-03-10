@@ -83,8 +83,10 @@ public interface ApiService {
     @GET("reviews.php")
     Call<ArrayList<Review>> getReviews();
 
-    @POST
+    @POST("orders.php")
     @FormUrlEncoded
     Call<Order> makeOrder(@Field("orderItems") String orderItems,@Field("quantity") String quantity
             ,@Field("userId") int userId,@Field("address_id") int addressId);
+
+
 }

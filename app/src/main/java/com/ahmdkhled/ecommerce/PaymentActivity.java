@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,13 @@ import android.widget.Button;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Order;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.ui.LoginActivity;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,7 +30,7 @@ public class PaymentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_payment);
         placeOrder=findViewById(R.id.placeOrder);
 
-        ArrayList<CartItem> cartItems=getIntent().getParcelableArrayListExtra("items");
+        ArrayList<CartItem> cartItems=getIntent().getParcelableArrayListExtra("oitems");
         final String ids=getIdsAsString(cartItems);
         final String qs=getQuantitiesAsString(cartItems);
         final long userId=new SessionManager(this).getId();
@@ -34,7 +38,13 @@ public class PaymentActivity extends AppCompatActivity {
         placeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeOrder(ids,qs, (int) userId,addressId);
+                if (userId>-1){
+                    makeOrder(ids,qs, (int) userId,addressId);
+
+                }else {
+                    Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -56,10 +66,12 @@ public class PaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Order> call, Throwable t) {
+                        Log.d("ORDEERR","erro "+t.getMessage());
 
                     }
                 });
     }
+
 
     private String getIdsAsString(ArrayList<CartItem> cartItems){
         StringBuilder sb=new StringBuilder();

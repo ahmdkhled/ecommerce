@@ -77,7 +77,7 @@ public class ProductDetail extends AppCompatActivity {
                 if (product!=null){
                     CartItemsManger cartItemsManger=new CartItemsManger(getApplicationContext());
                     ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
-                    if (cartItems.contains(new CartItem(product,1))){
+                    if (cartItems!=null&&cartItems.contains(new CartItem(product,1))){
                         Toast.makeText(ProductDetail.this, "already exist", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getApplicationContext(),"added to cart ",Toast.LENGTH_SHORT).show();

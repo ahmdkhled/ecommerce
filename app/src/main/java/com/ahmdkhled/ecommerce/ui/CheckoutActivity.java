@@ -14,6 +14,7 @@ import com.ahmdkhled.ecommerce.PaymentActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ShipmentAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
+import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.Shipment;
 
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                intent.putParcelableArrayListExtra("oitems",cartItems);
                 startActivity(intent);
-                intent.putParcelableArrayListExtra("items",cartItems);
             }
         });
 
