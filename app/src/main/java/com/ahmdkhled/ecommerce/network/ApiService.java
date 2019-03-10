@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.network;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Checkout;
+import com.ahmdkhled.ecommerce.model.Order;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
@@ -81,4 +82,9 @@ public interface ApiService {
     Call<Checkout> getCheckoutInfo(@Query("user_id") String userId);
     @GET("reviews.php")
     Call<ArrayList<Review>> getReviews();
+
+    @POST
+    @FormUrlEncoded
+    Call<Order> makeOrder(@Field("orderItems") String orderItems,@Field("quantity") String quantity
+            ,@Field("userId") int userId,@Field("address_id") int addressId);
 }
