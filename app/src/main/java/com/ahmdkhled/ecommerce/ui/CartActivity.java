@@ -36,6 +36,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     CartItemAdapter cartItemAdapter;
     ProgressBar cartProgressBar ;
     CartItemAdapter.OnCartItemsChange onCartItemsChange;
+    int total=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -61,6 +62,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             public void onClick(View view) {
              Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
              intent.putParcelableArrayListExtra("items", cartItems);
+             intent.putExtra("total",total);
              startActivity(intent);
             }
         });
@@ -82,7 +84,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         RetrofetClient.getApiService().getCartItems(ids)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                    public void onResponse (Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                         ArrayList<Product> products = response.body();
                         for (int i = 0; i < cartItems.size(); i++) {
                             cartItems.get(i).setProduct(products.get(i));
@@ -92,7 +94,9 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                         recyclerView.setAdapter(cartItemAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         cartProgressBar.setVisibility(View.GONE);
-                        updateTotal(cartItems);
+                        int total=getTotal(cartItems);
+                        cart_subtotal.setText(String.valueOf(total));
+                        checkoutButton.setEnabled(true);
                     }
 
                     @Override
@@ -117,12 +121,13 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         return sb.toString();
     }
 
-    private void updateTotal(ArrayList<CartItem> cartItems){
+    private int getTotal(ArrayList<CartItem> cartItems){
         int total=0;
         for(int i=0;i<cartItems.size();i++){
             total+=cartItems.get(i).getQuantity()*cartItems.get(i).getProduct().getPrice();
         }
-        cart_subtotal.setText(String.valueOf(total));
+        this.total=total;
+        return total;
     }
 
     private void handleVisibility(ArrayList<CartItem> cartItems){
