@@ -42,7 +42,7 @@ public interface ApiService {
 
     @GET ("products.php")
     Call <ArrayList<Product>> getProducts(@Query("categoryId") String categoryId,@Query("page") int page,
-                                        @Query("sortBy") String sortBy,@Query("sort") String sort) ;
+                                        @Query("orderBy") String sortBy,@Query("sort") String sort) ;
 
     @GET("ads.php")
     Call<ArrayList<Ad>> getAds();

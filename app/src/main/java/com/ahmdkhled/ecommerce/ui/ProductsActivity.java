@@ -114,6 +114,7 @@ public class ProductsActivity  extends AppCompatActivity {
                         loadMorePB.setVisibility(View.GONE);
                         loadProductsPB.setVisibility(View.GONE);
 
+
                     }
 
                     @Override
