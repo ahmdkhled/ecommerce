@@ -17,6 +17,7 @@ import com.ahmdkhled.ecommerce.adapter.DetailsPageAdapter;
 import com.ahmdkhled.ecommerce.adapter.ProductsImagesPagerAdapter;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.SlideShowAdapter;
+import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Media;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
@@ -74,9 +75,15 @@ public class ProductDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (product!=null){
-                    Toast.makeText(getApplicationContext(),"added to cart ",Toast.LENGTH_SHORT).show();
                     CartItemsManger cartItemsManger=new CartItemsManger(getApplicationContext());
-                    cartItemsManger.saveCartItem(product.getId(),1);
+                    ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
+                    if (cartItems.contains(new CartItem(product,1))){
+                        Toast.makeText(ProductDetail.this, "already exist", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(),"added to cart ",Toast.LENGTH_SHORT).show();
+                        cartItemsManger.saveCartItem(product.getId(),1);
+                    }
+
                 }else{
                     Toast.makeText(getApplicationContext(),"error ",Toast.LENGTH_SHORT).show();
                 }
@@ -140,6 +147,7 @@ public class ProductDetail extends AppCompatActivity {
         name.setText(product.getName());
         price.setText(String.valueOf(product.getPrice()));
         seller.setText(product.getSellerName());
+        if (product.getMedia()!=null&&!product.getMedia().isEmpty())
         indicator.setCount(product.getMedia().size());
     }
 

@@ -29,6 +29,8 @@ public class SlideShowAdapter extends PagerAdapter {
 
     @Override
     public int getCount(){
+        if (media==null)
+            return 0;
         return media.size();
 
     }

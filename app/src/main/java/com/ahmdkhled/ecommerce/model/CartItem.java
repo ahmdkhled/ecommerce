@@ -64,4 +64,12 @@ public class CartItem implements Parcelable {
         parcel.writeParcelable(product, i);
         parcel.writeInt(quantity);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj==null) return false;
+        if (!(obj instanceof CartItem)) return false;
+        CartItem c= (CartItem) obj;
+        return c.getProduct().getId() == this.getProduct().getId();
+    }
 }
