@@ -4,18 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class User implements Parcelable {
-    private String fullname;
+    private String name;
     private String email;
     private String phonenumber;
 
-    public User(String fullname, String email, String phonenumber) {
-        this.fullname = fullname;
+    public User(String name, String email, String phonenumber) {
+        this.name = name;
         this.email = email;
         this.phonenumber = phonenumber;
     }
 
     protected User(Parcel in) {
-        fullname = in.readString();
+        name = in.readString();
         email = in.readString();
         phonenumber = in.readString();
     }
@@ -32,8 +32,8 @@ public class User implements Parcelable {
         }
     };
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setEmail(String email) {
@@ -44,8 +44,8 @@ public class User implements Parcelable {
         this.phonenumber = phonenumber;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {
@@ -63,7 +63,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(fullname);
+        parcel.writeString(name);
         parcel.writeString(email);
         parcel.writeString(phonenumber);
     }

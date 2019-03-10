@@ -99,6 +99,15 @@
         app:layout_constraintTop_toBottomOf="@id/product_tabLayout"/>
 
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fav_fab"
+        app:backgroundTint="#fff"
+        android:src="@drawable/ic_star_border_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/productImagesPager"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <Button
         android:id="@+id/addToCart"
         android:layout_width="match_parent"

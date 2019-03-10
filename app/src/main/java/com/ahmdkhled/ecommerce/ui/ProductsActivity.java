@@ -19,6 +19,8 @@ import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ProductAdapter;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 
 import java.util.ArrayList;
 
@@ -50,6 +52,7 @@ public class ProductsActivity  extends AppCompatActivity {
         recyclerView=findViewById(R.id.products_recyclerView);
         loadMorePB=findViewById(R.id.fav_loadMore_PB);
         loadProductsPB =findViewById(R.id.load_Products);
+
         productsList=new ArrayList<>();
 
         Intent intent = getIntent();
@@ -97,13 +100,11 @@ public class ProductsActivity  extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
     public void getProducts(String categoryid,int page){
-        RetrofetClient.getApiService().getProducts(categoryid,page)
+        RetrofetClient.getApiService().getProducts(categoryid,page,null,null)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {

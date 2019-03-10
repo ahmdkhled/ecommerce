@@ -15,7 +15,6 @@
         <TextView
             android:focusable="true"
             android:focusableInTouchMode="true"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/your_details_label"
@@ -34,6 +33,7 @@
             app:layout_constraintTop_toBottomOf="@+id/your_details_label">
 
             <EditText
+                android:id="@+id/name_Edittext"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/background"
@@ -54,6 +54,7 @@
             app:layout_constraintTop_toBottomOf="@+id/full_name">
 
             <EditText
+                android:id="@+id/email_Edittext"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/background"
@@ -72,6 +73,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailaddress">
             <EditText
+                android:id="@+id/phone_num_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:paddingLeft="30dp"
@@ -100,6 +102,7 @@
             app:layout_constraintTop_toBottomOf="@+id/shipping_add">
 
             <EditText
+                android:id="@+id/country_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/background"
@@ -118,6 +121,7 @@
             app:layout_constraintTop_toBottomOf="@+id/country">
 
             <EditText
+                android:id="@+id/city_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/background"
@@ -137,6 +141,7 @@
             app:layout_constraintTop_toBottomOf="@+id/city">
 
             <EditText
+                android:id="@+id/add1_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/background"
@@ -156,6 +161,7 @@
             app:layout_constraintTop_toBottomOf="@+id/address1">
 
             <EditText
+                android:id="@+id/add2_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/background"
