@@ -159,16 +159,19 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
     @Override
     public void onQuantityIncreased(int total) {
+        this.total=total;
         cart_subtotal.setText(String.valueOf(total));
     }
 
     @Override
     public void onQuantityDecreased(int total) {
+        this.total=total;
         cart_subtotal.setText(String.valueOf(total));
     }
 
     @Override
     public void onCartItemDeleted(int total) {
+        this.total=total;
         cart_subtotal.setText(String.valueOf(total));
         handleVisibility(cartItemAdapter.getCartItemList());
     }
