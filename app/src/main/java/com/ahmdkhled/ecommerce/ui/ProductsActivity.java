@@ -82,6 +82,15 @@ public class ProductsActivity  extends AppCompatActivity {
                     orderProductsByDate();
 
                 }
+                else if(l==1){
+                    orderProductsByPriceLow();
+                }
+                else if(l==2) {
+                    orderProductsByPriceHigh();
+                }
+                else if (l==3) {
+                    orderProductsByRate();
+                }
 
             }
 
@@ -216,11 +225,70 @@ public class ProductsActivity  extends AppCompatActivity {
 
     }
     private void orderProductsByPriceLow(){
+        RetrofetClient.getApiService().getProducts(null,1,"price","asc").enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                ArrayList<Product> products =response.body();
+                if(products!=null){
+                    productsList=products;
+                    showProducts();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+    private void orderProductsByPriceHigh() {
+        RetrofetClient.getApiService().getProducts(null,1,"price","desc").enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                ArrayList<Product> products=response.body();
+                if(products!=null) {
+                    productsList=products;
+                    showProducts();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+
+            }
+        });
 
 
     }
 
-    public void getFakeData (){
+
+    private void orderProductsByRate() {
+        RetrofetClient.getApiService().getProducts(null,1,"Rating",null).enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                ArrayList<Product> productArrayList =response.body();
+                if(productArrayList!=null) {
+                    productsList=productArrayList;
+                    showProducts();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
+
+
+
+      //  public void getFakeData (){
 //        Product p=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
 //        Product p1=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
 //        Product p2=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
@@ -238,7 +306,7 @@ public class ProductsActivity  extends AppCompatActivity {
 //        productsList.add(p5);
 //        productsList.add(p6);
 
-    }
+
 
 
 }
