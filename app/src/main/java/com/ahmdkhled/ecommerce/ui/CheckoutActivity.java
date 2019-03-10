@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ahmdkhled.ecommerce.PaymentActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ShipmentAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
@@ -51,6 +52,13 @@ public class CheckoutActivity extends AppCompatActivity {
         subtotal_value = findViewById(R.id.subtotal_price);
         total_value = findViewById(R.id.total_price);
         next_button = findViewById(R.id.continue_button);
+        next_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

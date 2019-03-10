@@ -7,6 +7,8 @@
 .idea/gradle.xml
 .idea/runConfigurations.xml
 .idea/vcs.xml
+.idea/caches/gradle_models.ser
+.idea/assetWizardSettings.xml
 .DS_Store
 /build
 /captures

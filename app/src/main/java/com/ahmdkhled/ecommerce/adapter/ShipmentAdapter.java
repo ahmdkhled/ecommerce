@@ -44,7 +44,6 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
         ArrayList<Media> media=shipment.getCartItem().getProduct().getMedia();
         if (media!=null&&!media.isEmpty()){
             Glide.with(context).load(media.get(0).getUrl()).into(holder.img_product);
-
         }
     }
 
