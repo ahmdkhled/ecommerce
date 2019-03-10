@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -19,6 +20,8 @@ import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ProductAdapter;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 
 import java.util.ArrayList;
 
@@ -50,6 +53,7 @@ public class ProductsActivity  extends AppCompatActivity {
         recyclerView=findViewById(R.id.products_recyclerView);
         loadMorePB=findViewById(R.id.fav_loadMore_PB);
         loadProductsPB =findViewById(R.id.load_Products);
+
         productsList=new ArrayList<>();
 
         Intent intent = getIntent();
@@ -69,6 +73,32 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
         showProducts();
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("spinner","i "+l);
+                if(l==0){
+                    orderProductsByDate();
+
+                }
+                else if(l==1){
+                    orderProductsByPriceLow();
+                }
+                else if(l==2) {
+                    orderProductsByPriceHigh();
+                }
+                else if (l==3) {
+                    orderProductsByRate();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
@@ -97,13 +127,11 @@ public class ProductsActivity  extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
     public void getProducts(String categoryid,int page){
-        RetrofetClient.getApiService().getProducts(categoryid,page)
+        RetrofetClient.getApiService().getProducts(categoryid,page,null,null)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
@@ -112,6 +140,7 @@ public class ProductsActivity  extends AppCompatActivity {
                             productAdapter.addItems(productsList);
                         loadMorePB.setVisibility(View.GONE);
                         loadProductsPB.setVisibility(View.GONE);
+
 
                     }
 
@@ -174,7 +203,92 @@ public class ProductsActivity  extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
-    public void getFakeData (){
+
+    private void orderProductsByDate(){
+        RetrofetClient.getApiService().getProducts(null,1,"date",null).enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                ArrayList<Product> products = response.body();
+                if(products!=null){
+                    productsList=products;
+                    showProducts();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+    private void orderProductsByPriceLow(){
+        RetrofetClient.getApiService().getProducts(null,1,"price","asc").enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                ArrayList<Product> products =response.body();
+                if(products!=null){
+                    productsList=products;
+                    showProducts();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+    private void orderProductsByPriceHigh() {
+        RetrofetClient.getApiService().getProducts(null,1,"price","desc").enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                ArrayList<Product> products=response.body();
+                if(products!=null) {
+                    productsList=products;
+                    showProducts();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+    private void orderProductsByRate() {
+        RetrofetClient.getApiService().getProducts(null,1,"Rating",null).enqueue(new Callback<ArrayList<Product>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                ArrayList<Product> productArrayList =response.body();
+                if(productArrayList!=null) {
+                    productsList=productArrayList;
+                    showProducts();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
+
+
+
+      //  public void getFakeData (){
 //        Product p=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
 //        Product p1=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
 //        Product p2=new Product(25,20,25,255,115,"fgg","12/5","this is ..",null);
@@ -192,7 +306,7 @@ public class ProductsActivity  extends AppCompatActivity {
 //        productsList.add(p5);
 //        productsList.add(p6);
 
-    }
+
 
 
 }

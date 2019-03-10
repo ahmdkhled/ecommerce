@@ -41,7 +41,8 @@ public interface ApiService {
     Call<ArrayList<Product>> getCartItems(@Query("id") String ids);
 
     @GET ("products.php")
-    Call <ArrayList<Product>> getProducts(@Query("categoryId") String categoryId,@Query("page") int page) ;
+    Call <ArrayList<Product>> getProducts(@Query("categoryId") String categoryId,@Query("page") int page,
+                                        @Query("orderBy") String sortBy,@Query("order") String sort) ;
 
     @GET("ads.php")
     Call<ArrayList<Ad>> getAds();
@@ -75,10 +76,9 @@ public interface ApiService {
     @POST(Constants.DELETE_ADDRESS)
     Call<Response> deleteAddress(@Field("id") int addressId);
 
-    @FormUrlEncoded
-    @GET(Constants.GET_CHECKOUT_INFO)
-    Call<Checkout> getCheckoutInfo(@Field("user_id") String userId);
 
+    @GET(Constants.GET_CHECKOUT_INFO)
+    Call<Checkout> getCheckoutInfo(@Query("user_id") String userId);
     @GET("reviews.php")
     Call<ArrayList<Review>> getReviews();
 }
