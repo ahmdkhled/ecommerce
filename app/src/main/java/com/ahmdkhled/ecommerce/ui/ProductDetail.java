@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -52,6 +55,10 @@ public class ProductDetail extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white)
+                , PorterDuff.Mode.SRC_ATOP);
         viewPager = findViewById(R.id.productImagesPager);
         detailsViewpager = findViewById(R.id.productDetail_viewPager);
         tabLayout=findViewById(R.id.product_tabLayout);
@@ -159,5 +166,48 @@ public class ProductDetail extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu,menu);
+        final MenuItem menuItem = menu.findItem(R.id.detail_cart);
+        View actionView = menuItem.getActionView();
+        TextView badgeTV=actionView.findViewById(R.id.cartCount);
+        setupBadge(badgeTV);
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==R.id.detail_cart){
+            Intent intent=new Intent(this,CartActivity.class);
+            startActivity(intent);
+        }
+        return true;
+    }
+
+    void setupBadge(TextView countTV){
+        CartItemsManger cartItemsManger=new CartItemsManger(this);
+        ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
+        if (cartItems==null||cartItems.isEmpty()){
+            countTV.setVisibility(View.GONE);
+        }else{
+            countTV.setVisibility(View.VISIBLE);
+            countTV.setText(String.valueOf(cartItems.size()));
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 }
