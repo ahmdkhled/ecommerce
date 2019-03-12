@@ -8,6 +8,8 @@ public class Order {
 
     @SerializedName("order_id")
     private int order_id;
+    @SerializedName("order_date")
+    private String order_date;
     @SerializedName("order_userId")
     private int userId;
     @SerializedName("order_status")
@@ -17,8 +19,10 @@ public class Order {
     @SerializedName("orderItems")
     private ArrayList<OrderItem> orderItems;
 
-    public Order(int order_id, int userId, String status, int addressId, ArrayList<OrderItem> orderItems) {
+
+    public Order(int order_id, String order_date, int userId, String status, int addressId, ArrayList<OrderItem> orderItems) {
         this.order_id = order_id;
+        this.order_date = order_date;
         this.userId = userId;
         this.status = status;
         this.addressId = addressId;
@@ -31,6 +35,14 @@ public class Order {
 
     public void setOrder_id(int order_id) {
         this.order_id = order_id;
+    }
+
+    public String getOrder_date() {
+        return order_date;
+    }
+
+    public void setOrder_date(String order_date) {
+        this.order_date = order_date;
     }
 
     public int getUserId() {
