@@ -58,8 +58,8 @@ public class CheckoutActivity extends AppCompatActivity {
         phoneNumber = findViewById(R.id.phone_num);
         country = findViewById(R.id.country);
         city = findViewById(R.id.city);
-        Address1 = findViewById(R.id.address1);
-        Address2 = findViewById(R.id.address2);
+        Address1 = findViewById(R.id.address_1);
+        Address2 = findViewById(R.id.address_2);
         next =  findViewById(R.id.next_button);
          name = (EditText) findViewById(R.id.name_Edittext);
          email = (EditText) findViewById(R.id.email_Edittext);
@@ -85,7 +85,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 if(validateInput(fullname,emailaddress,phonenumber,Country,City,address1)){
                     Intent intent = new Intent(getApplicationContext(),OrderSummaryActivity.class);
-                    Address address=new Address("daqahlia","mansoura",12345,"123 code academy","");
+                    Address address=new Address("ibra","ali","01234567890","daqahlia","mansoura",12345,"123 code academy","");
                     List<Address> addresses=new ArrayList<>();
                     addresses.add(address);
                     User user= new User("amribrahim","amribrahim@gmail.com","01092277653");
@@ -140,8 +140,8 @@ public class CheckoutActivity extends AppCompatActivity {
         }else {
             countryEditText.setText(checkout.getmAddress().get(0).getState());
             cityEditText.setText(checkout.getmAddress().get(0).getCity());
-            add1.setText(checkout.getmAddress().get(0).getAddress1());
-            add2.setText(checkout.getmAddress().get(0).getAddress2());
+            add1.setText(checkout.getmAddress().get(0).getAddress_1());
+            add2.setText(checkout.getmAddress().get(0).getAddress_2());
         }
 
     }

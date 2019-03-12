@@ -48,8 +48,10 @@
         <activity android:name=".ui.AddAddressActivity"/>
         <activity android:name=".ui.CheckoutActivity"
             android:exported="true"/>
-        <activity android:name=".ui.OrderSummaryActivity"
-            android:exported="true"/>
+
+       <activity android:name=".ui.OrderSummaryActivity"
+           android:exported="true"/>
+
     </application>
 
 </manifest>

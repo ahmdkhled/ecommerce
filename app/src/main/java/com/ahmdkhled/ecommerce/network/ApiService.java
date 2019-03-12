@@ -62,15 +62,18 @@ public interface ApiService {
     Call<ResponseBody> deleteFavoriteProduct(@Field("productId")long productId,
                                              @Field("userId") long userId );
 
-    @FormUrlEncoded
-    @POST(Constants.GET_ADDRESSES_URL)
-    Call<List<Address>> getAddresses(@Field("id") String userId);
+    @GET(Constants.GET_ADDRESSES_URL)
+    Call<List<Address>> getAddresses(@Query("user_id") String userId);
 
     @FormUrlEncoded
     @POST(Constants.ADD_ADDRESS_URL)
-    Call<Response> addAddress(@Field("user_id") String userId, @Field("state") String state,
+    Call<Response> addAddress(@Field("user_id") String userId,@Field("first_name") String firstName,
+                              @Field("last_name") String lastName,
+                              @Field("phone_number") String phoneNumber,
+                              @Field("state") String state,
                               @Field("city") String city, @Field("zip_code") int zipCode,
-                              @Field("address_1") String address1, @Field("address_2") String address2);
+                              @Field("address_1") String address1, @Field("address_2") String address2
+                              );
 
     @FormUrlEncoded
     @POST(Constants.DELETE_ADDRESS)
@@ -81,4 +84,12 @@ public interface ApiService {
     Call<Checkout> getCheckoutInfo(@Query("user_id") String userId);
     @GET("reviews.php")
     Call<ArrayList<Review>> getReviews();
+
+    @FormUrlEncoded
+    @POST(Constants.EDIT_ADDRESS)
+    Call<Response> editAddress(@Field("id") String id, @Field("first_name") String first_name,
+                               @Field("last_name") String last_name, @Field("phone_number") String phone_number,
+                               @Field("state") String state, @Field("city") String city,
+                               @Field("address_1") String address_1, @Field("address_2") String address_2,
+                               @Field("zip_code") String zip_code);
 }

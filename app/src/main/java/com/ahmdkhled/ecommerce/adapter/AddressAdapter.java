@@ -3,6 +3,7 @@ package com.ahmdkhled.ecommerce.adapter;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,20 +12,15 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.AddressItem;
-import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class
 AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
@@ -32,7 +28,7 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
     private Context mContext;
     private List<Address> addresses;
     private RadioButton mLastRbChecked = null;
-    private MutableLiveData<AddressItem> wannaDelete;
+    private MutableLiveData<AddressItem> mDelete,mEdit;
 
     public AddressAdapter(Context mContext, List<Address> addresses) {
         this.mContext = mContext;
@@ -49,8 +45,17 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
     @Override
     public void onBindViewHolder(@NonNull final AddressHolder holder, final int position) {
         final Address mAddress = addresses.get(position);
+
+        // address user name
+        holder.mUserName.setText(mContext.getString(R.string.address_user_name,mAddress.getFirst_name(),
+                                    mAddress.getLast_name()));
+
+        // address details
         holder.mAddressDetail.setText(mContext.getString(R.string.address_details,
-                mAddress.getAddress1(),mAddress.getAddress2()));
+                mAddress.getAddress_1(),mAddress.getAddress_2()));
+
+        // phone number
+        holder.mPhoneNumber.setText(mAddress.getPhone_number());
 
         // user can select only one address
         holder.mSelectAddressRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -64,11 +69,19 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
             }
         });
 
-        holder.mDeleteAddress.setOnClickListener(new View.OnClickListener() {
+        holder.mDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // delete address from adapter
-                wannaDelete.setValue(new AddressItem(mAddress,position));
+                mDelete.setValue(new AddressItem(mAddress,position));
+            }
+        });
+
+        holder.mEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("edit_add","position "+position);
+                mEdit.setValue(new AddressItem(mAddress,position));
             }
         });
 
@@ -77,9 +90,14 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     }
 
-    public MutableLiveData<AddressItem> getWannaDelete() {
-        if(wannaDelete == null)wannaDelete = new MutableLiveData<>();
-        return wannaDelete;
+    public MutableLiveData<AddressItem> getmDelete() {
+        if(mDelete == null) mDelete = new MutableLiveData<>();
+        return mDelete;
+    }
+
+    public MutableLiveData<AddressItem> getmEdit() {
+        if(mEdit == null) mEdit = new MutableLiveData<>();
+        return mEdit;
     }
 
 
@@ -103,9 +121,16 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
         }
     }
 
-    public void notifyAddressHasRemoved(int position) {
+    public void removeAddress(int position) {
         Log.d("delete_add","position deleted "+position);
         addresses.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void editAddress(Address address, int position) {
+        Log.d("edit_add","position  "+position);
+        addresses.remove(position);
+        addresses.add(position,address);
         notifyDataSetChanged();
     }
 
@@ -126,9 +151,11 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
         @BindView(R.id.select_address_rb)
         RadioButton mSelectAddressRB;
         @BindView(R.id.edit_address)
-        TextView mEditAddress;
+        AppCompatButton mEditBtn;
         @BindView(R.id.delete_address)
-        TextView mDeleteAddress;
+        AppCompatButton mDeleteBtn;
+        @BindView(R.id.address_phone_number)
+        TextView mPhoneNumber;
 
 
 

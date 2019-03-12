@@ -3,6 +3,7 @@ package com.ahmdkhled.ecommerce.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
@@ -28,7 +29,9 @@ public class AddressViewModel extends ViewModel {
     }
 
     public void loadAddresses(String userId){
+        Log.d("add_address","loadAddress vm");
         if(mAddressList != null){
+            Log.d("add_address","loadAddress vm list not null");
             return;
         }
         mAddressList = mAddressActivtyRepo.getAddresses(userId);

@@ -59,7 +59,7 @@
             android:textStyle="bold"
             android:textColor="#000"
             android:layout_marginStart="5dp"
-            app:layout_constraintTop_toTopOf="@id/sold_by_tv"
+            app:layout_constraintTop_toTopOf="@+id/sold_by_tv"
             app:layout_constraintStart_toEndOf="@+id/sold_by_tv"
             tools:text="Mi-Store" />
 

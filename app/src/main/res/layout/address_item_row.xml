@@ -22,7 +22,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="15dp"
-            android:text="ibrahim korayem"
+            tools:text="ibrahim korayem"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +41,19 @@
             app:layout_constraintTop_toBottomOf="@+id/address_user_name"
             />
 
+        <TextView
+            android:id="@+id/address_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:maxLines="4"
+            tools:text="01234567890"
+            app:layout_constraintStart_toStartOf="@+id/address_details"
+            app:layout_constraintTop_toBottomOf="@+id/address_details"
+            />
+
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -52,29 +65,31 @@
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/edit_address"
             android:text="Edit"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/address_details"
-            app:layout_constraintStart_toEndOf="@id/delete_address"
+            android:background="#21295C"
+            app:layout_constraintTop_toBottomOf="@+id/address_phone_number"
+            app:layout_constraintStart_toEndOf="@+id/delete_address"
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp" />
 
 
-        <TextView
+        <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/delete_address"
             android:text="Delete"
-            android:textColor="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/address_details"
-            app:layout_constraintStart_toStartOf="@id/address_details"
+            android:background="#B0080E"
+            app:layout_constraintTop_toBottomOf="@id/address_phone_number"
+            app:layout_constraintStart_toStartOf="@id/address_phone_number"
             android:layout_marginTop="10dp"
 
             />
