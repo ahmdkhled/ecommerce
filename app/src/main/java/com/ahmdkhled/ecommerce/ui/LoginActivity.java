@@ -16,10 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
-import retrofit2.Call;
-import retrofit2.Callback;
 import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.ahmdkhled.ecommerce.viewmodel.LoginViewModel;
 

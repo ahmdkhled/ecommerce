@@ -46,12 +46,12 @@
         <activity android:name=".ui.AddressActivity"
             android:exported="true"/>
         <activity android:name=".ui.AddAddressActivity"/>
-        <activity android:name=".ui.CheckoutActivity"
+
+
+        <activity android:name=".ui.OrderSummaryActivity"
             android:exported="true"/>
-
-       <activity android:name=".ui.OrderSummaryActivity"
-           android:exported="true"/>
-
+        <activity android:name=".ui.CheckoutActivity" />
+        <activity android:name=".PaymentActivity" />
     </application>
 
 </manifest>

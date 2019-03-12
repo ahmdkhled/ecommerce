@@ -1,7 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
@@ -36,6 +34,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     CartItemAdapter cartItemAdapter;
     ProgressBar cartProgressBar ;
     CartItemAdapter.OnCartItemsChange onCartItemsChange;
+    int total=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -61,11 +60,10 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             public void onClick(View view) {
              Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
              intent.putParcelableArrayListExtra("items", cartItems);
+             intent.putExtra("total",total);
              startActivity(intent);
             }
         });
-
-
 
 
         if (cartItems != null&&!cartItems.isEmpty()) {
@@ -82,7 +80,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         RetrofetClient.getApiService().getCartItems(ids)
                 .enqueue(new Callback<ArrayList<Product>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+                    public void onResponse (Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                         ArrayList<Product> products = response.body();
                         for (int i = 0; i < cartItems.size(); i++) {
                             cartItems.get(i).setProduct(products.get(i));
@@ -92,7 +90,9 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                         recyclerView.setAdapter(cartItemAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         cartProgressBar.setVisibility(View.GONE);
-                        updateTotal(cartItems);
+                        int total=getTotal(cartItems);
+                        cart_subtotal.setText(String.valueOf(total));
+                        checkoutButton.setEnabled(true);
                     }
 
                     @Override
@@ -117,12 +117,13 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         return sb.toString();
     }
 
-    private void updateTotal(ArrayList<CartItem> cartItems){
+    private int getTotal(ArrayList<CartItem> cartItems){
         int total=0;
         for(int i=0;i<cartItems.size();i++){
             total+=cartItems.get(i).getQuantity()*cartItems.get(i).getProduct().getPrice();
         }
-        cart_subtotal.setText(String.valueOf(total));
+        this.total=total;
+        return total;
     }
 
     private void handleVisibility(ArrayList<CartItem> cartItems){
@@ -137,7 +138,6 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
      }  else{
          Log.d("CARTTTT","not empty");
          emptyCartContainer.setVisibility(View.GONE);
-
          recyclerView.setVisibility(View.VISIBLE);
          checkoutButton.setVisibility(View.VISIBLE);
          cart_subtotal.setVisibility(View.VISIBLE);
@@ -159,16 +159,19 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
     @Override
     public void onQuantityIncreased(int total) {
+        this.total=total;
         cart_subtotal.setText(String.valueOf(total));
     }
 
     @Override
     public void onQuantityDecreased(int total) {
+        this.total=total;
         cart_subtotal.setText(String.valueOf(total));
     }
 
     @Override
     public void onCartItemDeleted(int total) {
+        this.total=total;
         cart_subtotal.setText(String.valueOf(total));
         handleVisibility(cartItemAdapter.getCartItemList());
     }
