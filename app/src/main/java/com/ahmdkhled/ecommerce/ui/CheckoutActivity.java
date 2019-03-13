@@ -6,14 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ShipmentAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
-import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 
 import java.util.List;
@@ -34,12 +33,15 @@ public class CheckoutActivity extends AppCompatActivity {
     TextView mChangeAddress;
     @BindView(R.id.shipment_recycler_view)
     RecyclerView mShipmentRecyclerView;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    @BindView(R.id.sub_total_value)
+    TextView mSubTotalTxt;
+    @BindView(R.id.payment_btn)
+    Button mPaymentBtn;
+
 
     List<CartItem> shipments;
     ShipmentAdapter mShipmentAdapter;
-    String shipmentTotla;
+    String subTotal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,24 +51,18 @@ public class CheckoutActivity extends AppCompatActivity {
         // bind views
         ButterKnife.bind(this);
 
-        /**
-         * check user session.
-         * if user has an account so he gotta login first.
-         */
-//        if(!userHasSession()){
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            intent.putExtra("source", this.getClass().getSimpleName());
-//            startActivity(intent);
-//            finish();
-//        }
-
-        // setup toolbar
-        setupToolbar();
-
         // get saved shipments in shared preference
-//        shipments = new CartItemsManger(this).getCartItems();
+        Intent intent = getIntent();
+        if(intent != null){
+            if(intent.getStringExtra("total") != null) subTotal = intent.getStringExtra("total");
+            if(intent.getParcelableArrayListExtra("items") != null)
+                shipments = intent.getParcelableArrayListExtra("items");
+        }
+        
 
         initShipmentRecyclerView();
+        mSubTotalTxt.setText(subTotal);
+
 
     }
 
@@ -79,11 +75,7 @@ public class CheckoutActivity extends AppCompatActivity {
         return  (userId != -1);
     }
 
-    private void setupToolbar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Order Summery");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
+
 
     private void initShipmentRecyclerView() {
         mShipmentAdapter = new ShipmentAdapter(shipments,this);

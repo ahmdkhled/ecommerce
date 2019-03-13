@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.network;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Checkout;
+import com.ahmdkhled.ecommerce.model.Order;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.Ad;
 import com.ahmdkhled.ecommerce.model.Category;
@@ -92,4 +93,12 @@ public interface ApiService {
                                @Field("state") String state, @Field("city") String city,
                                @Field("address_1") String address_1, @Field("address_2") String address_2,
                                @Field("zip_code") String zip_code);
+    @POST("orders.php")
+    @FormUrlEncoded
+    Call<Order> makeOrder(@Field("orderItems") String orderItems,@Field("quantity") String quantity
+            ,@Field("userId") int userId,@Field("address_id") int addressId);
+
+    @GET("orders.php")
+    Call<ArrayList<Order>> getOrders(@Query("userId") String userId);
+
 }

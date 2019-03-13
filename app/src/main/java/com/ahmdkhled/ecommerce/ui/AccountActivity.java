@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.adapter.OrdersAdapter;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 
 public class AccountActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class AccountActivity extends AppCompatActivity {
     Button login;
     Menu menu;
     ConstraintLayout favoritesContainer;
+    ConstraintLayout ordersContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class AccountActivity extends AppCompatActivity {
         email=findViewById(R.id.account_email);
         login=findViewById(R.id.accountLogin);
         favoritesContainer=findViewById(R.id.favorites_container);
+        ordersContainer=findViewById(R.id.orders_container);
         sessionManager=new SessionManager(this);
         populateDetails();
         login.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +53,14 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(),FavoritesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ordersContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), OrdersActivity.class);
                 startActivity(intent);
             }
         });

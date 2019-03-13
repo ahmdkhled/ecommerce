@@ -38,24 +38,24 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
 
     @Override
     public void onBindViewHolder(@NonNull ShipmentHolder holder, int position) {
-//        CartItem shipment=shipments.get(position);
-//        holder.product_name.setText(shipment.getProduct().getName());
-//        holder.product_price.setText(shipment.getProduct().getPrice()+"");
-//        holder.quantity_value.setText(shipment.getQuantity()+"");
-//        holder.seller_name.setText(shipment.getProduct().getSellerName());
-//
-//        Glide.with(mContext)
-//                .load(shipment.getProduct().getMedia().get(0).getUrl())
-//                .apply(new RequestOptions()
-//                .placeholder(R.drawable.ic_local_florist_black_24dp)
-//                .fitCenter())
-//                .into(holder.img_product);
+        CartItem shipment=shipments.get(position);
+        holder.product_name.setText(shipment.getProduct().getName());
+        holder.product_price.setText(shipment.getProduct().getPrice()+"");
+        holder.quantity_value.setText(shipment.getQuantity()+"");
+        holder.seller_name.setText(shipment.getProduct().getSellerName());
+
+        Glide.with(mContext)
+                .load(shipment.getProduct().getMedia().get(0).getUrl())
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.placeholder)
+                        .fitCenter())
+                .into(holder.img_product);
     }
 
     @Override
     public int getItemCount() {
         if(shipments != null && shipments.size() > 0)return shipments.size();
-        else return 3;
+        else return 0;
 
     }
 

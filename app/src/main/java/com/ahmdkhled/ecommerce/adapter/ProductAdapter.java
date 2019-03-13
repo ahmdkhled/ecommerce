@@ -53,7 +53,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
                     .load(imageUrl)
                     .apply(new RequestOptions()
                     .override(100,100)
-                    .placeholder(R.drawable.ic_local_florist_black_24dp)
+                    .placeholder(R.drawable.placeholder)
                     .centerCrop())
                     .into(holder.productImage);
 
