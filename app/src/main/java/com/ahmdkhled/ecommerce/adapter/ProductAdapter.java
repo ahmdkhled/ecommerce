@@ -17,6 +17,7 @@ import com.ahmdkhled.ecommerce.ui.ProductDetail;
 import com.ahmdkhled.ecommerce.ui.ProductsActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.annotation.GlideType;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
         ArrayList<Media> media=productsList.get(position).getMedia();
         if (media!=null&&media.size()>0){
             String imageUrl=media.get(0).getUrl();
-            Glide.with(context).load(imageUrl).into(holder.productImage);
+            Glide.with(context)
+                    .asBitmap()
+                    .load(imageUrl)
+                    .apply(new RequestOptions()
+                    .override(100,100)
+                    .placeholder(R.drawable.ic_local_florist_black_24dp)
+                    .centerCrop())
+                    .into(holder.productImage);
 
 
 

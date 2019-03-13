@@ -53,18 +53,18 @@ public class CheckoutActivity extends AppCompatActivity {
          * check user session.
          * if user has an account so he gotta login first.
          */
-        if(!userHasSession()){
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra("source", this.getClass().getSimpleName());
-            startActivity(intent);
-            finish();
-        }
+//        if(!userHasSession()){
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            intent.putExtra("source", this.getClass().getSimpleName());
+//            startActivity(intent);
+//            finish();
+//        }
 
         // setup toolbar
         setupToolbar();
 
         // get saved shipments in shared preference
-        shipments = new CartItemsManger(this).getCartItems();
+//        shipments = new CartItemsManger(this).getCartItems();
 
         initShipmentRecyclerView();
 

@@ -17,7 +17,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@android:color/white"
-            app:titleTextColor="@android:color/white"
+            app:titleTextColor="@android:color/black"
             android:theme="@style/ToolbarTheme"
             />
 
@@ -122,10 +122,11 @@
             android:layout_marginTop="10dp"/>
 
         <android.support.v7.widget.RecyclerView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/shipment_recycler_view"
             app:layout_constraintLeft_toLeftOf="@+id/shipment_txt"
+            android:layout_marginLeft="15dp"
             app:layout_constraintTop_toBottomOf="@+id/shipment_txt"/>
 
         <!--<TextView-->

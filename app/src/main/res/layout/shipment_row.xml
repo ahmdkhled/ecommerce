@@ -24,7 +24,7 @@
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:background="#565050" />
+            android:src="@drawable/ic_local_florist_black_24dp" />
 
         <TextView
             android:id="@+id/name_tv"
@@ -38,7 +38,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/product_image"
             app:layout_constraintTop_toTopOf="@id/product_image"
-            tools:text="product name"/>
+            android:text="product name"/>
 
         <TextView
             android:id="@+id/sold_by_tv"
@@ -82,7 +82,7 @@
             android:id="@+id/tv_q_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="1"
+            android:text="1"
             android:textStyle="bold"
             android:textSize="19sp"
             app:layout_constraintTop_toTopOf="parent"
@@ -103,7 +103,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/product_image"
             app:layout_constraintTop_toBottomOf="@id/name_tv"
-            tools:text="100 EGP" />
+            android:text="100 EGP" />
         <TextView
             android:id="@+id/expected_delivery"
             android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
             android:id="@+id/expected_delivery_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="3-5 Days"
+            android:text="3-5 Days"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/expected_delivery"

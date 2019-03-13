@@ -50,7 +50,8 @@
 
         <activity android:name=".ui.OrderSummaryActivity"
             android:exported="true"/>
-        <activity android:name=".ui.CheckoutActivity" />
+        <activity android:name=".ui.CheckoutActivity"
+            android:exported="true"/>
         <activity android:name=".PaymentActivity" />
     </application>
 
