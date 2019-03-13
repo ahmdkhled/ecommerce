@@ -37,33 +37,42 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     }
 
     @NonNull
-        @Override
-        public CartItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View row = LayoutInflater.from(context).inflate(R.layout.cart_item_row,parent,false);
-            return new CartItemHolder(row);
+    @Override
+    public CartItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View row = LayoutInflater.from(context).inflate(R.layout.cart_item_row,parent,false);
+        return new CartItemHolder(row);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CartItemHolder holder, int position) {
+        holder.name.setText(cartItemList.get(position).getProduct().getName());
+        holder.price.setText(String.valueOf(cartItemList.get(position).getProduct().getPrice()));
+        holder.quantity.setText(String.valueOf(cartItemList.get(position).getQuantity()));
+        ArrayList<Media> imagesList=cartItemList.get(position).getProduct().getMedia();
+        if (imagesList!=null&&imagesList.size()>0){
+            Glide.with(context).load(imagesList.get(0).getUrl()).into(holder.image);
+        }else{
+            //Log.d("CARTTT","no image");
         }
 
-        @Override
-        public void onBindViewHolder(@NonNull CartItemHolder holder, int position) {
-            holder.name.setText(cartItemList.get(position).getProduct().getName());
-            holder.price.setText(String.valueOf(cartItemList.get(position).getProduct().getPrice()));
-            holder.quantity.setText(String.valueOf(cartItemList.get(position).getQuantity()));
-            ArrayList<Media> imagesList=cartItemList.get(position).getProduct().getMedia();
-            if (imagesList!=null&&imagesList.size()>0){
-                Glide.with(context).load(imagesList.get(0).getUrl()).into(holder.image);
-            }else{
-                Log.d("CARTTT","no image");
-            }
+    }
 
-        }
-
-        @Override
-        public int getItemCount() {
-            return cartItemList.size();
-        }
+    @Override
+    public int getItemCount() {
+    if (cartItemList==null)
+        return 0;
+    return cartItemList.size();
+    }
 
     public ArrayList<CartItem> getCartItemList() {
         return cartItemList;
+    }
+
+    public void addItems(ArrayList<CartItem> newCartItems){
+        if (cartItemList==null)
+            cartItemList=new ArrayList<>();
+        this.cartItemList.addAll(newCartItems);
+        notifyDataSetChanged();
     }
 
     private int getTotal (){

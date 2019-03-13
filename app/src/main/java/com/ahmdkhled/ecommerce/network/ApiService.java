@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.network;
 
 import com.ahmdkhled.ecommerce.model.Address;
+import com.ahmdkhled.ecommerce.model.CartResponse;
 import com.ahmdkhled.ecommerce.model.Checkout;
 import com.ahmdkhled.ecommerce.model.Order;
 import com.ahmdkhled.ecommerce.model.Product;
@@ -38,8 +39,8 @@ public interface ApiService {
     @GET(Constants.CATEGORY_URL)
     Call<ArrayList<Category>> getCategories();
 
-    @GET("products.php")
-    Call<ArrayList<Product>> getCartItems(@Query("id") String ids);
+    @GET("cart.php")
+    Call<CartResponse> getCartItems(@Query("ids") String ids, @Query("q") String q, @Query("page") String page);
 
     @GET ("products.php")
     Call <ArrayList<Product>> getProducts(@Query("categoryId") String categoryId,@Query("page") int page,
