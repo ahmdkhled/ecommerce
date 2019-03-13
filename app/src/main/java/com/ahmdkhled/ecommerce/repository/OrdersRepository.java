@@ -16,6 +16,7 @@ public class OrdersRepository {
 
     private static OrdersRepository ordersRepository;
     private MutableLiveData<ArrayList<Order>> orders=new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoading=new MutableLiveData<>();
 
     public static OrdersRepository getInstence(){
         if (ordersRepository==null)
@@ -23,7 +24,8 @@ public class OrdersRepository {
         return ordersRepository;
     }
 
-    public MutableLiveData<ArrayList<Order>> getOrders(String userId){
+    public MutableLiveData<ArrayList<Order>> getOrders(final String userId){
+        isLoading.setValue(true);
         RetrofetClient.getApiService()
                 .getOrders(userId)
                 .enqueue(new Callback<ArrayList<Order>>() {
@@ -32,14 +34,19 @@ public class OrdersRepository {
                         if (response.isSuccessful()){
                             orders.setValue(response.body());
                         }
+                        isLoading.setValue(false);
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<Order>> call, Throwable t) {
                         Log.d("ORDERSS",t.getMessage());
+                        isLoading.setValue(false);
                     }
                 });
         return orders;
     }
 
+    public MutableLiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
 }
