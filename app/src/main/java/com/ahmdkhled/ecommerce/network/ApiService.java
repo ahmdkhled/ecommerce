@@ -78,7 +78,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST(Constants.DELETE_ADDRESS)
-    Call<Response> deleteAddress(@Field("id") int addressId);
+    Call<Response> deleteAddress(@Field("address_id") int addressId);
 
 
     @GET(Constants.GET_CHECKOUT_INFO)

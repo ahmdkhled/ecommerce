@@ -71,7 +71,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
     AddAddressViewModel mAddAddressViewModel;
-    private String userId = "2";
+    private String userId = "1";
     private Address newAddress,addressEdited;
     String target = "Add new address";
 

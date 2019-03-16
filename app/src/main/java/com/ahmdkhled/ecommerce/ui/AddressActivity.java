@@ -51,7 +51,7 @@ public class AddressActivity extends AppCompatActivity {
     AddressAdapter mAddressAdapter;
     ArrayList<Address> addresses = new ArrayList<>();
     AddressViewModel mAddressViewModel;
-    private String userId = "2";
+    private String userId = "1";
     private int mAddressPosition;
 
 
@@ -139,7 +139,18 @@ public class AddressActivity extends AppCompatActivity {
             }
         });
 
+
+        // observe if user select an address to return to checkout
+        mAddressAdapter.getmSelectAddress().observe(this, new Observer<Address>() {
+            @Override
+            public void onChanged(@Nullable Address address) {
+                returnToCheckoutActivity(address);
+            }
+        });
+
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -198,6 +209,13 @@ public class AddressActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void returnToCheckoutActivity(Address address) {
+        Intent intent = new Intent();
+        intent.putExtra("new_address",address);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 
     public void showProgressBar(){

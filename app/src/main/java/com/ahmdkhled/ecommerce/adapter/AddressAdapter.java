@@ -29,6 +29,7 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
     private List<Address> addresses;
     private RadioButton mLastRbChecked = null;
     private MutableLiveData<AddressItem> mDelete,mEdit;
+    private MutableLiveData<Address> mSelectAddress;
 
     public AddressAdapter(Context mContext, List<Address> addresses) {
         this.mContext = mContext;
@@ -85,6 +86,13 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
             }
         });
 
+        holder.mSelectAddressRB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSelectAddress.setValue(mAddress);
+            }
+        });
+
 
 
 
@@ -98,6 +106,11 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
     public MutableLiveData<AddressItem> getmEdit() {
         if(mEdit == null) mEdit = new MutableLiveData<>();
         return mEdit;
+    }
+
+    public MutableLiveData<Address> getmSelectAddress() {
+        if(mSelectAddress == null) mSelectAddress = new MutableLiveData<>();
+        return mSelectAddress;
     }
 
 
