@@ -82,7 +82,9 @@ public class AddressActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
                 Log.d(TAG,"address list onchanged");
-                mAddressAdapter.notifyAdapter(addresses);
+                if (addresses!= null && addresses.size() > 0) {
+                    mAddressAdapter.notifyAdapter(addresses);
+                }else Toast.makeText(AddressActivity.this, "No available address", Toast.LENGTH_SHORT).show();
             }
         });
 
