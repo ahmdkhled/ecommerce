@@ -11,6 +11,8 @@ public class CartResponse {
         this.products = products;
     }
 
+
+
     public int getTotal() {
         return total;
     }

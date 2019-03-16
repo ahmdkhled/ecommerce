@@ -1,5 +1,7 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,26 +11,25 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ShipmentAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
-import com.ahmdkhled.ecommerce.model.CartItem;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.model.CartResponse;
+import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.ahmdkhled.ecommerce.viewmodel.CheckoutViewModel;
 
-import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.Result;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class CheckoutActivity extends AppCompatActivity {
     private static final String TAG = "CHECKOUT_ACTIVITY_TAG";
@@ -49,13 +50,18 @@ public class CheckoutActivity extends AppCompatActivity {
     TextView mSubTotalTxt;
     @BindView(R.id.payment_btn)
     Button mPaymentBtn;
+    @BindView(R.id.checkout_add_progress_bar)
+    ProgressBar mAddressProgressBar;
+    @BindView(R.id.checkout_shipment_progress_bar)
+    ProgressBar mShipmentsProgressBar;
 
 
 
-    List<CartItem> shipments;
+    CartResponse shipments = new CartResponse(0,new ArrayList<Product>());
     ShipmentAdapter mShipmentAdapter;
     String userId = "1";
-    int subTotal;
+    CheckoutViewModel mCheckoutViewModel;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,22 +71,79 @@ public class CheckoutActivity extends AppCompatActivity {
         // bind views
         ButterKnife.bind(this);
 
-        // get saved shipments in shared preference
-        Intent intent = getIntent();
-        if(intent != null){
-            if(intent.hasExtra("total"))
-                subTotal = intent.getIntExtra("total",-1);
-            if(intent.getParcelableArrayListExtra("items") != null)
-                shipments = intent.getParcelableArrayListExtra("items");
+        /**
+         * check first if user has session.
+         * if he hasn't he should login first,
+         */
+
+        if(!userHasSession()){
+            Intent loginIntent = new Intent(this,LoginActivity.class);
+            loginIntent.putExtra("source",CheckoutActivity.class.getSimpleName());
+            startActivity(loginIntent);
+            finish();
         }
 
-        getAddress();
+        // link view model
+        mCheckoutViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
+
+        mCheckoutViewModel.init(getApplication(),userId);
+
+
+        // observe loading address process' response
+        mCheckoutViewModel.getAddress().observe(this, new Observer<List<Address>>() {
+            @Override
+            public void onChanged(@Nullable List<Address> addresses) {
+                if(addresses.size() > 0) {
+                    fillAddress(addresses.get(0));
+                }else addNewAddress();
+            }
+        });
+
+        // observe loading address process' status
+        mCheckoutViewModel.addressIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean) {
+                    showAddressProgressBar();
+                    mChangeAddress.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    hideAddressProgressBar();
+                    mChangeAddress.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
+        // observe loading cart items process' response
+        mCheckoutViewModel.getCart().observe(this, new Observer<CartResponse>() {
+            @Override
+            public void onChanged(@Nullable CartResponse cartResponse) {
+                mShipmentAdapter.notifyAdapter(cartResponse);
+                mSubTotalTxt.setText(cartResponse.getTotal()+"");
+            }
+        });
+
+        // observe loading cart items process' status
+        mCheckoutViewModel.cartIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean)showShipmentProgressBar();
+                else hideShipmentProgressBar();
+            }
+        });
+
+
+
+
+
+
         initShipmentRecyclerView();
-        mSubTotalTxt.setText(subTotal+"");
         mChangeAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent changeAddressIntent = new Intent(CheckoutActivity.this,AddressActivity.class);
+                changeAddressIntent.putExtra("source","checkout");
                 startActivityForResult(changeAddressIntent,CHANGE_ADDRESS_REQUEST);
             }
         });
@@ -88,29 +151,10 @@ public class CheckoutActivity extends AppCompatActivity {
 
     }
 
-    private void getAddress() {
-        Call<List<Address>> call = RetrofetClient.getApiService().getAddresses(userId);
-        call.enqueue(new Callback<List<Address>>() {
-            @Override
-            public void onResponse(Call<List<Address>> call, Response<List<Address>> response) {
-                if(response.isSuccessful()){
-                    if(response.body() != null && response.body().size() > 0) {
-                        fillAddress(response.body().get(0));
-                    }else {
-                        Intent addAddressIntent = new Intent(CheckoutActivity.this,AddAddressActivity.class);
-                        addAddressIntent.putExtra("user_id",userId);
-                        startActivityForResult(addAddressIntent,ADD_ADDRESS_REQUEST);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Address>> call, Throwable t) {
-
-            }
-        });
+    private void addNewAddress() {
+        Intent addAddressIntent = new Intent(CheckoutActivity.this,AddAddressActivity.class);
+        startActivityForResult(addAddressIntent,ADD_ADDRESS_REQUEST);
     }
-
 
 
     private void fillAddress(Address address) {
@@ -140,13 +184,34 @@ public class CheckoutActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK && data != null){
+        Log.d("checkout","result "+resultCode);
+        if(data != null){
             Address address = data.getParcelableExtra("new_address");
-            if(requestCode == CHANGE_ADDRESS_REQUEST || requestCode == ADD_ADDRESS_REQUEST){
-                Log.d(TAG,"change address");
+            if(requestCode == CHANGE_ADDRESS_REQUEST && resultCode == RESULT_OK){
                 fillAddress(address);
+
+            }
+            else if(requestCode == ADD_ADDRESS_REQUEST){
+                if(resultCode == RESULT_OK)fillAddress(address);
+                else finish();
             }
 
         }
+    }
+
+    private void showAddressProgressBar(){
+        mAddressProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideAddressProgressBar(){
+        mAddressProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void showShipmentProgressBar(){
+        mShipmentsProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideShipmentProgressBar(){
+        mShipmentsProgressBar.setVisibility(View.INVISIBLE);
     }
 }

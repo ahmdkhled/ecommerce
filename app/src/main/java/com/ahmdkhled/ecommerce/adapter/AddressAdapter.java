@@ -27,13 +27,17 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     private Context mContext;
     private List<Address> addresses;
+    private String source;
     private RadioButton mLastRbChecked = null;
     private MutableLiveData<AddressItem> mDelete,mEdit;
     private MutableLiveData<Address> mSelectAddress;
 
-    public AddressAdapter(Context mContext, List<Address> addresses) {
+    public AddressAdapter(Context mContext, List<Address> addresses, String source) {
         this.mContext = mContext;
         this.addresses = addresses;
+        this.source = source;
+
+
     }
 
     @NonNull
@@ -45,6 +49,12 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final AddressHolder holder, final int position) {
+
+        if(source.equals("checkout")){
+            holder.mDeleteBtn.setVisibility(View.GONE);
+            holder.mEditBtn.setVisibility(View.GONE);
+        }
+
         final Address mAddress = addresses.get(position);
 
         // address user name

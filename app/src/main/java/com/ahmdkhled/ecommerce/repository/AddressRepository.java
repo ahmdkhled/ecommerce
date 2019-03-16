@@ -13,20 +13,20 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SharedAddressRepository {
+public class AddressRepository {
 
-    private static final String TAG = SharedAddressRepository.class.getSimpleName();
+    private static final String TAG = AddressRepository.class.getSimpleName();
 
-    private static SharedAddressRepository mInstance;
+    private static AddressRepository mInstance;
     private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsLoading,mIsDeleting,mISEditing;
     private MutableLiveData<Boolean> mIsAdding;
     private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse,mEditResponse;
 
 
-    public static SharedAddressRepository getInstance(){
+    public static AddressRepository getInstance(){
         if(mInstance == null){
-            mInstance = new SharedAddressRepository();
+            mInstance = new AddressRepository();
         }
         return mInstance;
     }
@@ -53,7 +53,6 @@ public class SharedAddressRepository {
                      */
                     Log.d("add_address","successfully loaded address list");
                     mIsLoading.setValue(false);
-                    Log.d("add_address",response.body().get(0).getId()+"");
                     mAddressList.setValue(response.body());
 
                 }

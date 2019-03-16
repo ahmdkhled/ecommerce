@@ -282,5 +282,12 @@ public class AddAddressActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED,returnIntent);
+        finish();
 
+    }
 }

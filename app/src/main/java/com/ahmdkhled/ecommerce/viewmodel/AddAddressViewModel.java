@@ -2,16 +2,15 @@ package com.ahmdkhled.ecommerce.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.repository.SharedAddressRepository;
+import com.ahmdkhled.ecommerce.repository.AddressRepository;
 
 
 public class AddAddressViewModel extends ViewModel {
 
-    private SharedAddressRepository mAddressActivtyRepo;
+    private AddressRepository mAddressActivtyRepo;
     private MutableLiveData<Response> addResponse,editResponse;
     private MutableLiveData<Boolean> mIsAdding,mIsEditing;
 
@@ -20,7 +19,7 @@ public class AddAddressViewModel extends ViewModel {
         if(addResponse != null){
             return;
         }
-        mAddressActivtyRepo = SharedAddressRepository.getInstance();
+        mAddressActivtyRepo = AddressRepository.getInstance();
     }
 
     // To add new address

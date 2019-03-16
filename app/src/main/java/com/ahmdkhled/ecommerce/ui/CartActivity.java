@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.EndlessRecyclerViewScrollListener;
 import com.ahmdkhled.ecommerce.R;
@@ -61,6 +62,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
              Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
              intent.putParcelableArrayListExtra("items", cartItems);
              intent.putExtra("total",total);
@@ -114,6 +116,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                     @Override
                     public void onFailure(Call<CartResponse> call, Throwable t) {
                         cartProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(CartActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
                         Log.d("CARTTT",t.getMessage());
                     }
                 });

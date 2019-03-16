@@ -53,6 +53,7 @@ public class AddressActivity extends AppCompatActivity {
     AddressViewModel mAddressViewModel;
     private String userId = "1";
     private int mAddressPosition;
+    private String source = "";
 
 
     @Override
@@ -102,6 +103,15 @@ public class AddressActivity extends AppCompatActivity {
             }
         });
 
+
+        /**
+         * check source so if it is checkout activity user can't delete or edit address
+         */
+
+        Intent intent = getIntent();
+        if(intent != null && intent.getStringExtra("source") != null){
+            source = intent.getStringExtra("source");
+        }
 
         initRecyclerView();
 
@@ -174,7 +184,7 @@ public class AddressActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         // setup recycler view
-        mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddressList().getValue());
+        mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddressList().getValue(),source);
         mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAddressRecyclerView.setAdapter(mAddressAdapter);
     }

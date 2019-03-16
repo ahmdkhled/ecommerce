@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.CartItem;
+import com.ahmdkhled.ecommerce.model.CartResponse;
 import com.ahmdkhled.ecommerce.model.Media;
+import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.model.Shipment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -21,10 +23,10 @@ import java.util.List;
 
 public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.ShipmentHolder> {
 
-    List<CartItem> shipments ;
+    CartResponse shipments ;
     Context mContext;
 
-    public ShipmentAdapter(List<CartItem> shipments, Context mContext) {
+    public ShipmentAdapter(CartResponse shipments, Context mContext) {
         this.shipments = shipments;
         this.mContext = mContext;
     }
@@ -38,14 +40,14 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
 
     @Override
     public void onBindViewHolder(@NonNull ShipmentHolder holder, int position) {
-        CartItem shipment=shipments.get(position);
-        holder.product_name.setText(shipment.getProduct().getName());
-        holder.product_price.setText(shipment.getProduct().getPrice()+"");
-        holder.quantity_value.setText(shipment.getQuantity()+"");
-        holder.seller_name.setText(shipment.getProduct().getSellerName());
+        Product product = shipments.getProducts().get(position);
+        holder.product_name.setText(product.getName());
+        holder.product_price.setText(product.getPrice()+"");
+        holder.quantity_value.setText(product.getQuantity()+"");
+        holder.seller_name.setText(product.getSellerName());
 
         Glide.with(mContext)
-                .load(shipment.getProduct().getMedia().get(0).getUrl())
+                .load(product.getMedia().get(0).getUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.drawable.placeholder)
                         .fitCenter())
@@ -54,9 +56,16 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
 
     @Override
     public int getItemCount() {
-        if(shipments != null && shipments.size() > 0)return shipments.size();
+        if(shipments != null && shipments.getProducts().size() > 0) return shipments.getProducts().size();
         else return 0;
 
+    }
+
+    public void notifyAdapter(CartResponse cartResponse) {
+        if(cartResponse != null){
+            shipments = cartResponse;
+            notifyDataSetChanged();
+        }
     }
 
     class ShipmentHolder extends RecyclerView.ViewHolder{
