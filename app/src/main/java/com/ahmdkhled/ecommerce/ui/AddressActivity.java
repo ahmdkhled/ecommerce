@@ -35,8 +35,9 @@ import butterknife.ButterKnife;
 
 public class AddressActivity extends AppCompatActivity {
 
-    private static final String TAG = AddressActivity.class.getSimpleName();
+    private static final String TAG = "ADDRESS_ACTIVITY_TAG";
     private static final int ADD_ADDRESS_REQUEST_CODE = 1000;
+    private static final int EDIT_ADDRESS_REQUEST_CODE = 1001;
 
     @BindView(R.id.address_recycler_view)
     RecyclerView mAddressRecyclerView;
@@ -50,8 +51,9 @@ public class AddressActivity extends AppCompatActivity {
     AddressAdapter mAddressAdapter;
     ArrayList<Address> addresses = new ArrayList<>();
     AddressViewModel mAddressViewModel;
-    private String userId = "2";
+    private String userId = "1";
     private int mAddressPosition;
+    private String source = "";
 
 
     @Override
@@ -79,7 +81,10 @@ public class AddressActivity extends AppCompatActivity {
         mAddressViewModel.getAddressList().observe(this, new Observer<List<Address>>() {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
-                mAddressAdapter.notifyAdapter(addresses);
+                Log.d(TAG,"address list onchanged");
+                if (addresses!= null && addresses.size() > 0) {
+                    mAddressAdapter.notifyAdapter(addresses);
+                }else Toast.makeText(AddressActivity.this, "No available address", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -101,16 +106,36 @@ public class AddressActivity extends AppCompatActivity {
         });
 
 
+        /**
+         * check source so if it is checkout activity user can't delete or edit address
+         */
+
+        Intent intent = getIntent();
+        if(intent != null && intent.getStringExtra("source") != null){
+            source = intent.getStringExtra("source");
+        }
+
         initRecyclerView();
 
         // observe if user wanna delete an address
-        mAddressAdapter.getWannaDelete().observe(this, new Observer<AddressItem>() {
+        mAddressAdapter.getmDelete().observe(this, new Observer<AddressItem>() {
             @Override
             public void onChanged(@Nullable AddressItem address) {
                 mAddressViewModel.deleteAddress(address.getmAddress());
                 mAddressPosition = address.getPosition();
                 observeAddressDeletionResponse();
                 observeAddressDeletionStatus();
+            }
+        });
+
+        // observe if user wanna edit an address
+        mAddressAdapter.getmEdit().observe(this, new Observer<AddressItem>() {
+            @Override
+            public void onChanged(@Nullable AddressItem addressItem) {
+                mAddressPosition = addressItem.getPosition();
+                Intent editIntent = new Intent(AddressActivity.this,AddAddressActivity.class);
+                editIntent.putExtra("edit_address",addressItem.getmAddress());
+                startActivityForResult(editIntent,EDIT_ADDRESS_REQUEST_CODE);
             }
         });
 
@@ -126,20 +151,30 @@ public class AddressActivity extends AppCompatActivity {
             }
         });
 
+
+        // observe if user select an address to return to checkout
+        mAddressAdapter.getmSelectAddress().observe(this, new Observer<Address>() {
+            @Override
+            public void onChanged(@Nullable Address address) {
+                returnToCheckoutActivity(address);
+            }
+        });
+
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == ADD_ADDRESS_REQUEST_CODE && resultCode == RESULT_OK && data !=  null){
-            if(data.hasExtra("new_address")) {
-                String newAddressAsString = data.getStringExtra("new_address");
-                Gson gson=new Gson();
-                Type type = new TypeToken<Address>() {}.getType();
-                Address newAddress =  gson.fromJson(newAddressAsString,type);
+        if(resultCode == RESULT_OK && data != null){
+            Address address = data.getParcelableExtra("new_address");
+            if(requestCode == ADD_ADDRESS_REQUEST_CODE) {
+                mAddressAdapter.addAddress(address);
 
-                mAddressAdapter.addAddress(newAddress);
+            }else if (requestCode == EDIT_ADDRESS_REQUEST_CODE){
+                Log.d(TAG,"new address "+address.getFirst_name());
+                mAddressAdapter.editAddress(address,mAddressPosition);
             }
-
         }
     }
 
@@ -151,7 +186,7 @@ public class AddressActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         // setup recycler view
-        mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddressList().getValue());
+        mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddressList().getValue(),source);
         mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAddressRecyclerView.setAdapter(mAddressAdapter);
     }
@@ -163,9 +198,14 @@ public class AddressActivity extends AppCompatActivity {
         mAddressViewModel.getDeleteResponse().observe(this, new Observer<Response>() {
             @Override
             public void onChanged(@Nullable Response response) {
-                mAddressAdapter.notifyAddressHasRemoved(mAddressPosition);
-                Toast.makeText(AddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-
+                if(response != null) {
+                    if (!response.isError()) {
+                        mAddressAdapter.removeAddress(mAddressPosition);
+                        Toast.makeText(AddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
@@ -182,7 +222,15 @@ public class AddressActivity extends AppCompatActivity {
             }
         });
     }
-fv
+
+
+    private void returnToCheckoutActivity(Address address) {
+        Intent intent = new Intent();
+        intent.putExtra("new_address",address);
+        setResult(RESULT_OK,intent);
+        finish();
+    }
+
     public void showProgressBar(){
         mProgressBar.setVisibility(View.VISIBLE);
     }

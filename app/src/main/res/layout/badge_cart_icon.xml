@@ -2,10 +2,11 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@color/colorPrimary">
+    tools:background="@color/colorPrimary"
+    android:layout_marginRight="40dp">
 
     <ImageView
         android:layout_width="30dp"

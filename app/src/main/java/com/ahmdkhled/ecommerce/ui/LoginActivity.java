@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         progressBar=findViewById(R.id.loginProgressBar);
 
         source=getIntent().getStringExtra("source");
+        Log.d("login","source "+source);
         loginViewModel= ViewModelProviders.of(this).get(LoginViewModel.class);
         loginBu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                     }else {
                         SessionManager sessionManager=new SessionManager(getApplicationContext());
                         sessionManager.saveSession(response.getId(),response.getName(),response.getEmail());
-                        if (source!=null&&source.equals(ChangeAddressActivity.class.getSimpleName())){
-                            Intent intent=new Intent(getApplicationContext(),ChangeAddressActivity.class);
+                        if (source!=null&&source.equals(CheckoutActivity.class.getSimpleName())){
+                            Intent intent=new Intent(getApplicationContext(),CheckoutActivity.class);
                             startActivity(intent);
                             finish();
 

@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ahmdkhled.ecommerce.EndlessRecyclerViewScrollListener;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
+import com.ahmdkhled.ecommerce.model.CartResponse;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
@@ -34,6 +37,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     CartItemAdapter cartItemAdapter;
     ProgressBar cartProgressBar ;
     CartItemAdapter.OnCartItemsChange onCartItemsChange;
+    LinearLayoutManager linearLayoutManager;
     int total=0;
 
     @Override
@@ -58,6 +62,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
              Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
              intent.putParcelableArrayListExtra("items", cartItems);
              intent.putExtra("total",total);
@@ -68,44 +73,65 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
         if (cartItems != null&&!cartItems.isEmpty()) {
             cartProgressBar.setVisibility(View.VISIBLE);
-            getCartItems(cartItems);
-            Log.d("CARTTT","getting cartItems ");
+            showCartItems(null);
+            getCartItems(cartItems,"1");
         }
 
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                page++;
+                getCartItems(cartItems, String.valueOf(page));
+            }
+        });
 
     }
 
-    public void getCartItems(final ArrayList<CartItem> cartItems) {
-        String ids = arrToString(cartItems);
-        RetrofetClient.getApiService().getCartItems(ids)
-                .enqueue(new Callback<ArrayList<Product>>() {
+
+    public void getCartItems(final ArrayList<CartItem> cartItems, final String page) {
+        String ids = getIdsAsString(cartItems);
+        String q=getQuantitiesAsString(cartItems);
+        RetrofetClient.getApiService().getCartItems(ids,q,page)
+                .enqueue(new Callback<CartResponse>() {
                     @Override
-                    public void onResponse (Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
-                        ArrayList<Product> products = response.body();
-                        for (int i = 0; i < cartItems.size(); i++) {
-                            cartItems.get(i).setProduct(products.get(i));
+                    public void onResponse (Call<CartResponse> call, Response<CartResponse> response) {
+                        CartResponse cartResponse=response.body();
+                        ArrayList<Product> products = cartResponse.getProducts();
+                        ArrayList<CartItem> newCartItems=new ArrayList<>();
+                        Log.d("CARTTT","price "+cartResponse.getTotal());
+                        for (int i = 0; i < products.size(); i++) {
+                            int j=(Integer.valueOf(page)-1) *10 +i;
+                            //newCartItems.get(j).setProduct(products.get(i));
+                            newCartItems.add(new CartItem(products.get(i),cartItems.get(j).getQuantity()));
                         }
-                         cartItemAdapter = new CartItemAdapter(getApplicationContext(),cartItems,
-                                onCartItemsChange);
-                        recyclerView.setAdapter(cartItemAdapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        Log.d("CARTTT",page);
+
+                        cartItemAdapter.addItems(newCartItems);
+                        if (!products.isEmpty())
+                            cart_subtotal.setText(String.valueOf(cartResponse.getTotal()));
                         cartProgressBar.setVisibility(View.GONE);
-                        int total=getTotal(cartItems);
-                        cart_subtotal.setText(String.valueOf(total));
                         checkoutButton.setEnabled(true);
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                    public void onFailure(Call<CartResponse> call, Throwable t) {
                         cartProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(CartActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
                         Log.d("CARTTT",t.getMessage());
                     }
                 });
     }
 
 
+    private void showCartItems(ArrayList<CartItem> cartItems) {
+        cartItemAdapter = new CartItemAdapter(getApplicationContext(),cartItems,
+                onCartItemsChange);
+        linearLayoutManager=new LinearLayoutManager(this);
+        recyclerView.setAdapter(cartItemAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
+    }
 
-    private String arrToString(ArrayList<CartItem> cartItems){
+    private String getIdsAsString(ArrayList<CartItem> cartItems){
         StringBuilder sb=new StringBuilder();
         for (int i=0 ;i<cartItems.size(); i++){
             if (i<cartItems.size()-1){
@@ -117,18 +143,23 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         return sb.toString();
     }
 
-    private int getTotal(ArrayList<CartItem> cartItems){
-        int total=0;
-        for(int i=0;i<cartItems.size();i++){
-            total+=cartItems.get(i).getQuantity()*cartItems.get(i).getProduct().getPrice();
+    private String getQuantitiesAsString(ArrayList<CartItem> cartItems){
+        StringBuilder sb=new StringBuilder();
+        for (int i=0 ;i<cartItems.size(); i++){
+            if (i<cartItems.size()-1){
+                sb.append(cartItems.get(i).getQuantity()).append(",");
+            }else {
+                sb.append(cartItems.get(i).getQuantity());
+            }
         }
-        this.total=total;
-        return total;
+        return sb.toString();
     }
+
+    
 
     private void handleVisibility(ArrayList<CartItem> cartItems){
      if (cartItems==null||cartItems.isEmpty()){
-         Log.d("CARTTTT","empty");
+         //Log.d("CARTTTT","empty");
          emptyCartContainer.setVisibility(View.VISIBLE);
          recyclerView.setVisibility(View.GONE);
          checkoutButton.setVisibility(View.GONE);
@@ -136,7 +167,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
          cartSubtotal_label.setVisibility(View.GONE);
          LE.setVisibility(View.GONE);
      }  else{
-         Log.d("CARTTTT","not empty");
+         //Log.d("CARTTTT","not empty");
          emptyCartContainer.setVisibility(View.GONE);
          recyclerView.setVisibility(View.VISIBLE);
          checkoutButton.setVisibility(View.VISIBLE);

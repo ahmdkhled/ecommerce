@@ -26,6 +26,7 @@ public class AccountActivity extends AppCompatActivity {
     Menu menu;
     ConstraintLayout favoritesContainer;
     ConstraintLayout ordersContainer;
+    TextView mUserAddressTxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class AccountActivity extends AppCompatActivity {
         login=findViewById(R.id.accountLogin);
         favoritesContainer=findViewById(R.id.favorites_container);
         ordersContainer=findViewById(R.id.orders_container);
+        mUserAddressTxt = findViewById(R.id.address_label);
         sessionManager=new SessionManager(this);
         populateDetails();
         login.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +64,13 @@ public class AccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), OrdersActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        mUserAddressTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),AddressActivity.class));
             }
         });
     }
