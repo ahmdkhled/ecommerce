@@ -72,6 +72,7 @@ public class AddressRepository {
 
     // To add new address
     public MutableLiveData<Response> addAddress(Address address,String userId) {
+        Log.d("ADD_ADDRESS_TAG","add address repo");
         final MutableLiveData<Response> mResponse = new MutableLiveData<>();
         mAddAddressResponse = new MutableLiveData<>();
         mIsAdding = new MutableLiveData<>();
@@ -86,8 +87,9 @@ public class AddressRepository {
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if(response.isSuccessful()){
                     mIsAdding.setValue(false);
+                    Log.d("ADD_ADDRESS_TAG","message from repo "+response.body().getMessage());
                     mAddAddressResponse.setValue(response.body());
-                }
+                }else Log.d("ADD_ADDRESS_TAG","add address response not success");
             }
 
             @Override

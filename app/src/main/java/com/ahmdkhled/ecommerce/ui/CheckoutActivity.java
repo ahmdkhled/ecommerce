@@ -59,7 +59,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     CartResponse shipments = new CartResponse(0,new ArrayList<Product>());
     ShipmentAdapter mShipmentAdapter;
-    String userId = "1";
+    long userId;
     CheckoutViewModel mCheckoutViewModel;
 
 
@@ -76,12 +76,15 @@ public class CheckoutActivity extends AppCompatActivity {
          * if he hasn't he should login first,
          */
 
-        if(!userHasSession()){
+        userId = getUserId();
+
+        if(userId == -1){
             Intent loginIntent = new Intent(this,LoginActivity.class);
             loginIntent.putExtra("source",CheckoutActivity.class.getSimpleName());
             startActivity(loginIntent);
             finish();
         }
+
 
         // link view model
         mCheckoutViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
@@ -144,6 +147,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent changeAddressIntent = new Intent(CheckoutActivity.this,AddressActivity.class);
                 changeAddressIntent.putExtra("source","checkout");
+                changeAddressIntent.putExtra("user_id",userId);
                 startActivityForResult(changeAddressIntent,CHANGE_ADDRESS_REQUEST);
             }
         });
@@ -153,6 +157,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void addNewAddress() {
         Intent addAddressIntent = new Intent(CheckoutActivity.this,AddAddressActivity.class);
+        addAddressIntent.putExtra("user_id",userId);
         startActivityForResult(addAddressIntent,ADD_ADDRESS_REQUEST);
     }
 
@@ -166,11 +171,9 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
 
-    private boolean userHasSession() {
+    private long getUserId() {
         SessionManager sessionManager = new SessionManager(this);
-        long userId = sessionManager.getId();
-        Log.d(TAG, "user id " + userId);
-        return  (userId != -1);
+        return  sessionManager.getId();
     }
 
 

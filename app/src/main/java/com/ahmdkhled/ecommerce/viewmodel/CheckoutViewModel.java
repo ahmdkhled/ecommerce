@@ -26,7 +26,7 @@ public class CheckoutViewModel extends ViewModel {
     private CartItemsManger cartItemsManger;
     private MutableLiveData<Boolean> addressIsLoading,cartIsLoading;
 
-    public void init(Application application,String userId) {
+    public void init(Application application,long userId) {
 
 
         // initiate repos
@@ -34,7 +34,7 @@ public class CheckoutViewModel extends ViewModel {
         mCartRepo = CartRepo.getInstance();
 
         // get address
-        mAddress = mAddressRepository.getAddresses(userId);
+        mAddress = mAddressRepository.getAddresses(String.valueOf(userId));
         addressIsLoading = mAddressRepository.getmIsLoading();
 
         // get cart items

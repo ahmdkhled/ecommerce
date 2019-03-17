@@ -71,7 +71,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
     AddAddressViewModel mAddAddressViewModel;
-    private String userId = "1";
+    private long userId;
     private Address newAddress,addressEdited;
     String target = "Add new address";
 
@@ -94,6 +94,11 @@ public class AddAddressActivity extends AppCompatActivity {
                 fillViewsWithAddress(addressEdited);
                 target = "Edit the address";
             }
+        }
+
+        if(intent != null && intent.hasExtra("user_id")){
+            userId = intent.getLongExtra("user_id",0);
+            Log.d(TAG,"user id "+userId);
         }
 
         // setup activity
@@ -192,7 +197,8 @@ public class AddAddressActivity extends AppCompatActivity {
             /*
                 obserce add address function to make an action when this process is done
              */
-            mAddAddressViewModel.addAddress(newAddress,userId);
+            Log.d(TAG,"id "+userId);
+            mAddAddressViewModel.addAddress(newAddress,String.valueOf(userId));
             observeAddressAddingResponse();
             observeAddingAddressStatus();
         }
@@ -216,6 +222,7 @@ public class AddAddressActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Response response) {
                 if(response != null) {
+                    Log.d(TAG,"message "+response.getMessage());
                     Toast.makeText(AddAddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
                     if (!response.isError()) {
                         newAddress.setId(response.getAddress_id());
