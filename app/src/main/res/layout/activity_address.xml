@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.AddressActivity"
+    android:background="@android:color/white"
     >
 
     <android.support.v7.widget.Toolbar
@@ -14,8 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorPrimary"
-        app:titleTextColor="@android:color/white"
+        android:background="@android:color/white"
+        app:titleTextColor="@android:color/black"
         android:theme="@style/ToolbarTheme"
         />
 

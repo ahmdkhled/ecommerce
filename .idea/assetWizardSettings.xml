@@ -3,6 +3,11 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
+        <entry key="imageWizard">
+          <value>
+            <PersistentState />
+          </value>
+        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -18,11 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-<<<<<<< HEAD
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/maps/ic_directions_car_black_24dp.xml" />
-=======
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/toggle/ic_star_black_24dp.xml" />
->>>>>>> 34edf57500e7dd54697ab90850e28ad5b7bf7a6b
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/maps/ic_local_florist_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -32,14 +33,9 @@
                         </option>
                         <option name="values">
                           <map>
-<<<<<<< HEAD
-                            <entry key="outputName" value="ic_directions_car_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\ahmedkhaled" />
-=======
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_star_black_24dp" />
+                            <entry key="outputName" value="ic_local_florist_black_24dp" />
                             <entry key="sourceFile" value="C:\Users\laptop market" />
->>>>>>> 34edf57500e7dd54697ab90850e28ad5b7bf7a6b
                           </map>
                         </option>
                       </PersistentState>

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.adapter.OrdersAdapter;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 
 public class AccountActivity extends AppCompatActivity {
@@ -24,6 +25,9 @@ public class AccountActivity extends AppCompatActivity {
     Button login;
     Menu menu;
     ConstraintLayout favoritesContainer;
+    ConstraintLayout ordersContainer;
+    TextView mUserAddressTxt;
+    private long userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +41,13 @@ public class AccountActivity extends AppCompatActivity {
         email=findViewById(R.id.account_email);
         login=findViewById(R.id.accountLogin);
         favoritesContainer=findViewById(R.id.favorites_container);
+        ordersContainer=findViewById(R.id.orders_container);
+        mUserAddressTxt = findViewById(R.id.address_label);
         sessionManager=new SessionManager(this);
+
+        // get user id if he has logged in before
+        userId = sessionManager.getId();
+
         populateDetails();
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +61,26 @@ public class AccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(),FavoritesActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        ordersContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), OrdersActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mUserAddressTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(userId != -1) {
+                    Intent addressIntent = new Intent(getApplicationContext(), AddressActivity.class);
+                    addressIntent.putExtra("user_id",userId);
+                    startActivity(addressIntent);
+                }else
+                    Toast.makeText(AccountActivity.this, "please log in to access your address", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -94,4 +124,6 @@ public class AccountActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

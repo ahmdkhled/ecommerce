@@ -14,11 +14,12 @@
    >
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorPrimaryDark"
-        android:id="@+id/toolBar"/>
+        android:layout_height="53dp"
+        app:titleTextColor="#fff"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/productImagesPager"

@@ -3,17 +3,18 @@ package com.ahmdkhled.ecommerce.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.repository.SharedAddressRepository;
+import com.ahmdkhled.ecommerce.repository.AddressRepository;
 
 import java.util.List;
 
 public class AddressViewModel extends ViewModel {
 
 
-    private SharedAddressRepository mAddressActivtyRepo;
+    private AddressRepository mAddressActivtyRepo;
     private MutableLiveData<List<Address>> mAddressList;
     private MutableLiveData<Boolean> mIsLoading;
     private MutableLiveData<Boolean> mIsDeleting;
@@ -24,11 +25,13 @@ public class AddressViewModel extends ViewModel {
        if(mAddressList != null){
             return;
        }
-       mAddressActivtyRepo = SharedAddressRepository.getInstance();
+       mAddressActivtyRepo = AddressRepository.getInstance();
     }
 
     public void loadAddresses(String userId){
+        Log.d("add_address","loadAddress vm");
         if(mAddressList != null){
+            Log.d("add_address","loadAddress vm list not null");
             return;
         }
         mAddressList = mAddressActivtyRepo.getAddresses(userId);
