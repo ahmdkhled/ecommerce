@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class OrderItem {
     private int id;
-    @SerializedName("orderItem_quantity")
-    private int quantity;
+    @SerializedName(value="quantity", alternate={"orderItem_quantity"})
+    private int orderItem_quantity;
 
     public OrderItem(int id, int quantity) {
         this.id = id;
-        this.quantity = quantity;
+        this.orderItem_quantity = quantity;
     }
 
     public int getId() {
@@ -20,11 +20,11 @@ public class OrderItem {
         this.id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getOrderItem_quantity() {
+        return orderItem_quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setOrderItem_quantity(int orderItem_quantity) {
+        this.orderItem_quantity = orderItem_quantity;
     }
 }

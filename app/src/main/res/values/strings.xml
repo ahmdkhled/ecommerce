@@ -18,8 +18,9 @@
     <string name="address_activity_title">Select Address</string>
     <string name="address_details">%1$s, %2$s</string>
     <string name="address_user_name">%1$s %2$s</string>
-    <string name="sub_total_payment">%1$i EGP</string>
+    <string name="sub_total_payment">%1$d EGP</string>
     <string name="error_message">something went wrong please try again</string>
     <string name="phone_edit_hint">Phone Number</string>
+    <string name="payment_activiy_title">Payment Options</string>
 
 </resources>

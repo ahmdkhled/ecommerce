@@ -16,8 +16,10 @@ public class Order {
     private String status;
     @SerializedName("order_addressId")
     private int addressId;
-    @SerializedName("orderItems")
+    @SerializedName("products")
     private ArrayList<OrderItem> orderItems;
+
+
 
 
     public Order(int order_id, String order_date, int userId, String status, int addressId, ArrayList<OrderItem> orderItems) {

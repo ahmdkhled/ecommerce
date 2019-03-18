@@ -62,6 +62,7 @@ public class CheckoutActivity extends AppCompatActivity {
     long userId;
     CheckoutViewModel mCheckoutViewModel;
     private int mSubTotalValue;
+    private Address mShipmentAddress;
 
 
     @Override
@@ -98,7 +99,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
                 if(addresses.size() > 0) {
-                    fillAddress(addresses.get(0));
+                    mShipmentAddress = addresses.get(0);
+                    fillAddress(mShipmentAddress);
                 }else addNewAddress();
             }
         });
@@ -161,6 +163,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent paymentIntent = new Intent(getApplicationContext(),PaymentActivity.class);
                 paymentIntent.putExtra("sub_total",mSubTotalValue);
+                paymentIntent.putExtra("shipment_address",mShipmentAddress);
                 startActivity(paymentIntent);
 
             }
@@ -168,6 +171,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
     }
+
+
 
     private void addNewAddress() {
         Intent addAddressIntent = new Intent(CheckoutActivity.this,AddAddressActivity.class);
@@ -203,18 +208,20 @@ public class CheckoutActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("checkout","result "+resultCode);
         if(data != null){
-            Address address = data.getParcelableExtra("new_address");
+            mShipmentAddress = data.getParcelableExtra("new_address");
             if(requestCode == CHANGE_ADDRESS_REQUEST && resultCode == RESULT_OK){
-                fillAddress(address);
+                fillAddress(mShipmentAddress);
 
             }
             else if(requestCode == ADD_ADDRESS_REQUEST){
-                if(resultCode == RESULT_OK)fillAddress(address);
+                if(resultCode == RESULT_OK)fillAddress(mShipmentAddress);
                 else finish();
             }
 
         }
     }
+
+
 
     private void showAddressProgressBar(){
         mAddressProgressBar.setVisibility(View.VISIBLE);

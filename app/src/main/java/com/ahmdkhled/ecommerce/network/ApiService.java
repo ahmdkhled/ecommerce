@@ -101,7 +101,7 @@ public interface ApiService {
     @POST("orders.php")
     @FormUrlEncoded
     Call<Order> makeOrder(@Field("orderItems") String orderItems,@Field("quantity") String quantity
-            ,@Field("userId") int userId,@Field("address_id") int addressId);
+            ,@Field("userId") long userId,@Field("address_id") int addressId);
 
     @GET("orders.php")
     Call<ArrayList<Order>> getOrders(@Query("userId") String userId);
