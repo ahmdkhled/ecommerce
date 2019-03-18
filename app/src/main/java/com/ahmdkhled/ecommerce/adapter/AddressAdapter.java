@@ -57,16 +57,18 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
         final Address mAddress = addresses.get(position);
 
-        // address user name
+        // fill views
         holder.mUserName.setText(mContext.getString(R.string.address_user_name,mAddress.getFirst_name(),
                                     mAddress.getLast_name()));
-
-        // address details
         holder.mAddressDetail.setText(mContext.getString(R.string.address_details,
                 mAddress.getAddress_1(),mAddress.getAddress_2()));
-
-        // phone number
         holder.mPhoneNumber.setText(mAddress.getPhone_number());
+
+
+        /**
+         * if there is a default address so that it should be marked
+         */
+        if()
 
         // user can select only one address
         holder.mSelectAddressRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
