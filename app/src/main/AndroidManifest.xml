@@ -54,7 +54,7 @@
             android:exported="true"/>
         <activity android:name=".ui.CheckoutActivity"
             android:exported="true"/>
-        <activity android:name=".PaymentActivity"
+        <activity android:name=".ui.PaymentActivity"
             android:exported="true" />
 
 

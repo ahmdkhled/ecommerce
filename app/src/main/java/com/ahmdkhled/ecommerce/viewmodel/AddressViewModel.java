@@ -17,8 +17,8 @@ public class AddressViewModel extends ViewModel {
     private AddressRepository mAddressActivtyRepo;
     private MutableLiveData<List<Address>> mAddressList;
     private MutableLiveData<Boolean> mIsLoading;
-    private MutableLiveData<Boolean> mIsDeleting;
-    private MutableLiveData<Response> mDeleteResponse;
+    private MutableLiveData<Boolean> mIsDeleting,mIsAddressSatDefault;
+    private MutableLiveData<Response> mDeleteResponse,mSetDefaultResponse;
 
 
     public void init(){
@@ -28,13 +28,13 @@ public class AddressViewModel extends ViewModel {
        mAddressActivtyRepo = AddressRepository.getInstance();
     }
 
-    public void loadAddresses(String userId){
+    public void loadAddresses(String userId,String isDefault){
         Log.d("add_address","loadAddress vm");
         if(mAddressList != null){
             Log.d("add_address","loadAddress vm list not null");
             return;
         }
-        mAddressList = mAddressActivtyRepo.getAddresses(userId);
+        mAddressList = mAddressActivtyRepo.getAddresses(userId,isDefault);
         mIsLoading = mAddressActivtyRepo.getmIsLoading();
 
     }
@@ -67,12 +67,20 @@ public class AddressViewModel extends ViewModel {
     }
 
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
+    public void setDefaultAddress(long userId, Address address) {
+        mSetDefaultResponse = mAddressActivtyRepo.setDefaultAddress(userId,address);
+        mIsAddressSatDefault = mAddressActivtyRepo.getmIsAddressSatDefault();
     }
 
+    public MutableLiveData<Response> getSetDefaultResponse(){
+        if(mSetDefaultResponse == null)mSetDefaultResponse = new MutableLiveData<>();
 
+        return mSetDefaultResponse;
 
+    }
 
+    public MutableLiveData<Boolean> getmIsAddressSatDefault() {
+        if(mIsAddressSatDefault == null) mIsAddressSatDefault = new MutableLiveData<>();
+        return mIsAddressSatDefault;
+    }
 }

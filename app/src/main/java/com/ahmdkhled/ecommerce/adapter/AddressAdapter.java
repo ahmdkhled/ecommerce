@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.adapter;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +30,7 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
     private List<Address> addresses;
     private String source;
     private RadioButton mLastRbChecked = null;
-    private MutableLiveData<AddressItem> mDelete,mEdit;
+    private MutableLiveData<AddressItem> mDelete,mEdit,mDefault;
     private MutableLiveData<Address> mSelectAddress;
 
     public AddressAdapter(Context mContext, List<Address> addresses, String source) {
@@ -68,19 +69,26 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
         /**
          * if there is a default address so that it should be marked
          */
-        if()
+        if(mAddress.getisDefault() == 1){
+            holder.mSelectAddressRB.setChecked(true);
+            mLastRbChecked = holder.mSelectAddressRB;
+        }
 
         // user can select only one address
-        holder.mSelectAddressRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        holder.mSelectAddressRB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
+                Log.d("ADDRESS_ACTIVITY_TAG","RB cahnge");
                 RadioButton rb = holder.mSelectAddressRB;
                 if(mLastRbChecked != null){
                     mLastRbChecked.setChecked(false);
                 }
                 mLastRbChecked = rb;
+                mSelectAddress.setValue(mAddress);
             }
         });
+
 
         holder.mDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,13 +103,6 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
             public void onClick(View view) {
                 Log.d("edit_add","position "+position);
                 mEdit.setValue(new AddressItem(mAddress,position));
-            }
-        });
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mSelectAddress.setValue(mAddress);
             }
         });
 
@@ -124,6 +125,8 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
         if(mSelectAddress == null) mSelectAddress = new MutableLiveData<>();
         return mSelectAddress;
     }
+
+
 
 
 

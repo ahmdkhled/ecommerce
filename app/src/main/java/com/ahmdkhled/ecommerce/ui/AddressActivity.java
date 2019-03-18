@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListPopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -81,7 +82,7 @@ public class AddressActivity extends AppCompatActivity {
           */
         mAddressViewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
         mAddressViewModel.init();
-        mAddressViewModel.loadAddresses(String.valueOf(userId));
+        mAddressViewModel.loadAddresses(String.valueOf(userId),null);
 
         // observe changes in address list
         mAddressViewModel.getAddressList().observe(this, new Observer<List<Address>>() {
@@ -120,6 +121,7 @@ public class AddressActivity extends AppCompatActivity {
         if(intent != null && intent.getStringExtra("source") != null){
             source = intent.getStringExtra("source");
         }
+
 
         initRecyclerView();
 
@@ -163,11 +165,23 @@ public class AddressActivity extends AppCompatActivity {
         mAddressAdapter.getmSelectAddress().observe(this, new Observer<Address>() {
             @Override
             public void onChanged(@Nullable Address address) {
-                returnToCheckoutActivity(address);
+                if(source.equals("checkout")) {
+                    returnToCheckoutActivity(address);
+                }
+
+                // in this case user want to set address as default
+                else{
+                    Log.d(TAG,"user select address");
+                    mAddressViewModel.setDefaultAddress(userId,address);
+                    observesettingDefaultAddressResponse();
+                    observesettingDefaultAddressStatus();
+                }
             }
         });
 
+
     }
+
 
 
 
@@ -176,6 +190,7 @@ public class AddressActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK && data != null){
             Address address = data.getParcelableExtra("new_address");
             if(requestCode == ADD_ADDRESS_REQUEST_CODE) {
+                Log.d(TAG,"address_1 "+address.getAddress_1());
                 mAddressAdapter.addAddress(address);
 
             }else if (requestCode == EDIT_ADDRESS_REQUEST_CODE){
@@ -193,7 +208,7 @@ public class AddressActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         // setup recycler view
-        mAddressAdapter = new AddressAdapter(this, mAddressViewModel.getAddressList().getValue(),source);
+        mAddressAdapter = new AddressAdapter(this,new ArrayList<Address>(),source);
         mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAddressRecyclerView.setAdapter(mAddressAdapter);
     }
@@ -226,6 +241,30 @@ public class AddressActivity extends AppCompatActivity {
                 if(aBoolean)showProgressBar();
                 else hideProgressBar();
 
+            }
+        });
+    }
+
+    private void observesettingDefaultAddressStatus() {
+        mAddressViewModel.getmIsAddressSatDefault().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean) hideProgressBar();
+                else showProgressBar();
+            }
+        });
+    }
+
+    private void observesettingDefaultAddressResponse() {
+        mAddressViewModel.getSetDefaultResponse().observe(this, new Observer<Response>() {
+            @Override
+            public void onChanged(@Nullable Response response) {
+                if(response != null){
+                    Toast.makeText(AddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                }else {
+                    Log.d(TAG,"set dafault response null");
+                    Toast.makeText(AddressActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

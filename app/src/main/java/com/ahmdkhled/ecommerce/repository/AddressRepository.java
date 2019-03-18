@@ -15,13 +15,13 @@ import retrofit2.Callback;
 
 public class AddressRepository {
 
-    private static final String TAG = AddressRepository.class.getSimpleName();
+    private static final String TAG = "ADDRESS_ACTIVITY_TAG";
 
     private static AddressRepository mInstance;
     private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsLoading,mIsDeleting,mISEditing;
-    private MutableLiveData<Boolean> mIsAdding;
-    private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse,mEditResponse;
+    private MutableLiveData<Boolean> mIsAdding,mIsAddressSatDefault;
+    private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse,mEditResponse,mSetDefaultAddressResponse;
 
 
     public static AddressRepository getInstance(){
@@ -34,7 +34,7 @@ public class AddressRepository {
 
 
     // get list of user addresses
-    public MutableLiveData<List<Address>> getAddresses(String userId){
+    public MutableLiveData<List<Address>> getAddresses(String userId,String isDefault){
         Log.d("add_address","getAddress repo");
         final MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
 
@@ -43,7 +43,7 @@ public class AddressRepository {
          */
         mIsLoading = new MutableLiveData<>();
         mIsLoading.setValue(true);
-        Call<List<Address>> call = RetrofetClient.getApiService().getAddresses(userId);
+        Call<List<Address>> call = RetrofetClient.getApiService().getAddresses(userId,isDefault);
         call.enqueue(new Callback<List<Address>>() {
             @Override
             public void onResponse(Call<List<Address>> call, retrofit2.Response<List<Address>> response) {
@@ -185,4 +185,34 @@ public class AddressRepository {
     }
 
 
+    public MutableLiveData<Response> setDefaultAddress(long userId,Address address) {
+        mSetDefaultAddressResponse = new MutableLiveData<>();
+        mIsAddressSatDefault = new MutableLiveData<>();
+        mIsAddressSatDefault.setValue(false);
+
+        Call<Response> call = RetrofetClient.getApiService().setDefaultAddress(userId,address.getId());
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                if(response.isSuccessful()){
+                    Log.d(TAG,"set default response "+response.body().getMessage());
+                    mIsAddressSatDefault.setValue(true);
+                    mSetDefaultAddressResponse.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Log.d(TAG,"failure "+t.getMessage());
+                mIsAddressSatDefault.setValue(true);
+                mSetDefaultAddressResponse.setValue(null);
+            }
+        });
+
+        return mSetDefaultAddressResponse;
+    }
+
+    public MutableLiveData<Boolean> getmIsAddressSatDefault() {
+        return mIsAddressSatDefault;
+    }
 }

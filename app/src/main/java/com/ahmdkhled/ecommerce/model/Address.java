@@ -15,11 +15,11 @@ public class Address implements Parcelable{
     private int zip_code;
     private String address_2;
     private String address_1;
-    private int mDefault;
+    private int isDefault;
 
 
     public Address(String first_name, String last_name, String phone_number, String state, String city,
-                   int zip_code, String address2, String address1,int mDefault) {
+                   int zip_code, String address2, String address1, int isDefault) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.phone_number = phone_number;
@@ -28,7 +28,7 @@ public class Address implements Parcelable{
         this.zip_code = zip_code;
         this.address_2 = address2;
         this.address_1 = address1;
-        this.mDefault = mDefault;
+        this.isDefault = isDefault;
     }
 
     protected Address(Parcel in) {
@@ -41,7 +41,7 @@ public class Address implements Parcelable{
         zip_code = in.readInt();
         address_2 = in.readString();
         address_1 = in.readString();
-        mDefault = in.readInt();
+        isDefault = in.readInt();
     }
 
     public static final Creator<Address> CREATOR = new Creator<Address>() {
@@ -133,12 +133,12 @@ public class Address implements Parcelable{
         this.id = id;
     }
 
-    public int getmDefault() {
-        return mDefault;
+    public int getisDefault() {
+        return isDefault;
     }
 
-    public void setmDefault(int mDefault) {
-        this.mDefault = mDefault;
+    public void setisDefault(int mDefault) {
+        this.isDefault = mDefault;
     }
 
     @Override
@@ -155,8 +155,8 @@ public class Address implements Parcelable{
         parcel.writeString(state);
         parcel.writeString(city);
         parcel.writeInt(zip_code);
-        parcel.writeInt(mDefault);
         parcel.writeString(address_2);
         parcel.writeString(address_1);
+        parcel.writeInt(isDefault);
     }
 }

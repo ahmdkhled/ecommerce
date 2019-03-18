@@ -65,7 +65,7 @@ public interface ApiService {
                                              @Field("userId") long userId );
 
     @GET(Constants.ADDRESS)
-    Call<List<Address>> getAddresses(@Query("user_id") String userId);
+    Call<List<Address>> getAddresses(@Query("user_id") String userId, @Query("default") String isDefult);
 
     @FormUrlEncoded
     @POST(Constants.ADDRESS)
@@ -96,7 +96,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST(Constants.ADDRESS)
-    Call<Response> setDefaultAddress(@Field("default_address_id") String addressId);
+    Call<Response> setDefaultAddress(@Field("user_id") long userId, @Field("address_id") int addressId);
 
     @POST("orders.php")
     @FormUrlEncoded
