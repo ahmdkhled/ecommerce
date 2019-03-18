@@ -51,7 +51,7 @@ public class AddressActivity extends AppCompatActivity {
     AddressAdapter mAddressAdapter;
     ArrayList<Address> addresses = new ArrayList<>();
     AddressViewModel mAddressViewModel;
-    private String userId = "1";
+    private long userId ;
     private int mAddressPosition;
     private String source = "";
 
@@ -68,6 +68,12 @@ public class AddressActivity extends AppCompatActivity {
         // setup toolbar
         setupToolbar();
 
+        // get user id from intent
+        Intent intent = getIntent();
+        if(intent != null && intent.hasExtra("user_id")){
+            userId = intent.getLongExtra("user_id",0);
+            Log.d(TAG,"user id "+userId);
+        }
 
         /**
          * link address view model with this activity.
@@ -75,7 +81,7 @@ public class AddressActivity extends AppCompatActivity {
           */
         mAddressViewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
         mAddressViewModel.init();
-        mAddressViewModel.loadAddresses(userId);
+        mAddressViewModel.loadAddresses(String.valueOf(userId));
 
         // observe changes in address list
         mAddressViewModel.getAddressList().observe(this, new Observer<List<Address>>() {
@@ -110,7 +116,7 @@ public class AddressActivity extends AppCompatActivity {
          * check source so if it is checkout activity user can't delete or edit address
          */
 
-        Intent intent = getIntent();
+
         if(intent != null && intent.getStringExtra("source") != null){
             source = intent.getStringExtra("source");
         }
@@ -147,6 +153,7 @@ public class AddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent addAddressIntent = new Intent(AddressActivity.this, AddAddressActivity.class);
+                addAddressIntent.putExtra("user_id",userId);
                 startActivityForResult(addAddressIntent,ADD_ADDRESS_REQUEST_CODE);
             }
         });

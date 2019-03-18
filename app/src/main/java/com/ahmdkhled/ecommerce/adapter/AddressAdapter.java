@@ -96,7 +96,7 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
             }
         });
 
-        holder.mSelectAddressRB.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSelectAddress.setValue(mAddress);
