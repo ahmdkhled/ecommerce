@@ -61,6 +61,7 @@ public class CheckoutActivity extends AppCompatActivity {
     ShipmentAdapter mShipmentAdapter;
     long userId;
     CheckoutViewModel mCheckoutViewModel;
+    private int mSubTotalValue;
 
 
     @Override
@@ -123,6 +124,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable CartResponse cartResponse) {
                 mShipmentAdapter.notifyAdapter(cartResponse);
+                mSubTotalValue = cartResponse.getTotal();
                 mSubTotalTxt.setText(cartResponse.getTotal()+"");
             }
         });
@@ -149,6 +151,18 @@ public class CheckoutActivity extends AppCompatActivity {
                 changeAddressIntent.putExtra("source","checkout");
                 changeAddressIntent.putExtra("user_id",userId);
                 startActivityForResult(changeAddressIntent,CHANGE_ADDRESS_REQUEST);
+            }
+        });
+
+
+        // continue to payment methods
+        mPaymentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent paymentIntent = new Intent(getApplicationContext(),PaymentActivity.class);
+                paymentIntent.putExtra("sub_total",mSubTotalValue);
+                startActivity(paymentIntent);
+
             }
         });
 

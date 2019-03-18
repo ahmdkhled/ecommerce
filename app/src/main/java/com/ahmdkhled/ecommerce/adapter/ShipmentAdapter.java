@@ -46,12 +46,14 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
         holder.quantity_value.setText(product.getQuantity()+"");
         holder.seller_name.setText(product.getSellerName());
 
-        Glide.with(mContext)
-                .load(product.getMedia().get(0).getUrl())
-                .apply(new RequestOptions()
-                        .placeholder(R.drawable.placeholder)
-                        .fitCenter())
-                .into(holder.img_product);
+        if(product.getMedia() != null && product.getMedia().size() > 0) {
+            Glide.with(mContext)
+                    .load(product.getMedia().get(0).getUrl())
+                    .apply(new RequestOptions()
+                            .placeholder(R.drawable.placeholder)
+                            .fitCenter())
+                    .into(holder.img_product);
+        }
     }
 
     @Override

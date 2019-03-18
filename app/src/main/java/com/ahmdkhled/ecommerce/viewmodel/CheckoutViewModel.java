@@ -34,7 +34,7 @@ public class CheckoutViewModel extends ViewModel {
         mCartRepo = CartRepo.getInstance();
 
         // get address
-        mAddress = mAddressRepository.getAddresses(String.valueOf(userId));
+        mAddress = mAddressRepository.getAddresses(String.valueOf(userId),"1");
         addressIsLoading = mAddressRepository.getmIsLoading();
 
         // get cart items
