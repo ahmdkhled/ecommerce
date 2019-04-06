@@ -1,4 +1,10 @@
 <resources>
+    <string name="roboto_black">fonts/Roboto-Black.ttf</string>
+    <string name="roboto_light">fonts/Roboto-Light.ttf</string>
+    <string name="roboto_medium">fonts/Roboto-Medium.ttf</string>
+    <string name="roboto_bold">fonts/Roboto-Bold.ttf</string>
+    <string name="roboto_regular">fonts/Roboto-Regular.ttf</string>
+
     <string name="app_name">ecommerce</string>
     <string name="email_edit_hint">Email Address</string>
     <string name="password_edit_hint">Password</string>

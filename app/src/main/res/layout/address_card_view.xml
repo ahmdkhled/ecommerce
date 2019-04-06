@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardElevation="4dp">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Ibrahim karim"
+        android:textAllCaps="false"
+        android:textSize="15dp"
+        android:textColor="#000000"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/checkout_address_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Cairo, Egypt"
+        android:textAllCaps="false"
+        android:textSize="13dp"
+        android:textColor="#000000"
+        android:id="@+id/checkout_address_address_1"
+        app:layout_constraintTop_toBottomOf="@+id/checkout_address_name"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="@+id/checkout_address_name"
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="new Cairo, 90th streat"
+            android:textAllCaps="false"
+            android:textSize="13dp"
+            android:textColor="#000000"
+            android:id="@+id/checkout_address_address_2"
+            app:layout_constraintTop_toBottomOf="@+id/checkout_address_address_1"
+            android:layout_marginTop="3dp"
+            app:layout_constraintLeft_toLeftOf="@+id/checkout_address_address_1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="01234567890"
+            android:textAllCaps="false"
+            android:textSize="13dp"
+            android:textColor="#3C0EF1"
+            android:id="@+id/checkout_address_mobile_number"
+            app:layout_constraintTop_toBottomOf="@+id/checkout_address_address_2"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="@+id/checkout_address_address_2"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/select_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/checkout_address_name"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/selected_address_image_btn"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_address"
+            app:layout_constraintRight_toLeftOf="@+id/delete_address_image_btn"
+            app:layout_constraintTop_toTopOf="@+id/delete_address_image_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="15dp"
+            android:id="@+id/edit_address_image_btn"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/delete_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/delete_address_image_btn"/>
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
