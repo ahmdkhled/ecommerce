@@ -56,10 +56,10 @@ public class CheckoutViewModel extends ViewModel {
 
 
 
-    public void loadAddress(String userId){
+    public void loadAddress(String userId, String isDefault){
         if(mAddress != null) return;
         mAddressRepository = AddressRepository.getInstance();
-        mAddress = mAddressRepository.getAddresses(userId,"1");
+        mAddress = mAddressRepository.getAddresses(userId,isDefault);
         isAddressLoading = mAddressRepository.getmIsLoading();
     }
 

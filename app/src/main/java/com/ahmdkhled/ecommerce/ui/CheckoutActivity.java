@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,7 @@ public class CheckoutActivity extends AppCompatActivity {
     Button mContinueBtn;
 
     CheckoutViewPagerAdapter mCheckoutViewPagerAdapter;
-    private Fragment[] checkoutFragment = {new CheckoutAddressFragment(), new CheckoutShippingFragment()
+    private Fragment[] checkoutFragment = {new AddressFragment(), new CheckoutShippingFragment()
                                             , new CheckoutPaymentFragment()};
     private TabLayout.Tab mTab;
     private int tabPosition;

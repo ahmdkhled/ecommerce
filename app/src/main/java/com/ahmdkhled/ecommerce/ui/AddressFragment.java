@@ -8,16 +8,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
+import com.ahmdkhled.ecommerce.adapter.AddressAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.viewmodel.CheckoutViewModel;
 
@@ -26,28 +28,20 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CheckoutAddressFragment extends Fragment {
+public class AddressFragment extends Fragment {
 
 
     private static final String TAG = "ADDRESS_FRAGMENT";
-    @BindView(R.id.checkout_address_name)
-    TextView mAddressNameTxt;
-    @BindView(R.id.checkout_address_address_1)
-    TextView mAddress1Text;
-    @BindView(R.id.checkout_address_address_2)
-    TextView mAddress2Text;
-    @BindView(R.id.checkout_address_mobile_number)
-    TextView mPhoneNumberTxt;
-    @BindView(R.id.edit_address_image_btn)
-    ImageButton mEditAddressBtn;
-    @BindView(R.id.delete_address_image_btn)
-    ImageButton mDeleteAddressBtn;
     @BindView(R.id.add_address_txt)
     TextView mAddAddressTxt;
     @BindView(R.id.address_fragment_layout)
     ConstraintLayout mAddressFragmentLayout;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(R.id.address_recycler_view)
+    RecyclerView mAddressRecyclerView;
+
+    private AddressAdapter mAddressAdapter;
 
 
 
@@ -70,7 +64,7 @@ public class CheckoutAddressFragment extends Fragment {
         mCheckoutViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
 
         // load address
-        mCheckoutViewModel.loadAddress(userId);
+        mCheckoutViewModel.loadAddress(userId,null);
 
         // observe loading address response
         mCheckoutViewModel.getAddress().observe(this, new Observer<List<Address>>() {
@@ -78,7 +72,7 @@ public class CheckoutAddressFragment extends Fragment {
             public void onChanged(@Nullable List<Address> addresses) {
                 Log.d(TAG,"get address");
                 if(addresses != null && addresses.size() > 0){
-                    fillAddressFields(addresses.get(0));
+                    mAddressAdapter.notifyAdapter(addresses);
                 }else Log.d(TAG,"null address list");
             }
         });
@@ -99,28 +93,23 @@ public class CheckoutAddressFragment extends Fragment {
         });
 
 
-
+        setupRecyclerView();
 
 
         return view;
     }
 
-    private void fillAddressFields(Address address) {
-        mAddressNameTxt.setText(address.getFirst_name()+" "+address.getLast_name());
-        mAddress1Text.setText(address.getAddress_1());
-        mAddress2Text.setText(address.getAddress_2());
-        mPhoneNumberTxt.setText(address.getPhone_number());
+    private void setupRecyclerView() {
+        mAddressAdapter = new AddressAdapter(getContext(),null,"");
+        mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAddressRecyclerView.setAdapter(mAddressAdapter);
+        mAddressRecyclerView.setHasFixedSize(true);
     }
 
+
+
     private void setupViewFont() {
-        mAddressNameTxt.setTypeface(Typeface.createFromAsset(getContext().getAssets()
-                ,getString(R.string.roboto_medium)));
-        mAddress1Text.setTypeface(Typeface.createFromAsset(getContext().getAssets()
-                ,getString(R.string.roboto_light)));
-        mAddress2Text.setTypeface(Typeface.createFromAsset(getContext().getAssets()
-                ,getString(R.string.roboto_light)));
-        mPhoneNumberTxt.setTypeface(Typeface.createFromAsset(getContext().getAssets()
-                ,getString(R.string.roboto_black)));
+
         mAddAddressTxt.setTypeface(Typeface.createFromAsset(getContext().getAssets()
                 ,getString(R.string.roboto_black)));
 

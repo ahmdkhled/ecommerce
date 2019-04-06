@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CheckoutActivity"
+    tools:context=".ui.CheckoutActivity"
     android:background="@color/address_back">
 
     <android.support.v7.widget.Toolbar
@@ -78,7 +78,7 @@
 
         app:tabTextAppearance="@style/AppTabTextAppearance"/>
 
-    <com.example.rxjavademo.CustomViewPager
+    <com.ahmdkhled.ecommerce.utils.CustomViewPager
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/checkout_view_pager"
