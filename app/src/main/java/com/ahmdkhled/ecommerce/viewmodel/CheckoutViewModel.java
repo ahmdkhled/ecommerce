@@ -13,18 +13,31 @@ public class CheckoutViewModel extends ViewModel {
     private AddressRepository mAddressRepository;
     private MutableLiveData<List<com.ahmdkhled.ecommerce.model.Address>> mAddress;
     private MutableLiveData<Boolean> isAddressLoading;
-    private MutableLiveData<Boolean> isShippingComplete,isPaymentComplete;
+    private MutableLiveData<Boolean> isShippingComplete,isPaymentComplete,mChooseAddress;
+    private MutableLiveData<Address> mSetNewAddress;
 
 
     public void init(){
         if(isShippingComplete == null){
             Log.d("checkout_tag","init");
             isShippingComplete = new MutableLiveData<>();
-            isPaymentComplete = new MutableLiveData<>();
+
             isShippingComplete.setValue(false);
-            isPaymentComplete.setValue(false);
+
 
         }
+
+        if(isPaymentComplete == null){
+            isPaymentComplete = new MutableLiveData<>();
+            isPaymentComplete.setValue(false);
+        }
+
+        if(mChooseAddress == null){
+            mChooseAddress = new MutableLiveData<>();
+            mChooseAddress.setValue(false);
+        }
+
+        if(mSetNewAddress == null) mSetNewAddress = new MutableLiveData<>();
     }
 
     public void setShippingComplete(boolean isAllowed){
@@ -49,27 +62,4 @@ public class CheckoutViewModel extends ViewModel {
 
 
 
-
-
-
-
-
-
-
-    public void loadAddress(String userId, String isDefault){
-        if(mAddress != null) return;
-        mAddressRepository = AddressRepository.getInstance();
-        mAddress = mAddressRepository.getAddresses(userId,isDefault);
-        isAddressLoading = mAddressRepository.getmIsLoading();
-    }
-
-    public MutableLiveData<List<Address>> getAddress() {
-        if(mAddress == null) mAddress = new MutableLiveData<>();
-        return mAddress;
-    }
-
-    public MutableLiveData<Boolean> getIsAddressLoading() {
-        if (isAddressLoading == null) isAddressLoading = new MutableLiveData<>();
-        return isAddressLoading;
-    }
 }

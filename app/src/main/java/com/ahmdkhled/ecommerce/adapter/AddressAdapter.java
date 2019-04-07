@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.adapter;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.provider.MediaStore;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.AddressItem;
+import com.ahmdkhled.ecommerce.utils.AddressCommunication;
+import com.ahmdkhled.ecommerce.viewmodel.AddAddressViewModel;
 
 import java.util.List;
 
@@ -30,12 +33,12 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     private Context mContext;
     private List<Address> addresses;
+    private ImageButton mLastDefaultAddress = null;
+    private AddressCommunication mCommunication;
     private String source;
-    private RadioButton mLastRbChecked = null;
-    private MutableLiveData<AddressItem> mDelete,mEdit,mDefault;
-    private MutableLiveData<Address> mSelectAddress;
-
-    public AddressAdapter(Context mContext, List<Address> addresses, String source) {
+    public AddressAdapter(Context mContext, List<Address> addresses, AddressCommunication mCommunication,
+                          String source) {
+        this.mCommunication = mCommunication;
         this.mContext = mContext;
         this.addresses = addresses;
         this.source = source;
@@ -47,21 +50,13 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
     @Override
     public AddressHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new AddressHolder(LayoutInflater.from(mContext)
-        .inflate(R.layout.address_card_view,parent,false));
+        .inflate(R.layout.address_item_row,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull final AddressHolder holder, final int position) {
-
         holder.setupFonts();
-
-        if(source.equals("checkout")){
-            holder.mDeleteAddressBtn.setVisibility(View.GONE);
-            holder.mEditAddressBtn.setVisibility(View.GONE);
-        }
-
         final Address mAddress = addresses.get(position);
-
         // fill views
         holder.mUserNameTxt.setText(mContext.getString(R.string.address_user_name,mAddress.getFirst_name(),
                                     mAddress.getLast_name()));
@@ -73,67 +68,48 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
         /**
          * if there is a default address so that it should be marked
          */
-//        if(mAddress.getisDefault() == 1){
-//            holder.mSelectAddressRB.setChecked(true);
-//            mLastRbChecked = holder.mSelectAddressRB;
-//        }
+
+        if(source.equals("address_activity")) {
+            if (mAddress.getisDefault() == 1) {
+                holder.mSelectAddressIcon.setVisibility(View.VISIBLE);
+                mLastDefaultAddress = holder.mSelectAddressIcon;
+
+            } else holder.mSelectAddressIcon.setVisibility(View.INVISIBLE);
+        }
 
         // user can select only one address
 
-//        holder.mSelectAddressIcon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("ADDRESS_ACTIVITY_TAG","RB cahnge");
-//                RadioButton rb = holder.mSelectAddressRB;
-//                if(mLastRbChecked != null){
-//                    mLastRbChecked.setChecked(false);
-//                }
-//                mLastRbChecked = rb;
-//                mSelectAddress.setValue(mAddress);
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageButton ib = holder.mSelectAddressIcon;
+                if (mLastDefaultAddress != null) {
+                    mLastDefaultAddress.setVisibility(View.INVISIBLE);
+                }
+                mLastDefaultAddress = ib;
+                ib.setVisibility(View.VISIBLE);
+                mCommunication.selectAddress(mAddress);
+
+            }
+        });
 
 
         holder.mDeleteAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // delete address from adapter
-                mDelete.setValue(new AddressItem(mAddress,position));
+                mCommunication.deleteAddress(new AddressItem(mAddress,position));
             }
         });
 
         holder.mEditAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("edit_add","position "+position);
-                mEdit.setValue(new AddressItem(mAddress,position));
+                mCommunication.editAddress(new AddressItem(mAddress,position));
             }
         });
 
 
-
-
-
     }
-
-    public MutableLiveData<AddressItem> getmDelete() {
-        if(mDelete == null) mDelete = new MutableLiveData<>();
-        return mDelete;
-    }
-
-    public MutableLiveData<AddressItem> getmEdit() {
-        if(mEdit == null) mEdit = new MutableLiveData<>();
-        return mEdit;
-    }
-
-    public MutableLiveData<Address> getmSelectAddress() {
-        if(mSelectAddress == null) mSelectAddress = new MutableLiveData<>();
-        return mSelectAddress;
-    }
-
-
-
-
 
     @Override
     public int getItemCount() {
@@ -142,27 +118,23 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
             return addresses.size();
         }
         else{
-            Log.d("viewmodeldemo","null list in adapter");
             return 0;
         }
     }
 
     public void notifyAdapter(List<Address> mAddresses) {
         if(mAddresses != null && mAddresses.size() != 0){
-            Log.d("address_adapter","address "+mAddresses.size());
             addresses = mAddresses;
             this.notifyDataSetChanged();
         }
     }
 
     public void removeAddress(int position) {
-        Log.d("delete_add","position deleted "+position);
         addresses.remove(position);
         notifyDataSetChanged();
     }
 
     public void editAddress(Address address, int position) {
-        Log.d("edit_add","position  "+position);
         addresses.remove(position);
         addresses.add(position,address);
         notifyDataSetChanged();

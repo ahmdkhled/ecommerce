@@ -18,7 +18,7 @@ public class AddressRepository {
     private static final String TAG = "ADDRESS_ACTIVITY_TAG";
 
     private static AddressRepository mInstance;
-    private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
+    private MutableLiveData<List<Address>> mAddressList;
     private MutableLiveData<Boolean> mIsLoading,mIsDeleting,mISEditing;
     private MutableLiveData<Boolean> mIsAdding,mIsAddressSatDefault;
     private MutableLiveData<Response> mAddAddressResponse,mDeleteResponse,mEditResponse,mSetDefaultAddressResponse;
@@ -35,8 +35,8 @@ public class AddressRepository {
 
     // get list of user addresses
     public MutableLiveData<List<Address>> getAddresses(String userId,String isDefault){
-        Log.d("add_address","getAddress repo");
-        final MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
+        Log.d("address_tag","getAddress repo");
+        mAddressList = new MutableLiveData<>();
 
         /*
         Fetching data is processing so mIsLoading will be true
@@ -51,9 +51,11 @@ public class AddressRepository {
                     /*
                     fetching data is done so mIsloading will be false
                      */
-                    Log.d("add_address","successfully loaded address list");
-                    mIsLoading.setValue(false);
-                    mAddressList.setValue(response.body());
+                    if(response != null) {
+                        Log.d("add_address", "successfully loaded address list");
+                        mIsLoading.setValue(false);
+                        mAddressList.setValue(response.body());
+                    }else Log.d("address_tag", "null response");
 
                 }
             }
@@ -73,7 +75,6 @@ public class AddressRepository {
     // To add new address
     public MutableLiveData<Response> addAddress(Address address,String userId) {
         Log.d("ADD_ADDRESS_TAG","add address repo");
-        final MutableLiveData<Response> mResponse = new MutableLiveData<>();
         mAddAddressResponse = new MutableLiveData<>();
         mIsAdding = new MutableLiveData<>();
         mIsAdding.setValue(true);
@@ -96,7 +97,7 @@ public class AddressRepository {
             public void onFailure(Call<Response> call, Throwable t) {
                 Log.d(TAG,"failure message : "+t.getMessage());
                 mIsAdding.setValue(false);
-                mAddAddressResponse.setValue(new Response(true,400));
+                mAddAddressResponse.setValue(null);
             }
         });
 

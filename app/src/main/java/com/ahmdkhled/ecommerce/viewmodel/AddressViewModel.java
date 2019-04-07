@@ -17,23 +17,19 @@ public class AddressViewModel extends ViewModel {
     private AddressRepository mAddressActivtyRepo;
     private MutableLiveData<List<Address>> mAddressList;
     private MutableLiveData<Boolean> mIsLoading;
-    private MutableLiveData<Boolean> mIsDeleting,mIsAddressSatDefault;
-    private MutableLiveData<Response> mDeleteResponse,mSetDefaultResponse;
+    private MutableLiveData<Boolean> mIsDeleting,mIsAddressSatDefault,mIsEditing;
+    private MutableLiveData<Response> mDeleteResponse,mSetDefaultResponse,editResponse;
 
 
     public void init(){
-       if(mAddressList != null){
-            return;
-       }
        mAddressActivtyRepo = AddressRepository.getInstance();
     }
 
     public void loadAddresses(String userId,String isDefault){
-        Log.d("add_address","loadAddress vm");
-        if(mAddressList != null){
-            Log.d("add_address","loadAddress vm list not null");
-            return;
-        }
+//        if(mAddressList != null){
+//            Log.d("add_address","loadAddress vm list not null");
+//            return;
+//        }
         mAddressList = mAddressActivtyRepo.getAddresses(userId,isDefault);
         mIsLoading = mAddressActivtyRepo.getmIsLoading();
 
@@ -42,6 +38,7 @@ public class AddressViewModel extends ViewModel {
 
 
     public MutableLiveData<List<Address>> getAddressList() {
+        if(mAddressList == null)mAddressList = new MutableLiveData<>();
         return mAddressList;
     }
 
@@ -82,5 +79,21 @@ public class AddressViewModel extends ViewModel {
     public MutableLiveData<Boolean> getmIsAddressSatDefault() {
         if(mIsAddressSatDefault == null) mIsAddressSatDefault = new MutableLiveData<>();
         return mIsAddressSatDefault;
+    }
+
+    // edit address
+    public void editAddress(Address addressEdited) {
+        editResponse = mAddressActivtyRepo.editAddress(addressEdited);
+        mIsEditing = mAddressActivtyRepo.getISEditing();
+    }
+
+    public MutableLiveData<Response> getEditResponse() {
+        if(editResponse == null) editResponse = new MutableLiveData<>();
+        return editResponse;
+    }
+
+    public MutableLiveData<Boolean> getIsEditing() {
+        if(mIsEditing == null)mIsEditing = new MutableLiveData<>();
+        return mIsEditing;
     }
 }

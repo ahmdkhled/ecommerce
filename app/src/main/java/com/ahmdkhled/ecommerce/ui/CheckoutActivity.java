@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CheckoutViewPagerAdapter;
+import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.utils.CustomViewPager;
 import com.ahmdkhled.ecommerce.viewmodel.CheckoutViewModel;
 
@@ -27,7 +30,7 @@ import butterknife.ButterKnife;
 public class CheckoutActivity extends AppCompatActivity {
 
 
-
+    private static final int SELECT_ADDRESS_REQUEST_CODE = 1005;
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.checkout_view_pager)
@@ -166,8 +169,6 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
     private void setupViewPager() {
@@ -204,10 +205,13 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void setFonts() {
         mToolbarTitle.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_black)));
-        mToolbarTitle.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_black)));
-        mToolbarTitle.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_black)));
-        mToolbarTitle.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_black)));
         mContinueBtn.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_regular)));
 
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
     }
 }

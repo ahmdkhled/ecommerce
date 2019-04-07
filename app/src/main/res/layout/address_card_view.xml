@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardElevation="4dp"
-    app:cardUseCompatPadding="true"
     android:layout_marginBottom="15dp"
 
     >
@@ -22,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Ibrahim karim"
+        android:text="Ibrahim karim"
         android:textAllCaps="false"
         android:textSize="15dp"
         android:textColor="#000000"
@@ -35,7 +34,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Cairo, Egypt"
+        android:text="Cairo, Egypt"
         android:textAllCaps="false"
         android:textSize="13dp"
         android:textColor="#000000"
@@ -48,7 +47,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="new Cairo, 90th streat"
+            android:text="new Cairo, 90th streat"
             android:textAllCaps="false"
             android:textSize="13dp"
             android:textColor="#000000"
@@ -61,7 +60,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="01234567890"
+            android:text="01234567890"
             android:textAllCaps="false"
             android:textSize="13dp"
             android:textColor="#3C0EF1"

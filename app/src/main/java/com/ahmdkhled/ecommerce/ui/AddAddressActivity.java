@@ -133,9 +133,11 @@ public class AddAddressActivity extends AppCompatActivity {
             String address_1 = mAddress1Txt.getText().toString();
             String address_2 = mAddress2Txt.getText().toString();
             int zip_code = Integer.valueOf(mZipCodeTxt.getText().toString());
+            int isDefault = addressEdited.getisDefault();
             int id = addressEdited.getId();
             addressEdited = new Address(firstName,lastName,phoneNumber,state,city,zip_code,address_1,address_2,0);
             addressEdited.setId(id);
+            addressEdited.setisDefault(isDefault);
             mAddAddressViewModel.editAddress(addressEdited);
             observeEditingAddressResponse();
             observeEditingAddressStatus();
@@ -228,9 +230,10 @@ public class AddAddressActivity extends AppCompatActivity {
                         newAddress.setId(response.getAddress_id());
                         returnToAddressActivity(newAddress);
                     }
-
-
+                }else{
+                    Log.d("address_tag","adding address response "+response.getMessage());
                 }
+
 
             }
         });
