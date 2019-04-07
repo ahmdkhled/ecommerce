@@ -84,7 +84,7 @@ public interface ApiService {
 
 
     @GET("reviews.php")
-    Call<ArrayList<Review>> getReviews();
+    Call<ArrayList<Review>> getReviews(@Query("productId") String productId);
 
     @FormUrlEncoded
     @POST(Constants.ADDRESS)
