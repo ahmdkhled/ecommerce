@@ -17,7 +17,6 @@ public class OrdersViewModel extends ViewModel {
     public MutableLiveData<ArrayList<Order>> getOrders(String userId){
         if (orders==null)
             orders= OrdersRepository.getInstence().getOrders(userId);
-
         return orders;
     }
 
