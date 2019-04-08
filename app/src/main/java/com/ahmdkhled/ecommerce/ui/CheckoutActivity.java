@@ -61,6 +61,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private int shippingOption;
     private int shippingAddressId;
     private int paymentOption;
+    private int total;
 
 
     @Override
@@ -91,6 +92,13 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // setup button text at the beginning
         mContinueBtn.setText("Continue To Shipping");
+
+        // get total from intent
+        Intent intent = getIntent();
+        if(intent != null && intent.hasExtra("total")){
+            total = intent.getIntExtra("total",0);
+            mTotalValueTxt.setText(total+" EGP");
+        }
 
         // handle tab view as step indicator
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -145,6 +153,11 @@ public class CheckoutActivity extends AppCompatActivity {
                         Log.d("order","shipping address "+shippingAddressId);
                         Log.d("order","shipping option "+shippingOption);
                         Log.d("order","payment option "+paymentOption);
+                        Intent placeOrderIntent = new Intent(getApplicationContext(),OrderSummaryActivity.class);
+                        placeOrderIntent.putExtra("shipping_address_id",shippingAddressId);
+                        placeOrderIntent.putExtra("shipping_method",shippingOption);
+                        placeOrderIntent.putExtra("payment_method",paymentOption);
+                        startActivity(placeOrderIntent);
                     }else
                         Toast.makeText(CheckoutActivity.this, "please choose one payment option",
                                 Toast.LENGTH_SHORT).show();

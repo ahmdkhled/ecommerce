@@ -27,6 +27,7 @@ import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.AddressItem;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.utils.AddressCommunication;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
 import com.ahmdkhled.ecommerce.viewmodel.CheckoutViewModel;
 
@@ -57,12 +58,12 @@ public class AddressFragment extends Fragment implements AddressCommunication {
 
     AddressAdapter mAddressAdapter;
     AddressViewModel mAddressViewModel;
-    private String userId = "2";
+    private String userId;
     private int editedAddressPosition;
     private CheckoutViewModel mCheckOutViewModel;
-    private int size;
     private int shippingAddress;
     private String source = "checkout";
+
 
     @Nullable
     @Override
@@ -74,6 +75,11 @@ public class AddressFragment extends Fragment implements AddressCommunication {
 
         // set Roboto font to text view
         setupViewFont();
+
+        // get user id
+        SessionManager sessionManager = new SessionManager(getContext());
+        userId = String.valueOf(sessionManager.getId());
+
 
         Bundle bundle = getArguments();
         if(bundle != null && bundle.getString("source") != null){
@@ -100,7 +106,7 @@ public class AddressFragment extends Fragment implements AddressCommunication {
                         mAddressAdapter.notifyAdapter(addresses);
                     } else {
                         // no addresses
-                        size = 0;
+
 
                     }
                 }else Toast.makeText(getContext(), getContext().getString(R.string.error_message), Toast.LENGTH_SHORT).show();

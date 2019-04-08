@@ -95,7 +95,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitXY"
-        android:src="@drawable/Yes_Check_Circle"
+        android:src="@drawable/yes_check_circle"
         app:layout_constraintBottom_toTopOf="@+id/order_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

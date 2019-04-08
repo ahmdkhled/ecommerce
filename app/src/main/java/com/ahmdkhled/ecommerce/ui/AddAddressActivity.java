@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.ahmdkhled.ecommerce.viewmodel.AddAddressViewModel;
 
 import butterknife.BindView;
@@ -84,6 +85,9 @@ public class AddAddressActivity extends AppCompatActivity {
 
         // bind views
         ButterKnife.bind(this);
+
+        // get user id
+        userId = new SessionManager(this).getId();
 
         // check if user wanna edit an address.
         Intent intent = getIntent();
