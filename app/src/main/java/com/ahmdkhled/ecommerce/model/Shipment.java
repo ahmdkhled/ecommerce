@@ -5,16 +5,16 @@ import android.os.Parcelable;
 
 public class Shipment implements Parcelable {
     private CartItem cartItem;
-    private String expectedDelivery ;
+    private int total;
 
-    public Shipment(CartItem cartItem, String expectedDelivery) {
+    public Shipment(CartItem cartItem, int total) {
         this.cartItem = cartItem;
-        this.expectedDelivery = expectedDelivery;
+        this.total = total;
     }
 
     protected Shipment(Parcel in) {
         cartItem = in.readParcelable(CartItem.class.getClassLoader());
-        expectedDelivery = in.readString();
+        total = in.readInt();
     }
 
     public static final Creator<Shipment> CREATOR = new Creator<Shipment>() {
@@ -37,12 +37,12 @@ public class Shipment implements Parcelable {
         this.cartItem = cartItem;
     }
 
-    public String getExpectedDelivery() {
-        return expectedDelivery;
+    public int getTotal() {
+        return total;
     }
 
-    public void setExpectedDelivery(String expectedDelivery) {
-        this.expectedDelivery = expectedDelivery;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     @Override
@@ -53,6 +53,6 @@ public class Shipment implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeParcelable(cartItem, i);
-        parcel.writeString(expectedDelivery);
+        parcel.writeInt(total);
     }
 }

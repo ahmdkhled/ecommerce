@@ -103,7 +103,10 @@ public class RegistrationActivity extends AppCompatActivity  {
             public void onChanged(@Nullable Response response) {
                 if(response != null) {
                     showToast(response.getMessage());
-                }else showToast(getString(R.string.error_message));
+                    if(!response.isError()) finish();
+                }else {
+                    showToast(getString(R.string.error_message));
+                }
             }
         });
     }

@@ -2,7 +2,9 @@ package com.ahmdkhled.ecommerce.adapter;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,32 +13,32 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.AddressItem;
-import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class
 AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     private Context mContext;
     private List<Address> addresses;
+    private String source;
     private RadioButton mLastRbChecked = null;
-    private MutableLiveData<AddressItem> wannaDelete;
+    private MutableLiveData<AddressItem> mDelete,mEdit,mDefault;
+    private MutableLiveData<Address> mSelectAddress;
 
-    public AddressAdapter(Context mContext, List<Address> addresses) {
+    public AddressAdapter(Context mContext, List<Address> addresses, String source) {
         this.mContext = mContext;
         this.addresses = addresses;
+        this.source = source;
+
+
     }
 
     @NonNull
@@ -48,27 +50,59 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final AddressHolder holder, final int position) {
+
+        if(source.equals("checkout")){
+            holder.mDeleteBtn.setVisibility(View.GONE);
+            holder.mEditBtn.setVisibility(View.GONE);
+        }
+
         final Address mAddress = addresses.get(position);
+
+        // fill views
+        holder.mUserName.setText(mContext.getString(R.string.address_user_name,mAddress.getFirst_name(),
+                                    mAddress.getLast_name()));
         holder.mAddressDetail.setText(mContext.getString(R.string.address_details,
-                mAddress.getAddress1(),mAddress.getAddress2()));
+                mAddress.getAddress_1(),mAddress.getAddress_2()));
+        holder.mPhoneNumber.setText(mAddress.getPhone_number());
+
+
+        /**
+         * if there is a default address so that it should be marked
+         */
+        if(mAddress.getisDefault() == 1){
+            holder.mSelectAddressRB.setChecked(true);
+            mLastRbChecked = holder.mSelectAddressRB;
+        }
 
         // user can select only one address
-        holder.mSelectAddressRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        holder.mSelectAddressRB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
+                Log.d("ADDRESS_ACTIVITY_TAG","RB cahnge");
                 RadioButton rb = holder.mSelectAddressRB;
                 if(mLastRbChecked != null){
                     mLastRbChecked.setChecked(false);
                 }
                 mLastRbChecked = rb;
+                mSelectAddress.setValue(mAddress);
             }
         });
 
-        holder.mDeleteAddress.setOnClickListener(new View.OnClickListener() {
+
+        holder.mDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // delete address from adapter
-                wannaDelete.setValue(new AddressItem(mAddress,position));
+                mDelete.setValue(new AddressItem(mAddress,position));
+            }
+        });
+
+        holder.mEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("edit_add","position "+position);
+                mEdit.setValue(new AddressItem(mAddress,position));
             }
         });
 
@@ -77,10 +111,22 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     }
 
-    public MutableLiveData<AddressItem> getWannaDelete() {
-        if(wannaDelete == null)wannaDelete = new MutableLiveData<>();
-        return wannaDelete;
+    public MutableLiveData<AddressItem> getmDelete() {
+        if(mDelete == null) mDelete = new MutableLiveData<>();
+        return mDelete;
     }
+
+    public MutableLiveData<AddressItem> getmEdit() {
+        if(mEdit == null) mEdit = new MutableLiveData<>();
+        return mEdit;
+    }
+
+    public MutableLiveData<Address> getmSelectAddress() {
+        if(mSelectAddress == null) mSelectAddress = new MutableLiveData<>();
+        return mSelectAddress;
+    }
+
+
 
 
 
@@ -103,9 +149,16 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
         }
     }
 
-    public void notifyAddressHasRemoved(int position) {
+    public void removeAddress(int position) {
         Log.d("delete_add","position deleted "+position);
         addresses.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void editAddress(Address address, int position) {
+        Log.d("edit_add","position  "+position);
+        addresses.remove(position);
+        addresses.add(position,address);
         notifyDataSetChanged();
     }
 
@@ -126,9 +179,11 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
         @BindView(R.id.select_address_rb)
         RadioButton mSelectAddressRB;
         @BindView(R.id.edit_address)
-        TextView mEditAddress;
+        AppCompatButton mEditBtn;
         @BindView(R.id.delete_address)
-        TextView mDeleteAddress;
+        AppCompatButton mDeleteBtn;
+        @BindView(R.id.address_phone_number)
+        TextView mPhoneNumber;
 
 
 

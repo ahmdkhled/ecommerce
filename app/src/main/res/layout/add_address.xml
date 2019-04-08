@@ -133,7 +133,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/address1"
+            android:id="@+id/address_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -152,13 +152,13 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/address2"
+            android:id="@+id/address_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/address1">
+            app:layout_constraintTop_toBottomOf="@+id/address_1">
 
             <EditText
                 android:id="@+id/add2_edittext"
@@ -180,7 +180,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/background"
             android:text="Next"
-            app:layout_constraintTop_toBottomOf="@+id/address2"
+            app:layout_constraintTop_toBottomOf="@+id/address_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="15dp"/>

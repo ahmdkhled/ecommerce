@@ -3,35 +3,38 @@ package com.ahmdkhled.ecommerce.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.repository.SharedAddressRepository;
+import com.ahmdkhled.ecommerce.repository.AddressRepository;
 
 import java.util.List;
 
 public class AddressViewModel extends ViewModel {
 
 
-    private SharedAddressRepository mAddressActivtyRepo;
+    private AddressRepository mAddressActivtyRepo;
     private MutableLiveData<List<Address>> mAddressList;
     private MutableLiveData<Boolean> mIsLoading;
-    private MutableLiveData<Boolean> mIsDeleting;
-    private MutableLiveData<Response> mDeleteResponse;
+    private MutableLiveData<Boolean> mIsDeleting,mIsAddressSatDefault;
+    private MutableLiveData<Response> mDeleteResponse,mSetDefaultResponse;
 
 
     public void init(){
        if(mAddressList != null){
             return;
        }
-       mAddressActivtyRepo = SharedAddressRepository.getInstance();
+       mAddressActivtyRepo = AddressRepository.getInstance();
     }
 
-    public void loadAddresses(String userId){
+    public void loadAddresses(String userId,String isDefault){
+        Log.d("add_address","loadAddress vm");
         if(mAddressList != null){
+            Log.d("add_address","loadAddress vm list not null");
             return;
         }
-        mAddressList = mAddressActivtyRepo.getAddresses(userId);
+        mAddressList = mAddressActivtyRepo.getAddresses(userId,isDefault);
         mIsLoading = mAddressActivtyRepo.getmIsLoading();
 
     }
@@ -64,12 +67,20 @@ public class AddressViewModel extends ViewModel {
     }
 
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
+    public void setDefaultAddress(long userId, Address address) {
+        mSetDefaultResponse = mAddressActivtyRepo.setDefaultAddress(userId,address);
+        mIsAddressSatDefault = mAddressActivtyRepo.getmIsAddressSatDefault();
     }
 
+    public MutableLiveData<Response> getSetDefaultResponse(){
+        if(mSetDefaultResponse == null)mSetDefaultResponse = new MutableLiveData<>();
 
+        return mSetDefaultResponse;
 
+    }
 
+    public MutableLiveData<Boolean> getmIsAddressSatDefault() {
+        if(mIsAddressSatDefault == null) mIsAddressSatDefault = new MutableLiveData<>();
+        return mIsAddressSatDefault;
+    }
 }

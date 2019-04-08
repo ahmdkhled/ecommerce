@@ -78,17 +78,17 @@ public class ProductsActivity  extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("spinner","i "+l);
-                if(l==0){
+                if(l==1){
                     orderProductsByDate();
 
                 }
-                else if(l==1){
+                else if(l==2){
                     orderProductsByPriceLow();
                 }
-                else if(l==2) {
+                else if(l==3) {
                     orderProductsByPriceHigh();
                 }
-                else if (l==3) {
+                else if (l==4) {
                     orderProductsByRate();
                 }
 
@@ -195,6 +195,7 @@ public class ProductsActivity  extends AppCompatActivity {
 
     private void setUpSpinner(){
         ArrayList<String> sortList=new ArrayList<>();
+        sortList.add("select..");
         sortList.add("date");
         sortList.add("price(Low)");
         sortList.add("price(High)");
@@ -205,7 +206,8 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
     private void orderProductsByDate(){
-        RetrofetClient.getApiService().getProducts(null,1,"date",null).enqueue(new Callback<ArrayList<Product>>() {
+        loadProductsPB.setVisibility(View.VISIBLE);
+        RetrofetClient.getApiService().getProducts(String.valueOf(categoryId),1,"date",null).enqueue(new Callback<ArrayList<Product>>() {
             @Override
             public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                 ArrayList<Product> products = response.body();
@@ -213,6 +215,7 @@ public class ProductsActivity  extends AppCompatActivity {
                     productsList=products;
                     showProducts();
                 }
+                loadProductsPB.setVisibility(View.GONE);
 
             }
 
@@ -225,7 +228,11 @@ public class ProductsActivity  extends AppCompatActivity {
 
     }
     private void orderProductsByPriceLow(){
-        RetrofetClient.getApiService().getProducts(null,1,"price","asc").enqueue(new Callback<ArrayList<Product>>() {
+        loadProductsPB.setVisibility(View.VISIBLE);
+        RetrofetClient
+                .getApiService()
+                .getProducts(String.valueOf(categoryId),1,"price","asc")
+                .enqueue(new Callback<ArrayList<Product>>() {
             @Override
             public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                 ArrayList<Product> products =response.body();
@@ -233,6 +240,7 @@ public class ProductsActivity  extends AppCompatActivity {
                     productsList=products;
                     showProducts();
                 }
+                loadProductsPB.setVisibility(View.GONE);
             }
 
             @Override
@@ -244,7 +252,11 @@ public class ProductsActivity  extends AppCompatActivity {
 
     }
     private void orderProductsByPriceHigh() {
-        RetrofetClient.getApiService().getProducts(null,1,"price","desc").enqueue(new Callback<ArrayList<Product>>() {
+        loadProductsPB.setVisibility(View.VISIBLE);
+        RetrofetClient
+                .getApiService()
+                .getProducts(String.valueOf(categoryId),1,"price","desc")
+                .enqueue(new Callback<ArrayList<Product>>() {
             @Override
             public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                 ArrayList<Product> products=response.body();
@@ -252,6 +264,7 @@ public class ProductsActivity  extends AppCompatActivity {
                     productsList=products;
                     showProducts();
                 }
+                loadProductsPB.setVisibility(View.GONE);
             }
 
             @Override
@@ -265,7 +278,9 @@ public class ProductsActivity  extends AppCompatActivity {
 
 
     private void orderProductsByRate() {
-        RetrofetClient.getApiService().getProducts(null,1,"Rating",null).enqueue(new Callback<ArrayList<Product>>() {
+        RetrofetClient.getApiService()
+                .getProducts(String.valueOf(categoryId),1,"Rating",null)
+                .enqueue(new Callback<ArrayList<Product>>() {
             @Override
             public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                 ArrayList<Product> productArrayList =response.body();

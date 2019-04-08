@@ -2,37 +2,36 @@ package com.ahmdkhled.ecommerce.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
-import com.ahmdkhled.ecommerce.repository.SharedAddressRepository;
+import com.ahmdkhled.ecommerce.repository.AddressRepository;
 
 
 public class AddAddressViewModel extends ViewModel {
 
-    private SharedAddressRepository mAddressActivtyRepo;
-    private MutableLiveData<Response> response;
-    private MutableLiveData<Boolean> mIsAdding;
+    private AddressRepository mAddressActivtyRepo;
+    private MutableLiveData<Response> addResponse,editResponse;
+    private MutableLiveData<Boolean> mIsAdding,mIsEditing;
 
 
     public void init(){
-        if(response != null){
+        if(addResponse != null){
             return;
         }
-        mAddressActivtyRepo = SharedAddressRepository.getInstance();
+        mAddressActivtyRepo = AddressRepository.getInstance();
     }
 
     // To add new address
     public void addAddress(Address address,String userId){
-        response = mAddressActivtyRepo.addAddress(address,userId);
+        addResponse = mAddressActivtyRepo.addAddress(address,userId);
         mIsAdding = mAddressActivtyRepo.getmIsAdding();
 
     }
 
-    public MutableLiveData<Response> getResponse() {
-        if(response == null)response = new MutableLiveData<>();
-        return response;
+    public MutableLiveData<Response> getAddResponse() {
+        if(addResponse == null) addResponse = new MutableLiveData<>();
+        return addResponse;
     }
 
     public MutableLiveData<Boolean> getIsAdding() {
@@ -40,9 +39,20 @@ public class AddAddressViewModel extends ViewModel {
         return mIsAdding;
     }
 
-    @Override
-    protected void onCleared() {
-        Log.d("mvvm","add address viewmodel is cleared");
-        super.onCleared();
+
+
+    public void editAddress(Address addressEdited) {
+        editResponse = mAddressActivtyRepo.editAddress(addressEdited);
+        mIsEditing = mAddressActivtyRepo.getISEditing();
+    }
+
+    public MutableLiveData<Response> getEditResponse() {
+        if(editResponse == null) editResponse = new MutableLiveData<>();
+        return editResponse;
+    }
+
+    public MutableLiveData<Boolean> getIsEditing() {
+        if(mIsEditing == null)mIsEditing = new MutableLiveData<>();
+        return mIsEditing;
     }
 }

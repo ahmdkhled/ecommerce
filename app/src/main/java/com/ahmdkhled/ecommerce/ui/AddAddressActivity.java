@@ -21,18 +21,13 @@ import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.viewmodel.AddAddressViewModel;
-import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AddAddressActivity extends AppCompatActivity {
 
-    private static final String TAG = AddAddressActivity.class.getSimpleName();
+    private static final String TAG = "ADD_ADDRESS_TAG";
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.fname_edittext)
@@ -61,6 +56,12 @@ public class AddAddressActivity extends AppCompatActivity {
     TextInputLayout mCityInputLayout;
     @BindView(R.id.zip_code_edittext)
     AppCompatEditText mZipCodeTxt;
+
+    @BindView(R.id.phone_textInputLayout)
+    TextInputLayout mPhoneInputLayout;
+    @BindView(R.id.phone_edittext)
+    AppCompatEditText mPhoneTxt;
+
     @BindView(R.id.zip_code_textInputLayout)
     TextInputLayout mZipCodeInputLayout;
     @BindView(R.id.add_address_btn)
@@ -70,8 +71,10 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
     AddAddressViewModel mAddAddressViewModel;
-    private String userId = "2";
-    private Address newAddress;
+    private long userId;
+    private Address newAddress,addressEdited;
+    String target = "Add new address";
+
 
 
     @Override
@@ -82,10 +85,28 @@ public class AddAddressActivity extends AppCompatActivity {
         // bind views
         ButterKnife.bind(this);
 
-        // setup toolbar
+        // check if user wanna edit an address.
+        Intent intent = getIntent();
+        if(intent != null && intent.hasExtra("edit_address")){
+            Log.d(TAG,"user wanna edit address");
+            if(intent.getParcelableExtra("edit_address") != null){
+                addressEdited = intent.getParcelableExtra("edit_address");
+                fillViewsWithAddress(addressEdited);
+                target = "Edit the address";
+            }
+        }
+
+        if(intent != null && intent.hasExtra("user_id")){
+            userId = intent.getLongExtra("user_id",0);
+            Log.d(TAG,"user id "+userId);
+        }
+
+        // setup activity
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(R.string.add_address_activity_title);
+        getSupportActionBar().setTitle(target);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         //link view model to the activity
         mAddAddressViewModel = ViewModelProviders.of(this).get(AddAddressViewModel.class);
@@ -95,11 +116,70 @@ public class AddAddressActivity extends AppCompatActivity {
         mAddAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNewAddress();
+                if(target.equals("Edit the address")) editAddress();
+                else addNewAddress();
             }
         });
     }
 
+
+    private void editAddress() {
+        if(inputsAreValid()){
+            String firstName = mFnameTxt.getText().toString();
+            String lastName = mLnameTxt.getText().toString();
+            String phoneNumber = mPhoneTxt.getText().toString();
+            String state = mStateTxt.getText().toString();
+            String city = mCityTxt.getText().toString();
+            String address_1 = mAddress1Txt.getText().toString();
+            String address_2 = mAddress2Txt.getText().toString();
+            int zip_code = Integer.valueOf(mZipCodeTxt.getText().toString());
+            int id = addressEdited.getId();
+            addressEdited = new Address(firstName,lastName,phoneNumber,state,city,zip_code,address_1,address_2,0);
+            addressEdited.setId(id);
+            mAddAddressViewModel.editAddress(addressEdited);
+            observeEditingAddressResponse();
+            observeEditingAddressStatus();
+        }
+    }
+
+    private void observeEditingAddressStatus() {
+        mAddAddressViewModel.getIsEditing().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean)showProgressBar();
+                else hideProgressBar();
+            }
+        });
+    }
+
+    private void observeEditingAddressResponse() {
+        mAddAddressViewModel.getEditResponse().observe(this, new Observer<Response>() {
+            @Override
+            public void onChanged(@Nullable Response response) {
+                if(response != null) {
+                    Toast.makeText(AddAddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                    if (!response.isError()) {
+                        returnToAddressActivity(addressEdited);
+                    }
+
+
+                }
+            }
+        });
+    }
+
+    // fill views with address that user want to edit.
+    private void fillViewsWithAddress(Address mAddress) {
+        Log.d(TAG,"first_name "+mAddress.getFirst_name());
+        mFnameTxt.setText(mAddress.getFirst_name());
+        mLnameTxt.setText(mAddress.getLast_name());
+        mPhoneTxt.setText(mAddress.getPhone_number());
+        mStateTxt.setText(mAddress.getState());
+        mCityTxt.setText(mAddress.getCity());
+        mAddress1Txt.setText(mAddress.getAddress_1());
+        mAddress2Txt.setText(mAddress.getAddress_2());
+        mZipCodeTxt.setText(mAddress.getZip_code()+"");
+    }
 
 
     private void addNewAddress() {
@@ -108,15 +188,17 @@ public class AddAddressActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(mFnameTxt.getText()) && !TextUtils.isEmpty(mLnameTxt.getText())
                 && !TextUtils.isEmpty(mAddress1Txt.getText()) && !TextUtils.isEmpty(mAddress2Txt.getText())
                 && !TextUtils.isEmpty(mStateTxt.getText()) && !TextUtils.isEmpty(mCityTxt.getText())
-                && !TextUtils.isEmpty(mZipCodeTxt.getText())){
+                && !TextUtils.isEmpty(mZipCodeTxt.getText()) && !TextUtils.isEmpty(mPhoneTxt.getText())){
 
-            newAddress = new Address(mStateTxt.getText().toString(),mCityTxt.getText().toString(),
-                    Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
+            newAddress = new Address(mFnameTxt.getText().toString(),mLnameTxt.getText().toString()
+                    ,mPhoneTxt.getText().toString(),mStateTxt.getText().toString(),mCityTxt.getText().toString(),
+                    Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString(),0);
 
             /*
                 obserce add address function to make an action when this process is done
              */
-            mAddAddressViewModel.addAddress(newAddress,userId);
+            Log.d(TAG,"id "+userId);
+            mAddAddressViewModel.addAddress(newAddress,String.valueOf(userId));
             observeAddressAddingResponse();
             observeAddingAddressStatus();
         }
@@ -128,6 +210,7 @@ public class AddAddressActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(mStateTxt.getText()))mStateInputLayout.setError(getString(R.string.field_is_required));
         if(TextUtils.isEmpty(mCityTxt.getText()))mCityInputLayout.setError(getString(R.string.field_is_required));
         if(TextUtils.isEmpty(mZipCodeTxt.getText()))mZipCodeInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mPhoneTxt.getText()))mPhoneInputLayout.setError(getString(R.string.field_is_required));
 
 
 
@@ -135,17 +218,18 @@ public class AddAddressActivity extends AppCompatActivity {
 
     // observe response of adding new address
     private void observeAddressAddingResponse() {
-        mAddAddressViewModel.getResponse().observe(this, new Observer<Response>() {
+        mAddAddressViewModel.getAddResponse().observe(this, new Observer<Response>() {
             @Override
             public void onChanged(@Nullable Response response) {
                 if(response != null) {
-                    if (response.isError() && response.getTag() == 400) {
-                        // response is failure
-                        Toast.makeText(AddAddressActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
-                    } else {
+                    Log.d(TAG,"message "+response.getMessage());
+                    Toast.makeText(AddAddressActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                    if (!response.isError()) {
                         newAddress.setId(response.getAddress_id());
                         returnToAddressActivity(newAddress);
                     }
+
+
                 }
 
             }
@@ -155,12 +239,9 @@ public class AddAddressActivity extends AppCompatActivity {
 
     // return to address activity with address added
     private void returnToAddressActivity(Address newAddress) {
-        Gson gson=new Gson();
-        Type type = new TypeToken<Address>() {}.getType();
-        String newAddressAsString =  gson.toJson(newAddress,type);
-
+        Log.d("ADDRESS_ACTIVITY_TAG","address_1 add "+newAddress.getAddress_1());
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("new_address",newAddressAsString);
+        returnIntent.putExtra("new_address",newAddress);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
@@ -179,6 +260,28 @@ public class AddAddressActivity extends AppCompatActivity {
         });
     }
 
+
+    private boolean inputsAreValid(){
+        if(!TextUtils.isEmpty(mFnameTxt.getText()) && !TextUtils.isEmpty(mLnameTxt.getText())
+                && !TextUtils.isEmpty(mAddress1Txt.getText()) && !TextUtils.isEmpty(mAddress2Txt.getText())
+                && !TextUtils.isEmpty(mStateTxt.getText()) && !TextUtils.isEmpty(mCityTxt.getText())
+                && !TextUtils.isEmpty(mZipCodeTxt.getText())){
+            return true;
+        }
+
+        if(TextUtils.isEmpty(mFnameTxt.getText()))mFnameInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mLnameTxt.getText()))mLnameInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mAddress1Txt.getText()))mAddress1InputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mAddress2Txt.getText()))mAddress2InputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mStateTxt.getText()))mStateInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mCityTxt.getText()))mCityInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mZipCodeTxt.getText()))mZipCodeInputLayout.setError(getString(R.string.field_is_required));
+        if(TextUtils.isEmpty(mPhoneTxt.getText()))mPhoneInputLayout.setError(getString(R.string.field_is_required));
+
+
+        return false;
+    }
+
     private void hideProgressBar() {
         mProgressBar.setVisibility(View.INVISIBLE);
     }
@@ -187,5 +290,12 @@ public class AddAddressActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED,returnIntent);
+        finish();
 
+    }
 }
