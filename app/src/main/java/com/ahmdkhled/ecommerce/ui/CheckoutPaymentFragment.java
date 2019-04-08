@@ -42,7 +42,6 @@ public class CheckoutPaymentFragment extends Fragment {
     @BindView(R.id.use_coupon_txt)
     TextView mUseCouponTxt;
     private CheckoutViewModel mCheckoutViewModel;
-    PrefManager manager;
 
     @Nullable
     @Override
@@ -53,7 +52,6 @@ public class CheckoutPaymentFragment extends Fragment {
 
         setupFonts();
 
-        manager = new PrefManager(getContext());
 
         mCheckoutViewModel = ViewModelProviders.of(getActivity()).get(CheckoutViewModel.class);
 
@@ -63,9 +61,8 @@ public class CheckoutPaymentFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     mCardSwitch.setChecked(false);
-                    mCheckoutViewModel.setPaymentComplete(true);
-                    manager.setPaymentOption("1");
-                }
+                    mCheckoutViewModel.setPaymentOption(1);
+                }else mCheckoutViewModel.setPaymentOption(-1);
             }
         });
 
@@ -73,10 +70,9 @@ public class CheckoutPaymentFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b){
                 if(b){
-                    mCheckoutViewModel.setPaymentComplete(true);
+                    mCheckoutViewModel.setPaymentOption(2);
                     mCODSwitch.setChecked(false);
-                    manager.setPaymentOption("2");
-                }
+                }else mCheckoutViewModel.setPaymentOption(-1);
             }
         });
 

@@ -23,6 +23,7 @@ import com.ahmdkhled.ecommerce.model.AddressItem;
 import com.ahmdkhled.ecommerce.utils.AddressCommunication;
 import com.ahmdkhled.ecommerce.viewmodel.AddAddressViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,18 +32,18 @@ import butterknife.ButterKnife;
 public class
 AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
+    private final String source;
     private Context mContext;
-    private List<Address> addresses;
+    private List<Address> addresses = new ArrayList<>();
     private ImageButton mLastDefaultAddress = null;
     private AddressCommunication mCommunication;
-    private String source;
-    public AddressAdapter(Context mContext, List<Address> addresses, AddressCommunication mCommunication,
+    private int shippingAddress;
+
+    public AddressAdapter(Context mContext,AddressCommunication mCommunication,
                           String source) {
         this.mCommunication = mCommunication;
         this.mContext = mContext;
-        this.addresses = addresses;
         this.source = source;
-
 
     }
 
@@ -55,6 +56,7 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final AddressHolder holder, final int position) {
+
         holder.setupFonts();
         final Address mAddress = addresses.get(position);
         // fill views
@@ -65,30 +67,23 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
         holder.mMobileNumberTxt.setText(mAddress.getPhone_number());
 
 
-        /**
-         * if there is a default address so that it should be marked
-         */
-
-        if(source.equals("address_activity")) {
-            if (mAddress.getisDefault() == 1) {
-                holder.mSelectAddressIcon.setVisibility(View.VISIBLE);
-                mLastDefaultAddress = holder.mSelectAddressIcon;
-
-            } else holder.mSelectAddressIcon.setVisibility(View.INVISIBLE);
-        }
 
         // user can select only one address
+        if(!source.equals("address_activity") && mAddress.getId() == shippingAddress)holder.mSelectAddressIcon.setVisibility(View.VISIBLE);
+        else holder.mSelectAddressIcon.setVisibility(View.INVISIBLE);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageButton ib = holder.mSelectAddressIcon;
-                if (mLastDefaultAddress != null) {
-                    mLastDefaultAddress.setVisibility(View.INVISIBLE);
+                if(!source.equals("address_activity")) {
+                    ImageButton ib = holder.mSelectAddressIcon;
+                    if (mLastDefaultAddress != null) {
+                        mLastDefaultAddress.setVisibility(View.INVISIBLE);
+                    }
+                    mLastDefaultAddress = ib;
+                    ib.setVisibility(View.VISIBLE);
                 }
-                mLastDefaultAddress = ib;
-                ib.setVisibility(View.VISIBLE);
-                mCommunication.selectAddress(mAddress);
+                mCommunication.selectAddress(new AddressItem(mAddress,position));
 
             }
         });
@@ -145,6 +140,10 @@ AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
             addresses.add(newAddress);
             this.notifyDataSetChanged();
         }
+    }
+
+    public void setSelectAddress(int shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 
 

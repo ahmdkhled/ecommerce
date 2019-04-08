@@ -1,7 +1,9 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,12 +13,10 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +27,9 @@ import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.AddressItem;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.utils.AddressCommunication;
-import com.ahmdkhled.ecommerce.viewmodel.AddAddressViewModel;
 import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
 import com.ahmdkhled.ecommerce.viewmodel.CheckoutViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,12 +37,11 @@ import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AddressFragment extends Fragment {
+public class AddressFragment extends Fragment implements AddressCommunication {
 
 
     private static final String TAG = "ADDRESS_FRAGMENT";
     private static final int EDIT_ADDRESS_REQUEST_CODE = 1006;
-    private static final int SELECT_ADDRESS_REQUEST_CODE = 1007;
     private static final int ADD_ADDRESS_REQUESTED_CODE = 1008;
 
     @BindView(R.id.add_address_txt)
@@ -53,28 +50,19 @@ public class AddressFragment extends Fragment {
     ConstraintLayout mAddressFragmentLayout;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
-    @BindView(R.id.address_user_name)
-    TextView mUserNameTxt;
-    @BindView(R.id.address_address_1)
-    TextView mAddress1Txt;
-    @BindView(R.id.address_address_2)
-    TextView mAddress2Txt;
-    @BindView(R.id.address_mobile_number)
-    TextView mMobileNumberTxt;
-    @BindView(R.id.edit_address_image_btn)
-    ImageButton mEditAddressBtn;
-    @BindView(R.id.delete_address_image_btn)
-    ImageButton mDeleteAddressBtn;
+    @BindView(R.id.address_recycler_view)
+    RecyclerView mAddressRecyclerView;
 
 
 
-
-    AddAddressViewModel mAddAddressViewModel;
+    AddressAdapter mAddressAdapter;
     AddressViewModel mAddressViewModel;
     private String userId = "2";
-    private boolean userHasAddress;
-    private Address mAddress;
     private int editedAddressPosition;
+    private CheckoutViewModel mCheckOutViewModel;
+    private int size;
+    private int shippingAddress;
+    private String source = "checkout";
 
     @Nullable
     @Override
@@ -87,33 +75,35 @@ public class AddressFragment extends Fragment {
         // set Roboto font to text view
         setupViewFont();
 
-
+        Bundle bundle = getArguments();
+        if(bundle != null && bundle.getString("source") != null){
+            source = bundle.getString("source");
+        }
 
         // view model
-        mAddAddressViewModel = ViewModelProviders.of(getActivity()).get(AddAddressViewModel.class);
+        mCheckOutViewModel = ViewModelProviders.of(getActivity()).get(CheckoutViewModel.class);
         mAddressViewModel = ViewModelProviders.of(getActivity()).get(AddressViewModel.class);
         mAddressViewModel.init();
 
-
-
         // load address
-        mAddressViewModel.loadAddresses(userId,"1"); // 1 means default address.
+        mAddressViewModel.loadAddresses(userId,null);
 
         // observe loading address response
         mAddressViewModel.getAddressList().observe(getActivity(), new Observer<List<Address>>() {
             @Override
             public void onChanged(@Nullable List<Address> addresses) {
-                if(addresses != null && addresses.size() > 0){
-                    mAddress = addresses.get(0);
-                    fillAddressViews(addresses.get(0));
-                    userHasAddress = true;
-                    mAddAddressTxt.setText("Choose Another Address");
-                }else {
-                    // no addresses
-                    userHasAddress = false;
-                    mAddAddressTxt.setText("Add New Address");
+                Log.d("address_tag","getAddressList");
+                if (addresses != null) {
+                    Log.d("address_tag","getAddressList "+addresses.size());
+                    if (addresses.size() > 0) {
+                        Log.d("address_tag","getAddressList "+addresses.size());
+                        mAddressAdapter.notifyAdapter(addresses);
+                    } else {
+                        // no addresses
+                        size = 0;
 
-                }
+                    }
+                }else Toast.makeText(getContext(), getContext().getString(R.string.error_message), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -137,34 +127,21 @@ public class AddressFragment extends Fragment {
         mAddAddressTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(userHasAddress){
-                    // add new address
-                    chooseNewAddress();
-                }else{
-                    // add new address
-                    addNewAddress();
-                }
+                addNewAddress();
             }
         });
 
 
-
-        mEditAddressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editAddress(mAddress);
-            }
-        });
-
-        mDeleteAddressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteAddress(mAddress);
-            }
-        });
-
+        setupRecyclerView();
 
         return view;
+    }
+
+    private void setupRecyclerView() {
+        mAddressAdapter = new AddressAdapter(getContext(),this,source);
+        mAddressRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAddressRecyclerView.setHasFixedSize(true);
+        mAddressRecyclerView.setAdapter(mAddressAdapter);
     }
 
     private void addNewAddress() {
@@ -172,32 +149,10 @@ public class AddressFragment extends Fragment {
         startActivityForResult(intent,ADD_ADDRESS_REQUESTED_CODE);
     }
 
-    private void fillAddressViews(Address address) {
-        mUserNameTxt.setText(address.getFirst_name()+" "+address.getLast_name());
-        mAddress1Txt.setText(address.getAddress_1());
-        mAddress2Txt.setText(address.getAddress_2());
-        mMobileNumberTxt.setText(address.getPhone_number());
-
-    }
-
-    private void chooseNewAddress() {
-        Intent chooseAddressIntent = new Intent(getContext(), AddressActivity.class);
-        chooseAddressIntent.putExtra("source","checkout");
-        startActivityForResult(chooseAddressIntent,SELECT_ADDRESS_REQUEST_CODE);
-    }
-
 
     private void setupViewFont() {
         mAddAddressTxt.setTypeface(Typeface.createFromAsset(getContext().getAssets()
                 ,getString(R.string.roboto_black)));
-        mUserNameTxt.setTypeface(Typeface.createFromAsset(getContext().getAssets()
-                ,getContext().getString(R.string.roboto_medium)));
-        mAddress1Txt.setTypeface(Typeface.createFromAsset(getContext().getAssets()
-                ,getContext().getString(R.string.roboto_light)));
-        mAddress2Txt.setTypeface(Typeface.createFromAsset(getContext().getAssets()
-                ,getContext().getString(R.string.roboto_light)));
-        mMobileNumberTxt.setTypeface(Typeface.createFromAsset(getContext().getAssets()
-                ,getContext().getString(R.string.roboto_black)));
     }
 
 
@@ -220,50 +175,79 @@ public class AddressFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK && data != null){
-            if(requestCode == SELECT_ADDRESS_REQUEST_CODE){
-                Address address = data.getParcelableExtra("selected_address");
-                fillAddressViews(address);
-            }
-
-            else if(requestCode == EDIT_ADDRESS_REQUEST_CODE){
+             if(requestCode == EDIT_ADDRESS_REQUEST_CODE){
                 Address address = data.getParcelableExtra("new_address");
-                fillAddressViews(address);
+                mAddressAdapter.editAddress(address,editedAddressPosition);
             }
 
             else if(requestCode == ADD_ADDRESS_REQUESTED_CODE){
                 Address address = data.getParcelableExtra("new_address");
-                fillAddressViews(address);
+                 mAddressAdapter.setSelectAddress(shippingAddress);
+                mAddressAdapter.addAddress(address);
             }
         }
     }
 
 
+    @Override
+    public void selectAddress(AddressItem addressItem) {
+       // save address into shared preferences
+        if(addressItem != null && source.equals("checkout")) {
+            shippingAddress = addressItem.getmAddress().getId();
+            Log.d("address_tag", "address id " + shippingAddress);
+            mCheckOutViewModel.setShippingAddress(addressItem.getmAddress().getId());
+        }else editAddress(addressItem);
+    }
 
-
-    private void editAddress(Address address) {
-        if(address != null){
+    @Override
+    public void editAddress(AddressItem addressItem) {
+        if(addressItem != null){
+            editedAddressPosition = addressItem.getPosition();
             Intent editAddressIntent = new Intent(getActivity(),AddAddressActivity.class);
-            editAddressIntent.putExtra("edit_address",address);
+            editAddressIntent.putExtra("edit_address",addressItem.getmAddress());
             startActivityForResult(editAddressIntent,EDIT_ADDRESS_REQUEST_CODE);
         }
     }
 
+    @Override
+    public void deleteAddress(final AddressItem addressItem) {
+        if(addressItem != null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Are you sure you want to delete this address ?");
+            builder.setNegativeButton("Cancel",null);
+            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    mAddressViewModel.deleteAddress(addressItem.getmAddress());
+                    mAddressViewModel.getDeleteResponse().observe(getActivity(), new Observer<Response>() {
+                        @Override
+                        public void onChanged(@Nullable Response response) {
+                            if(response != null){
+                                if(!response.isError()){
+                                    if(addressItem.getmAddress().getId() == shippingAddress){
+                                        shippingAddress = -1;
+                                        mCheckOutViewModel.setShippingAddress(-1);
+                                    }
+                                    mAddressAdapter.setSelectAddress(shippingAddress);
+                                    mAddressAdapter.removeAddress(addressItem.getPosition());
+                                }
+                            }else Toast.makeText(getActivity(), getString(R.string.error_message), Toast.LENGTH_SHORT).show();
 
-    private void deleteAddress( Address address) {
-        mAddressViewModel.deleteAddress(address);
-        mAddressViewModel.getDeleteResponse().observe(getActivity(), new Observer<Response>() {
-            @Override
-            public void onChanged(@Nullable Response response) {
-                if(response != null){
-                    Log.d("address_fragment","address deleted "+response.getMessage());
-                    if(!response.isError()){
+                        }
+                    });
 
-                    }
+                    mAddressViewModel.getIsDeleting().observe(getActivity(), new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(@Nullable Boolean aBoolean) {
+                            if(aBoolean)showProgressBar();
+                            else hideProgressBar();
+                        }
+                    });
                 }
+            });
 
-            }
-        });
+            builder.show();
+        }
+
     }
-
-
 }

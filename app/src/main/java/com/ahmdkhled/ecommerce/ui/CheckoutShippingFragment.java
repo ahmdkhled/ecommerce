@@ -40,7 +40,6 @@ public class CheckoutShippingFragment extends Fragment {
 
 
     private CheckoutViewModel mCheckoutViewModel;
-    private PrefManager manager;
 
 
     @Nullable
@@ -54,7 +53,6 @@ public class CheckoutShippingFragment extends Fragment {
         // setup fonts
         setFonts();
 
-        manager = new PrefManager(getContext());
 
         // link to checkout view model
         mCheckoutViewModel = ViewModelProviders.of(getActivity()).get(CheckoutViewModel.class);
@@ -66,9 +64,8 @@ public class CheckoutShippingFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     mFeatureTwoSwitch.setChecked(false);
-                    mCheckoutViewModel.setShippingComplete(true);
-                    manager.setShippingOption("1");
-                }
+                    mCheckoutViewModel.setShippingOption(1);
+                }else mCheckoutViewModel.setShippingOption(-1);
             }
         });
 
@@ -76,10 +73,9 @@ public class CheckoutShippingFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b){
                 if(b){
-                    mCheckoutViewModel.setShippingComplete(true);
+                    mCheckoutViewModel.setShippingOption(2);
                     mFeatureOneSwitch.setChecked(false);
-                    manager.setShippingOption("2");
-                }
+                }else mCheckoutViewModel.setShippingOption(-1);
             }
         });
 

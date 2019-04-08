@@ -63,6 +63,9 @@ public class AddressRepository {
             @Override
             public void onFailure(Call<List<Address>> call, Throwable t) {
                 Log.d("mvvm","failure "+t.getMessage());
+                mIsLoading.setValue(false);
+                mAddressList.setValue(null);
+
 
             }
         });

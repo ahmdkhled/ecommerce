@@ -22,6 +22,7 @@ import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CheckoutViewPagerAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.utils.CustomViewPager;
+import com.ahmdkhled.ecommerce.utils.PrefManager;
 import com.ahmdkhled.ecommerce.viewmodel.CheckoutViewModel;
 
 import butterknife.BindView;
@@ -56,10 +57,10 @@ public class CheckoutActivity extends AppCompatActivity {
     private TabLayout.Tab mTab;
     private int tabPosition;
     private String[] pageTitles = {"Address","Shipping","Payment"};
-    private boolean allowed;
     private CheckoutViewModel mCheckoutViewModel;
-    private Boolean isShippingComplete;
-    private Boolean isPaymentComplete;
+    private int shippingOption;
+    private int shippingAddressId;
+    private int paymentOption;
 
 
     @Override
@@ -70,6 +71,8 @@ public class CheckoutActivity extends AppCompatActivity {
         // bind views
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
+
+
 
         // set ROBOTO font
         setFonts();
@@ -130,20 +133,28 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(getViewPagerItem() == 1) {
-                    if(isShippingComplete){
+                    if(shippingOption != -1)
                         mViewPager.setCurrentItem(getViewPagerItem()+1,true);
-
-                    }else
+                    else
                         Toast.makeText(CheckoutActivity.this, "please choose one shipping option",
                                 Toast.LENGTH_SHORT).show();
-                }else if(getViewPagerItem() == 2){
-                    if(isPaymentComplete){
+                }
+                else if(getViewPagerItem() == 2){
+                    if(paymentOption != -1){
                         // place order into db
+                        Log.d("order","shipping address "+shippingAddressId);
+                        Log.d("order","shipping option "+shippingOption);
+                        Log.d("order","payment option "+paymentOption);
                     }else
                         Toast.makeText(CheckoutActivity.this, "please choose one payment option",
                                 Toast.LENGTH_SHORT).show();
-                }else if(getViewPagerItem() == 0){
-                    mViewPager.setCurrentItem(getViewPagerItem()+1,true);
+
+                }
+                else if(getViewPagerItem() == 0){
+                    if(shippingAddressId != -1)
+                         mViewPager.setCurrentItem(getViewPagerItem()+1,true);
+                    else Toast.makeText(CheckoutActivity.this, "please choose one address",
+                            Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -154,20 +165,30 @@ public class CheckoutActivity extends AppCompatActivity {
         // link to checkout view model
         mCheckoutViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
         mCheckoutViewModel.init();
-        mCheckoutViewModel.getIsShippingComplete().observe(this, new Observer<Boolean>() {
+
+        mCheckoutViewModel.getShippingOption().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                isShippingComplete = aBoolean;
+            public void onChanged(@Nullable Integer option) {
+                if(option != null) shippingOption = option;
             }
         });
 
-        mCheckoutViewModel.getIsPaymentComplete().observe(this, new Observer<Boolean>() {
+
+        mCheckoutViewModel.getPaymentOption().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                isPaymentComplete = aBoolean;
+            public void onChanged(@Nullable Integer option) {
+                if(option != null) paymentOption = option;
             }
         });
 
+        mCheckoutViewModel.getShippingAddress().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer addressId) {
+                if(addressId != null){
+                    shippingAddressId = addressId;
+                }
+            }
+        });
 
     }
 
@@ -176,6 +197,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 checkoutFragment,pageTitles);
         mViewPager.setAdapter(mCheckoutViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     private void setTabView() {

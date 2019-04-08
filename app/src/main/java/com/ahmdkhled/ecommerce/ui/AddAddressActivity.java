@@ -71,7 +71,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
     AddAddressViewModel mAddAddressViewModel;
-    private long userId;
+    private long userId = 2;
     private Address newAddress,addressEdited;
     String target = "Add new address";
 
@@ -96,10 +96,10 @@ public class AddAddressActivity extends AppCompatActivity {
             }
         }
 
-        if(intent != null && intent.hasExtra("user_id")){
-            userId = intent.getLongExtra("user_id",0);
-            Log.d(TAG,"user id "+userId);
-        }
+//        if(intent != null && intent.hasExtra("user_id")){
+//            userId = intent.getLongExtra("user_id",0);
+//            Log.d(TAG,"user id "+userId);
+//        }
 
         // setup activity
         setSupportActionBar(mToolbar);
@@ -231,7 +231,7 @@ public class AddAddressActivity extends AppCompatActivity {
                         returnToAddressActivity(newAddress);
                     }
                 }else{
-                    Log.d("address_tag","adding address response "+response.getMessage());
+//                    Log.d("address_tag","adding address response "+response.getMessage());
                 }
 
 

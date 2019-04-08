@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardElevation="4dp"
+    app:cardElevation="10dp"
     android:layout_marginBottom="15dp"
 
     >
@@ -78,7 +78,8 @@
             app:layout_constraintTop_toTopOf="@+id/address_user_name"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
-            android:id="@+id/selected_address_image_btn"/>
+            android:id="@+id/selected_address_image_btn"
+            android:visibility="invisible"/>
 
         <ImageButton
             android:layout_width="wrap_content"
