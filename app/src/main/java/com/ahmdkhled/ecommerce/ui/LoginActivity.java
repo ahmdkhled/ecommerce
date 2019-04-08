@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Response;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.ahmdkhled.ecommerce.viewmodel.LoginViewModel;
 
@@ -31,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
     String source="";
     LoginViewModel loginViewModel;
+    ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         passIL=findViewById(R.id.loginPass_IL);
         createNewAccount=findViewById(R.id.createNewAccount);
         progressBar=findViewById(R.id.loginProgressBar);
+        constraintLayout=findViewById(R.id.activity_login);
 
         source=getIntent().getStringExtra("source");
         Log.d("login","source "+source);
@@ -51,6 +56,11 @@ public class LoginActivity extends AppCompatActivity {
         loginBu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!Network.isConnected(getApplicationContext())){
+                    showSnakbar();
+                    return;
+                }
+
                 String mail=emailIL.getEditText().getText().toString();
                 String pass=passIL.getEditText().getText().toString();
                 if (validateInput()){
@@ -75,8 +85,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+    }
 
-
+    private void showSnakbar(){
+        Snackbar snackbar = Snackbar.make(constraintLayout,"there is no connection",Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     private void observeResponse(){
