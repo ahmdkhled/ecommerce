@@ -54,7 +54,5 @@
             android:exported="true"/>
         <activity android:name=".ui.CheckoutActivity"
             android:exported="true"/>
-        <activity android:name=".ui.PaymentActivity"
-            android:exported="true" />
     </application>
 </manifest>
