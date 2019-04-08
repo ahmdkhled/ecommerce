@@ -19,6 +19,7 @@ import retrofit2.Response;
 
 public class CategoriesActivity  extends AppCompatActivity {
 
+
     ArrayList<Category> categoriesArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
 
