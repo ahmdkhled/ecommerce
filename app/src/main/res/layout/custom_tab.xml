@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tab_title"
+        tools:text="Address"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:paddingStart="6dp"
+        android:paddingRight="6dp"
+        android:gravity="center"
+        tools:background="@drawable/selected_custom_tab"
+        android:paddingLeft="6dp" />
+
+</android.support.constraint.ConstraintLayout>
