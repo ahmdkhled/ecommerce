@@ -21,6 +21,7 @@ import com.ahmdkhled.ecommerce.model.CartResponse;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
 
 import java.util.ArrayList;
 import retrofit2.Call;
@@ -28,6 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity implements CartItemAdapter.OnCartItemsChange{
+    private static final int LOGIN_REQUEST_CODE = 1009;
     RecyclerView recyclerView;
     Button checkoutButton ;
     TextView cart_subtotal;
@@ -63,10 +65,16 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             @Override
             public void onClick(View view) {
 
-             Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
-             intent.putParcelableArrayListExtra("items", cartItems);
-             intent.putExtra("total",total);
-             startActivity(intent);
+             if(new SessionManager(CartActivity.this).getId() != -1) {
+                 Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+                 intent.putParcelableArrayListExtra("items", cartItems);
+                 intent.putExtra("total", total);
+                 startActivity(intent);
+             }else {
+                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                 intent.putExtra("source", "cartItemsActivity");
+                 startActivityForResult(intent,LOGIN_REQUEST_CODE);
+             }
             }
         });
 
@@ -87,6 +95,15 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK && requestCode == LOGIN_REQUEST_CODE && data != null){
+            Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+            intent.putExtra("total", total);
+            startActivity(intent);
+        }
+    }
 
     public void getCartItems(final ArrayList<CartItem> cartItems, final String page) {
         String ids = getIdsAsString(cartItems);

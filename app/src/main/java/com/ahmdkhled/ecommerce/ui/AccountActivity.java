@@ -27,7 +27,6 @@ public class AccountActivity extends AppCompatActivity {
     ConstraintLayout favoritesContainer;
     ConstraintLayout ordersContainer;
     TextView mUserAddressTxt;
-    private long userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +44,7 @@ public class AccountActivity extends AppCompatActivity {
         mUserAddressTxt = findViewById(R.id.address_label);
         sessionManager=new SessionManager(this);
 
-        // get user id if he has logged in before
-        userId = sessionManager.getId();
+
 
         populateDetails();
         login.setOnClickListener(new View.OnClickListener() {
@@ -75,9 +73,8 @@ public class AccountActivity extends AppCompatActivity {
         mUserAddressTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(userId != -1) {
+                if(sessionManager.getId() != -1) {
                     Intent addressIntent = new Intent(getApplicationContext(), AddressActivity.class);
-                    addressIntent.putExtra("user_id",userId);
                     startActivity(addressIntent);
                 }else
                     Toast.makeText(AccountActivity.this, "please log in to access your address", Toast.LENGTH_SHORT).show();

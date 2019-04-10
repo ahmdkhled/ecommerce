@@ -1,74 +1,70 @@
 package com.ahmdkhled.ecommerce.viewmodel;
-
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.CartItem;
-import com.ahmdkhled.ecommerce.model.CartResponse;
 import com.ahmdkhled.ecommerce.repository.AddressRepository;
-import com.ahmdkhled.ecommerce.repository.CartRepo;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutViewModel extends ViewModel {
 
-    private AddressRepository mAddressRepository;
-    private MutableLiveData<List<Address>> mAddress;
-    private MutableLiveData<CartResponse> mCart;
-    private CartRepo mCartRepo;
-    private CartItemsManger cartItemsManger;
-    private MutableLiveData<Boolean> addressIsLoading,cartIsLoading;
-
-    public void init(Application application,long userId) {
+    private MutableLiveData<Integer> shippingOption,paymentOption;
+    private MutableLiveData<Integer> shippingAddress;
 
 
-        // initiate repos
-        mAddressRepository = AddressRepository.getInstance();
-        mCartRepo = CartRepo.getInstance();
+    public void init(){
+        if(shippingOption == null){
+            shippingOption = new MutableLiveData<>();
+            shippingOption.setValue(-1);
+        }
 
-        // get address
-        mAddress = mAddressRepository.getAddresses(String.valueOf(userId),"1");
-        addressIsLoading = mAddressRepository.getmIsLoading();
+        if(paymentOption == null){
+            paymentOption = new MutableLiveData<>();
+            paymentOption.setValue(-1);
+        }
 
-        // get cart items
-        mCart = mCartRepo.getCart(loadCartFromSharedPref(application),"1");
-        cartIsLoading = mCartRepo.cartIsLoading();
-
+        if(shippingAddress == null){
+            shippingAddress = new MutableLiveData<>();
+            shippingAddress.setValue(-1);
+        }
 
     }
 
     private List<CartItem> loadCartFromSharedPref(Context context) {
-        cartItemsManger =CartItemsManger.getInstance(context);
+        CartItemsManger cartItemsManger = CartItemsManger.getInstance(context);
         return cartItemsManger.getCartItems();
 
     }
+    public void setShippingOption(int option){
+        shippingOption.setValue(option);
+    }
 
+    public MutableLiveData<Integer> getShippingOption() {
+        return shippingOption;
+    }
 
-    public MutableLiveData<List<Address>> getAddress() {
-        if(mAddress == null) mAddress = new MutableLiveData<>();
-        return mAddress;
+    public void setPaymentOption(int option){
+        paymentOption.setValue(option);
+    }
+
+    public MutableLiveData<Integer> getPaymentOption() {
+        return paymentOption;
+    }
+
+    public void setShippingAddress(int id) {
+        shippingAddress.setValue(id);
+
+    }
+
+    public MutableLiveData<Integer> getShippingAddress() {
+        return shippingAddress;
     }
 
 
-    public MutableLiveData<CartResponse> getCart() {
-        if (mCart == null) mCart = new MutableLiveData<>();
-        return mCart;
-    }
 
-    public MutableLiveData<Boolean> addressIsLoading() {
-        if(addressIsLoading == null) addressIsLoading = new MutableLiveData<>();
-        return addressIsLoading;
-    }
-
-    public MutableLiveData<Boolean> cartIsLoading() {
-        if(cartIsLoading == null) cartIsLoading = new MutableLiveData<>();
-        return cartIsLoading;
-    }
 }
