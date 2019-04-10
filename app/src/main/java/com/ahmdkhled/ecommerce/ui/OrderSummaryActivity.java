@@ -64,7 +64,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         // get user id
         userId = new SessionManager(this).getId();
-        List<CartItem> cartItems = new CartItemsManger(this).getCartItems();
+        List<CartItem> cartItems =  CartItemsManger.getInstance(this).getCartItems();
 
 
         mViewModel = ViewModelProviders.of(this).get(OrdersViewModel.class);
