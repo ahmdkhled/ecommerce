@@ -97,7 +97,7 @@ public class PaymentActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
 
         // read cart items from shared preference
-        CartItemsManger cartItemsManger = new CartItemsManger(this);
+        CartItemsManger cartItemsManger = CartItemsManger.getInstance(this);
         mCartItems = cartItemsManger.getCartItems();
         Log.d(TAG,"quantity "+mCartItems.get(0).getQuantity());
 
@@ -133,7 +133,7 @@ public class PaymentActivity extends AppCompatActivity {
                 Log.d(TAG,"q "+order.getOrderItems().get(0).getOrderItem_quantity());
                 Intent intent = new Intent(getApplicationContext(),OrderSummaryActivity.class);
                 intent.putExtra("order_id",order.getOrder_id());
-//                startActivity(intent);
+                startActivity(intent);
 
             }
         });

@@ -33,7 +33,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         this.context = context;
         this.cartItemList = cartItemList;
         this.onCartItemsChange = onCartItemsChange;
-        cartItemsManger=new CartItemsManger(context);
+        cartItemsManger=CartItemsManger.getInstance(context);
     }
 
     @NonNull

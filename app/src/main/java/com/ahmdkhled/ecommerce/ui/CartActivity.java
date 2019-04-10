@@ -55,7 +55,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
         onCartItemsChange=this;
 
-        CartItemsManger cartItemsManger=new CartItemsManger(this);
+        CartItemsManger cartItemsManger=CartItemsManger.getInstance(this);
         final ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
         handleVisibility(cartItems);
 

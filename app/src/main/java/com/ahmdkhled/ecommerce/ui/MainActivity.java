@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -142,6 +143,8 @@ public class MainActivity extends AppCompatActivity
             showSnackBar();
         }
 
+
+
     }
 
     void getCategories(){
@@ -278,6 +281,7 @@ public class MainActivity extends AppCompatActivity
         final MenuItem menuItem = menu.findItem(R.id.cart);
         View actionView = menuItem.getActionView();
         TextView badgeTV=actionView.findViewById(R.id.cartCount);
+
         setupBadge(badgeTV);
 
         actionView.setOnClickListener(new View.OnClickListener() {
@@ -372,15 +376,16 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    void setupBadge(TextView countTV){
-        CartItemsManger cartItemsManger=new CartItemsManger(this);
-        ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
-        if (cartItems==null||cartItems.isEmpty()){
-            countTV.setVisibility(View.GONE);
-        }else{
-            countTV.setVisibility(View.VISIBLE);
-            countTV.setText(String.valueOf(cartItems.size()));
-        }
+    void setupBadge(final TextView countTV){
+        CartItemsManger cartItemsManger=CartItemsManger.getInstance(this);
+        cartItemsManger.getCartItemsSize().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                Log.d("BADGEEE","count "+integer);
+                countTV.setText(String.valueOf(integer));
+            }
+        });
+
     }
 
     private void moveSlider(final int adsNum){

@@ -48,6 +48,7 @@ public class ProductDetail extends AppCompatActivity {
     FloatingActionButton favorite;
     public static final String PRODUCT_KEY="product_key";
     public Product product;
+    private TextView badgeTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,13 +83,15 @@ public class ProductDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (product!=null){
-                    CartItemsManger cartItemsManger=new CartItemsManger(getApplicationContext());
+                    CartItemsManger cartItemsManger=CartItemsManger.getInstance(getApplicationContext());
                     ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
                     if (cartItems!=null&&cartItems.contains(new CartItem(product,1))){
                         Toast.makeText(ProductDetail.this, "already exist", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getApplicationContext(),"added to cart ",Toast.LENGTH_SHORT).show();
                         cartItemsManger.saveCartItem(product.getId(),1);
+                        badgeTV.setText((Integer.parseInt(badgeTV.getText().toString()))+1);
+
                     }
 
                 }else{
@@ -171,7 +174,7 @@ public class ProductDetail extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.detail_menu,menu);
         final MenuItem menuItem = menu.findItem(R.id.detail_cart);
         View actionView = menuItem.getActionView();
-        TextView badgeTV=actionView.findViewById(R.id.cartCount);
+        badgeTV=actionView.findViewById(R.id.cartCount);
         setupBadge(badgeTV);
 
         actionView.setOnClickListener(new View.OnClickListener() {
@@ -194,7 +197,7 @@ public class ProductDetail extends AppCompatActivity {
     }
 
     void setupBadge(TextView countTV){
-        CartItemsManger cartItemsManger=new CartItemsManger(this);
+        CartItemsManger cartItemsManger=CartItemsManger.getInstance(this);
         ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
         if (cartItems==null||cartItems.isEmpty()){
             countTV.setVisibility(View.GONE);

@@ -45,7 +45,7 @@ public class CheckoutViewModel extends ViewModel {
     }
 
     private List<CartItem> loadCartFromSharedPref(Context context) {
-        cartItemsManger = new CartItemsManger(context);
+        cartItemsManger =CartItemsManger.getInstance(context);
         return cartItemsManger.getCartItems();
 
     }
