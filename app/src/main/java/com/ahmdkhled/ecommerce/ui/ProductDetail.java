@@ -90,7 +90,8 @@ public class ProductDetail extends AppCompatActivity {
                     }else{
                         Toast.makeText(getApplicationContext(),"added to cart ",Toast.LENGTH_SHORT).show();
                         cartItemsManger.saveCartItem(product.getId(),1);
-                        badgeTV.setText((Integer.parseInt(badgeTV.getText().toString()))+1);
+                        int count=(Integer.parseInt(badgeTV.getText().toString()))+1;
+                        badgeTV.setText(String.valueOf(count));
 
                     }
 
@@ -200,6 +201,7 @@ public class ProductDetail extends AppCompatActivity {
         CartItemsManger cartItemsManger=CartItemsManger.getInstance(this);
         ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
         if (cartItems==null||cartItems.isEmpty()){
+            countTV.setText("0");
             countTV.setVisibility(View.GONE);
         }else{
             countTV.setVisibility(View.VISIBLE);
