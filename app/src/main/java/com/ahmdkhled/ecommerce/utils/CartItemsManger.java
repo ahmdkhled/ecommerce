@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce.utils;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -18,18 +19,37 @@ public class CartItemsManger {
     private static final String CART_ITEMS_LIST_KEY="cart_items";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private MutableLiveData<Integer> cartItemsSize;
+    String TAG="BADGEEE";
+    static CartItemsManger cartItemsManger;
 
-    public CartItemsManger(Context context) {
-        sharedPreferences=context.getSharedPreferences(PREFS,Context.MODE_PRIVATE);
+    public static CartItemsManger getInstance(Context context){
+        if(cartItemsManger == null)cartItemsManger = new CartItemsManger(context);
 
+        return cartItemsManger;
+    }
+
+    private CartItemsManger(Context context) {
+        if(cartItemsSize == null) {
+            cartItemsSize = new MutableLiveData<>();
+            sharedPreferences=context.getSharedPreferences(PREFS,Context.MODE_PRIVATE);
+            cartItemsSize.setValue(getCartItems().size());
+        }
+        Log.d("BADGEEE", "sp cons null");
     }
 
     public ArrayList<CartItem> getCartItems(){
-        String json=sharedPreferences.getString(CART_ITEMS_LIST_KEY,null);
-        Log.d("JSONN","json is"+json);
-        Gson gson=new Gson();
-        Type type = new TypeToken<ArrayList<CartItem>>() {}.getType();
-        return gson.fromJson(json,type);
+        if(sharedPreferences == null){
+            Log.d("BADGEEE","sp null");
+            return new ArrayList<>();
+        }else {
+            String json = sharedPreferences.getString(CART_ITEMS_LIST_KEY, null);
+            Log.d("JSONN", "json is" + json);
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<CartItem>>() {
+            }.getType();
+            return gson.fromJson(json, type);
+        }
     }
 
     public void saveCartItem(int ProductId,int quantity){
@@ -44,11 +64,14 @@ public class CartItemsManger {
         editor=sharedPreferences.edit();
         editor.putString(CART_ITEMS_LIST_KEY,json);
         editor.apply();
+        cartItemsSize.setValue(cartItems.size());
+        Log.d(TAG, "saveCartItem: ");
     }
     private void deleteCartItems(){
         editor=sharedPreferences.edit();
         editor.putString(CART_ITEMS_LIST_KEY,"");
         editor.apply();
+
     }
 
     public void updateQuantity(int newQuantity,int pos){
@@ -71,7 +94,13 @@ public class CartItemsManger {
         editor=sharedPreferences.edit();
         editor.putString(CART_ITEMS_LIST_KEY,json);
         editor.apply();
+        cartItemsSize.setValue(cartItems.size());
 
+    }
+
+    public MutableLiveData<Integer> getCartItemsSize(){
+        Log.d(TAG, "getCartItemsSize: "+cartItemsSize.getValue());
+        return cartItemsSize;
     }
 
 

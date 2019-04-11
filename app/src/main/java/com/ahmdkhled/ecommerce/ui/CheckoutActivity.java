@@ -3,218 +3,250 @@ package com.ahmdkhled.ecommerce.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.Bundle;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
-import com.ahmdkhled.ecommerce.adapter.ShipmentAdapter;
+import com.ahmdkhled.ecommerce.adapter.CheckoutViewPagerAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
-import com.ahmdkhled.ecommerce.model.CartResponse;
-import com.ahmdkhled.ecommerce.model.Product;
-import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.ahmdkhled.ecommerce.utils.CustomViewPager;
+import com.ahmdkhled.ecommerce.utils.PrefManager;
 import com.ahmdkhled.ecommerce.viewmodel.CheckoutViewModel;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class CheckoutActivity extends AppCompatActivity {
-    private static final String TAG = "CHECKOUT_ACTIVITY_TAG";
-    private static final int CHANGE_ADDRESS_REQUEST = 1002;
-    private static final int ADD_ADDRESS_REQUEST = 1003;
-
-    @BindView(R.id.address_user_name)
-    TextView mAddressUserNameTxt;
-    @BindView(R.id.address_details)
-    TextView mAddressDetailsTxt;
-    @BindView(R.id.address_phone_number)
-    TextView mAddressPhoneTxt;
-    @BindView(R.id.change_address_txt)
-    TextView mChangeAddress;
-    @BindView(R.id.shipment_recycler_view)
-    RecyclerView mShipmentRecyclerView;
-    @BindView(R.id.sub_total_value)
-    TextView mSubTotalTxt;
-    @BindView(R.id.payment_btn)
-    Button mPaymentBtn;
-    @BindView(R.id.checkout_add_progress_bar)
-    ProgressBar mAddressProgressBar;
-    @BindView(R.id.checkout_shipment_progress_bar)
-    ProgressBar mShipmentsProgressBar;
 
 
+    private static final int SELECT_ADDRESS_REQUEST_CODE = 1005;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
+    @BindView(R.id.checkout_view_pager)
+    CustomViewPager mViewPager;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.shipping_txt)
+    TextView mShippingTxt;
+    @BindView(R.id.shipping_value)
+    TextView mShippingValueTxt;
+    @BindView(R.id.total_txt)
+    TextView mTotalTxt;
+    @BindView(R.id.total_value)
+    TextView mTotalValueTxt;
+    @BindView(R.id.continue_btn)
+    Button mContinueBtn;
 
-    CartResponse shipments = new CartResponse(0,new ArrayList<Product>());
-    ShipmentAdapter mShipmentAdapter;
-    long userId;
-    CheckoutViewModel mCheckoutViewModel;
+    CheckoutViewPagerAdapter mCheckoutViewPagerAdapter;
+    private Fragment[] checkoutFragment = {new AddressFragment(), new CheckoutShippingFragment()
+                                            , new CheckoutPaymentFragment()};
+    private TabLayout.Tab mTab;
+    private int tabPosition;
+    private String[] pageTitles = {"Address","Shipping","Payment"};
+    private CheckoutViewModel mCheckoutViewModel;
+    private int shippingOption;
+    private int shippingAddressId;
+    private int paymentOption;
+    private int total;
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
         // bind views
         ButterKnife.bind(this);
+        setSupportActionBar(mToolbar);
 
-        /**
-         * check first if user has session.
-         * if he hasn't he should login first,
-         */
 
-        userId = getUserId();
 
-        if(userId == -1){
-            Intent loginIntent = new Intent(this,LoginActivity.class);
-            loginIntent.putExtra("source",CheckoutActivity.class.getSimpleName());
-            startActivity(loginIntent);
-            finish();
+        // set ROBOTO font
+        setFonts();
+
+        // setup viewpager
+        setupViewPager();
+
+        // set tab view
+        setTabView();
+
+        // disable tabs selection
+        disableTabSelection();
+
+        // set allowed viewpager swipe direction
+        mViewPager.setAllowedDirecrion("left");
+
+        // setup button text at the beginning
+        mContinueBtn.setText("Continue To Shipping");
+
+        // get total from intent
+        Intent intent = getIntent();
+        if(intent != null && intent.hasExtra("total")){
+            total = intent.getIntExtra("total",0);
+            mTotalValueTxt.setText(total+" EGP");
         }
 
-
-        // link view model
-        mCheckoutViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
-
-        mCheckoutViewModel.init(getApplication(),userId);
-
-
-        // observe loading address process' response
-        mCheckoutViewModel.getAddress().observe(this, new Observer<List<Address>>() {
+        // handle tab view as step indicator
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onChanged(@Nullable List<Address> addresses) {
-                if(addresses.size() > 0) {
-                    fillAddress(addresses.get(0));
-                }else addNewAddress();
-            }
-        });
-
-        // observe loading address process' status
-        mCheckoutViewModel.addressIsLoading().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if(aBoolean) {
-                    showAddressProgressBar();
-                    mChangeAddress.setVisibility(View.INVISIBLE);
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition() > tabPosition){
+                    // forward
+                    tab.setCustomView(null);
+                    tab.setCustomView(mCheckoutViewPagerAdapter.getTabView(tab.getPosition(),true));
+                }else{
+                    for(int i = tabPosition; i - tab.getPosition() > 0; i--) {
+                        mTab = mTabLayout.getTabAt(i);
+                        mTab.setCustomView(null);
+                        mTab.setCustomView(mCheckoutViewPagerAdapter.getTabView(i, false));
+                    }
                 }
-                else {
-                    hideAddressProgressBar();
-                    mChangeAddress.setVisibility(View.VISIBLE);
-                }
+
+                // change button's text based on page
+                if(tab.getPosition() == 0) mContinueBtn.setText("Continue To Shipping");
+                else if(tab.getPosition() == 1) mContinueBtn.setText("Continue To Payment");
+                else if(tab.getPosition() == 2) mContinueBtn.setText("Place Order");
+
+
             }
-        });
 
-
-        // observe loading cart items process' response
-        mCheckoutViewModel.getCart().observe(this, new Observer<CartResponse>() {
             @Override
-            public void onChanged(@Nullable CartResponse cartResponse) {
-                mShipmentAdapter.notifyAdapter(cartResponse);
-                mSubTotalTxt.setText(cartResponse.getTotal()+"");
-            }
-        });
+            public void onTabUnselected(TabLayout.Tab tab) {
+                tabPosition = tab.getPosition();
 
-        // observe loading cart items process' status
-        mCheckoutViewModel.cartIsLoading().observe(this, new Observer<Boolean>() {
+            }
+
             @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if(aBoolean)showShipmentProgressBar();
-                else hideShipmentProgressBar();
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
 
-
-
-
-
-        initShipmentRecyclerView();
-        mChangeAddress.setOnClickListener(new View.OnClickListener() {
+        mContinueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent changeAddressIntent = new Intent(CheckoutActivity.this,AddressActivity.class);
-                changeAddressIntent.putExtra("source","checkout");
-                changeAddressIntent.putExtra("user_id",userId);
-                startActivityForResult(changeAddressIntent,CHANGE_ADDRESS_REQUEST);
+                if(getViewPagerItem() == 1) {
+                    if(shippingOption != -1)
+                        mViewPager.setCurrentItem(getViewPagerItem()+1,true);
+                    else
+                        Toast.makeText(CheckoutActivity.this, "please choose one shipping option",
+                                Toast.LENGTH_SHORT).show();
+                }
+                else if(getViewPagerItem() == 2){
+                    if(paymentOption != -1){
+                        // place order into db
+                        Log.d("order","shipping address "+shippingAddressId);
+                        Log.d("order","shipping option "+shippingOption);
+                        Log.d("order","payment option "+paymentOption);
+                        Intent placeOrderIntent = new Intent(getApplicationContext(),OrderSummaryActivity.class);
+                        placeOrderIntent.putExtra("shipping_address_id",shippingAddressId);
+                        placeOrderIntent.putExtra("shipping_method",shippingOption);
+                        placeOrderIntent.putExtra("payment_method",paymentOption);
+                        startActivity(placeOrderIntent);
+                    }else
+                        Toast.makeText(CheckoutActivity.this, "please choose one payment option",
+                                Toast.LENGTH_SHORT).show();
+
+                }
+                else if(getViewPagerItem() == 0){
+                    if(shippingAddressId != -1)
+                         mViewPager.setCurrentItem(getViewPagerItem()+1,true);
+                    else Toast.makeText(CheckoutActivity.this, "please choose one address",
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
 
+
+        // link to checkout view model
+        mCheckoutViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
+        mCheckoutViewModel.init();
+
+        mCheckoutViewModel.getShippingOption().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer option) {
+                if(option != null) shippingOption = option;
+            }
+        });
+
+
+        mCheckoutViewModel.getPaymentOption().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer option) {
+                if(option != null) paymentOption = option;
+            }
+        });
+
+        mCheckoutViewModel.getShippingAddress().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer addressId) {
+                if(addressId != null){
+                    shippingAddressId = addressId;
+                }
+            }
+        });
+
     }
 
-    private void addNewAddress() {
-        Intent addAddressIntent = new Intent(CheckoutActivity.this,AddAddressActivity.class);
-        addAddressIntent.putExtra("user_id",userId);
-        startActivityForResult(addAddressIntent,ADD_ADDRESS_REQUEST);
+    private void setupViewPager() {
+        mCheckoutViewPagerAdapter = new CheckoutViewPagerAdapter(this,getSupportFragmentManager(),
+                checkoutFragment,pageTitles);
+        mViewPager.setAdapter(mCheckoutViewPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
-
-    private void fillAddress(Address address) {
-        mAddressUserNameTxt.setText(getString(R.string.address_user_name,address.getFirst_name(),
-                address.getLast_name()));
-        mAddressDetailsTxt.setText(getString(R.string.address_details,address.getAddress_1(),
-                address.getAddress_2()));
-        mAddressPhoneTxt.setText(address.getPhone_number());
+    private void setTabView() {
+        for (int i = 0; i < mCheckoutViewPagerAdapter.getCount(); i++) {
+            TabLayout.Tab mTab = mTabLayout.getTabAt(i);
+            if (mTab != null) {
+                mTab.setCustomView(mCheckoutViewPagerAdapter.getTabView(i));
+            }
+        }
     }
 
-
-    private long getUserId() {
-        SessionManager sessionManager = new SessionManager(this);
-        return  sessionManager.getId();
+    private void disableTabSelection() {
+        ViewGroup tabStrip = ((ViewGroup)mTabLayout.getChildAt(0));
+        for(int i = 0; i <= 2; i++) {
+            tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+        }
     }
 
-
-
-    private void initShipmentRecyclerView() {
-        mShipmentAdapter = new ShipmentAdapter(shipments,this);
-        mShipmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mShipmentRecyclerView.setAdapter(mShipmentAdapter);
-        mShipmentRecyclerView.setHasFixedSize(true);
+    public int getViewPagerItem(){
+        return mViewPager.getCurrentItem();
     }
+
+    private void setFonts() {
+        mToolbarTitle.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_black)));
+        mContinueBtn.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_regular)));
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("checkout","result "+resultCode);
-        if(data != null){
-            Address address = data.getParcelableExtra("new_address");
-            if(requestCode == CHANGE_ADDRESS_REQUEST && resultCode == RESULT_OK){
-                fillAddress(address);
-
-            }
-            else if(requestCode == ADD_ADDRESS_REQUEST){
-                if(resultCode == RESULT_OK)fillAddress(address);
-                else finish();
-            }
-
-        }
-    }
-
-    private void showAddressProgressBar(){
-        mAddressProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void hideAddressProgressBar(){
-        mAddressProgressBar.setVisibility(View.INVISIBLE);
-    }
-
-    private void showShipmentProgressBar(){
-        mShipmentsProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void hideShipmentProgressBar(){
-        mShipmentsProgressBar.setVisibility(View.INVISIBLE);
+        super.onActivityResult(requestCode,resultCode,data);
     }
 }

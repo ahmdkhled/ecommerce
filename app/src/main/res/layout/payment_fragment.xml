@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/white"
+        android:id="@+id/payment_one_layout"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cod_txt"
+            android:text="Cash On Deliver"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/cod_detail_txt"
+            android:text="If you select Cash On Delivery, you can pay for your order when Delivery Co brings it to your door"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/cod_txt"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@+id/cod_txt"
+            />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cod_switch"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="15dp"
+            />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:background="@android:color/white"
+        android:id="@+id/payment_two_layout"
+        android:paddingBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/payment_one_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/card_txt"
+            android:text="Card"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/card_detail_txt"
+            android:text="5% Special Discount if you pay by a card "
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/card_txt"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@+id/card_txt"
+            />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/card_switch"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="15dp"
+            />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/use_coupon_txt"
+        android:text="USE A COUPON"
+        android:textColor="#9C9797"
+        app:layout_constraintTop_toBottomOf="@+id/payment_two_layout"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="30dp"
+        android:textSize="18sp"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/white"
+        android:id="@+id/coupon_layout"
+        app:layout_constraintTop_toBottomOf="@+id/use_coupon_txt"
+       >
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/coupon_input"
+            android:background="@drawable/enter_code_rec"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="15dp"
+            app:layout_constraintRight_toLeftOf="@+id/apply_coupon_btn"
+            android:layout_marginLeft="15dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            android:hint="Enter Your Code"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/apply_coupon_btn"
+            app:layout_constraintLeft_toRightOf="@+id/coupon_input"
+            android:background="@color/red"
+            android:text="APPLY"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+
+
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

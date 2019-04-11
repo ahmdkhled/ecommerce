@@ -1,4 +1,10 @@
 <resources>
+    <string name="roboto_black">fonts/Roboto-Black.ttf</string>
+    <string name="roboto_light">fonts/Roboto-Light.ttf</string>
+    <string name="roboto_medium">fonts/Roboto-Medium.ttf</string>
+    <string name="roboto_bold">fonts/Roboto-Bold.ttf</string>
+    <string name="roboto_regular">fonts/Roboto-Regular.ttf</string>
+
     <string name="app_name">ecommerce</string>
     <string name="email_edit_hint">Email Address</string>
     <string name="password_edit_hint">Password</string>
@@ -15,9 +21,12 @@
     <string name="zip_code_edit_hint">Zip Code</string>
     <string name="add_address_activity_title">Add New Address</string>
     <string name="field_is_required">Required Field</string>
-    <string name="address_activity_title">Select Address</string>
+    <string name="address_activity_title">Your Address</string>
     <string name="address_details">%1$s, %2$s</string>
     <string name="address_user_name">%1$s %2$s</string>
+    <string name="sub_total_payment">%1$d EGP</string>
     <string name="error_message">something went wrong please try again</string>
     <string name="phone_edit_hint">Phone Number</string>
+    <string name="payment_activiy_title">Payment Options</string>
+
 </resources>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/white"
+        android:id="@+id/feature_one_layout"
+        android:paddingBottom="15dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/feature_one_txt"
+        android:text="Feature One"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/feature_one_value"
+        android:text="Get it in Mansoura by sunday 24 Mar, allow up to 4 additional business days for other cities"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/feature_one_txt"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@+id/feature_one_txt"
+        />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/feature_one_switch"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="15dp"
+            />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:background="@android:color/white"
+        android:paddingBottom="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/feature_one_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/feature_two_txt"
+            android:text="Feature two"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/feature_two_value"
+            android:text="Get it in Mansoura by sunday 24 Mar, allow up to 4 additional business days for other cities"
+            android:textSize="16sp"
+            android:fontFamily=""
+            app:layout_constraintTop_toBottomOf="@+id/feature_two_txt"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@+id/feature_two_txt"
+            />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/feature_two_switch"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="15dp"
+            />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

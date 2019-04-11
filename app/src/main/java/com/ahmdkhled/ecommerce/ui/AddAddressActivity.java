@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.Response;
+import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.ahmdkhled.ecommerce.viewmodel.AddAddressViewModel;
 
 import butterknife.BindView;
@@ -71,7 +72,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
     AddAddressViewModel mAddAddressViewModel;
-    private long userId;
+    private long userId = 2;
     private Address newAddress,addressEdited;
     String target = "Add new address";
 
@@ -85,6 +86,9 @@ public class AddAddressActivity extends AppCompatActivity {
         // bind views
         ButterKnife.bind(this);
 
+        // get user id
+        userId = new SessionManager(this).getId();
+
         // check if user wanna edit an address.
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra("edit_address")){
@@ -96,10 +100,10 @@ public class AddAddressActivity extends AppCompatActivity {
             }
         }
 
-        if(intent != null && intent.hasExtra("user_id")){
-            userId = intent.getLongExtra("user_id",0);
-            Log.d(TAG,"user id "+userId);
-        }
+//        if(intent != null && intent.hasExtra("user_id")){
+//            userId = intent.getLongExtra("user_id",0);
+//            Log.d(TAG,"user id "+userId);
+//        }
 
         // setup activity
         setSupportActionBar(mToolbar);
@@ -133,9 +137,11 @@ public class AddAddressActivity extends AppCompatActivity {
             String address_1 = mAddress1Txt.getText().toString();
             String address_2 = mAddress2Txt.getText().toString();
             int zip_code = Integer.valueOf(mZipCodeTxt.getText().toString());
+            int isDefault = addressEdited.getisDefault();
             int id = addressEdited.getId();
-            addressEdited = new Address(firstName,lastName,phoneNumber,state,city,zip_code,address_1,address_2);
+            addressEdited = new Address(firstName,lastName,phoneNumber,state,city,zip_code,address_1,address_2,0);
             addressEdited.setId(id);
+            addressEdited.setisDefault(isDefault);
             mAddAddressViewModel.editAddress(addressEdited);
             observeEditingAddressResponse();
             observeEditingAddressStatus();
@@ -192,7 +198,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
             newAddress = new Address(mFnameTxt.getText().toString(),mLnameTxt.getText().toString()
                     ,mPhoneTxt.getText().toString(),mStateTxt.getText().toString(),mCityTxt.getText().toString(),
-                    Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString());
+                    Integer.valueOf(mZipCodeTxt.getText().toString()),mAddress1Txt.getText().toString(),mAddress2Txt.getText().toString(),0);
 
             /*
                 obserce add address function to make an action when this process is done
@@ -228,9 +234,10 @@ public class AddAddressActivity extends AppCompatActivity {
                         newAddress.setId(response.getAddress_id());
                         returnToAddressActivity(newAddress);
                     }
-
-
+                }else{
+//                    Log.d("address_tag","adding address response "+response.getMessage());
                 }
+
 
             }
         });
@@ -239,6 +246,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
     // return to address activity with address added
     private void returnToAddressActivity(Address newAddress) {
+        Log.d("ADDRESS_ACTIVITY_TAG","address_1 add "+newAddress.getAddress_1());
         Intent returnIntent = new Intent();
         returnIntent.putExtra("new_address",newAddress);
         setResult(Activity.RESULT_OK,returnIntent);
