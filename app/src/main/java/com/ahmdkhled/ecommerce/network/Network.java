@@ -14,5 +14,6 @@ public class Network {
         return activeNetwork != null &&
                 activeNetwork.isConnected();
 
+
     }
 }

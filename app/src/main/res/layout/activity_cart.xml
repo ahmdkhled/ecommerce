@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="5dp"
     android:background="#fdfdfd"
+    android:id="@+id/activity_cart"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.RecyclerView

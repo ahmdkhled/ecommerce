@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.CartResponse;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 
@@ -45,6 +48,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     TextView LE;
     CartItemAdapter cartItemAdapter;
     ProgressBar cartProgressBar ;
+    ConstraintLayout constraintLayout;
     CartItemAdapter.OnCartItemsChange onCartItemsChange;
     LinearLayoutManager linearLayoutManager;
     int total=0;
@@ -60,6 +64,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         cart_subtotal = findViewById(R.id.cart_subtotal);
         cartSubtotal_label = findViewById(R.id.cart_subtotal_label);
         emptyCartContainer = findViewById(R.id.emptyCartContainer);
+        constraintLayout = findViewById(R.id.activity_cart);
         LE = findViewById(R.id.L_E);
         cartProgressBar = findViewById(R.id.cart_progress_bar);
 
@@ -90,6 +95,11 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         if (cartItems != null&&!cartItems.isEmpty()) {
             cartProgressBar.setVisibility(View.VISIBLE);
             showCartItems(null);
+            if(Network.isConnected(this)) {
+                getCartItems(cartItems, "1");
+            }else {
+                showSnakbar();
+            }
             String ids = getIdsAsString(cartItems);
             String q=getQuantitiesAsString(cartItems);
             vm.getCartItems(ids,q,"1")
@@ -105,8 +115,12 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                page++;
-                getCartItems(cartItems, String.valueOf(page));
+                if (Network.isConnected(getApplicationContext())) {
+                    page++;
+                    getCartItems(cartItems, String.valueOf(page));
+                }else{
+                    showSnakbar();
+                }
             }
         });
 
@@ -207,6 +221,10 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         return sb.toString();
     }
 
+    private void showSnakbar(){
+        Snackbar snackbar = Snackbar.make(constraintLayout,"there is no connection",Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
     
 
     private void handleVisibility(ArrayList<CartItem> cartItems){

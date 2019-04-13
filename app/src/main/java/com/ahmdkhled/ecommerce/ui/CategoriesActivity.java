@@ -1,6 +1,8 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.util.Log;
 import com.ahmdkhled.ecommerce.adapter.CategoryAdapter;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Category;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.ArrayList;
@@ -19,9 +22,10 @@ import retrofit2.Response;
 
 public class CategoriesActivity  extends AppCompatActivity {
 
+
     ArrayList<Category> categoriesArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
-
+    ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +34,17 @@ public class CategoriesActivity  extends AppCompatActivity {
 
 
         recyclerView = findViewById(R.id.recycler_view);
-        getCategories();
+        constraintLayout = findViewById(R.id.activity_category);
+        if (Network.isConnected(this)) {
+            getCategories();
+    }else {
+            showSnakbar();
+        }
 
+    }
+    private void showSnakbar(){
+        Snackbar snackbar = Snackbar.make(constraintLayout,"there is no connection",Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     private void setAdapter() {

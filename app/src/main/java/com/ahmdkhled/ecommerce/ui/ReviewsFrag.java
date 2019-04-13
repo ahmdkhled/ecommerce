@@ -3,6 +3,7 @@ package com.ahmdkhled.ecommerce.ui;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ReviewsAdapter;
 import com.ahmdkhled.ecommerce.model.Review;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 
 import java.util.ArrayList;
@@ -39,10 +41,13 @@ public class ReviewsFrag extends Fragment {
         View v=inflater.inflate(R.layout.reviews_frag,container,false);
         recyclerView=v.findViewById(R.id.reviews_RecyclerView);
         progressBar=v.findViewById(R.id.reviews_progressbar);
-
         productId=((ProductDetail)getActivity()).product.getId();
+        if(Network.isConnected(getContext())) {
+            getReviews(productId);
+        }else {
+            Toast.makeText(getContext(), "there is no connection ", Toast.LENGTH_SHORT).show();
+        }
 
-        getReviews(productId);
         return v;
     }
 
