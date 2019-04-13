@@ -58,7 +58,8 @@
         <activity
             android:name=".ui.CheckoutActivity"
             android:exported="true" />
-        <activity android:name=".OrderDetailActivity"></activity>
+        <activity android:name=".OrderDetailActivity" />
+        <activity android:name=".ProfileUpdateActivity"></activity>
     </application>
 
 </manifest>
