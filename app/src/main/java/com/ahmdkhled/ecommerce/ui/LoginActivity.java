@@ -1,5 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -106,9 +107,9 @@ public class LoginActivity extends AppCompatActivity {
                     }else {
                         SessionManager sessionManager=new SessionManager(getApplicationContext());
                         sessionManager.saveSession(response.getId(),response.getName(),response.getEmail());
-                        if (source!=null&&source.equals(CheckoutActivity.class.getSimpleName())){
-                            Intent intent=new Intent(getApplicationContext(),CheckoutActivity.class);
-                            startActivity(intent);
+                        if (source!=null&&source.equals("cartItemsActivity")){
+                            Intent intent=new Intent();
+                            setResult(Activity.RESULT_OK,intent);
                             finish();
 
                         }else{

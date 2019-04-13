@@ -1,8 +1,12 @@
 package com.ahmdkhled.ecommerce.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,12 +29,17 @@ import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 
+import com.ahmdkhled.ecommerce.viewmodel.CartItemsViewModel;
+
+import com.ahmdkhled.ecommerce.utils.SessionManager;
+
 import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity implements CartItemAdapter.OnCartItemsChange{
+    private static final int LOGIN_REQUEST_CODE = 1009;
     RecyclerView recyclerView;
     Button checkoutButton ;
     TextView cart_subtotal;
@@ -43,6 +52,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     CartItemAdapter.OnCartItemsChange onCartItemsChange;
     LinearLayoutManager linearLayoutManager;
     int total=0;
+    CartItemsViewModel vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -59,8 +69,8 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         cartProgressBar = findViewById(R.id.cart_progress_bar);
 
         onCartItemsChange=this;
-
-        CartItemsManger cartItemsManger=new CartItemsManger(this);
+        vm= ViewModelProviders.of(this).get(CartItemsViewModel.class);
+        CartItemsManger cartItemsManger=CartItemsManger.getInstance(this);
         final ArrayList<CartItem> cartItems=cartItemsManger.getCartItems();
         handleVisibility(cartItems);
 
@@ -68,10 +78,16 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             @Override
             public void onClick(View view) {
 
-             Intent intent = new Intent(getApplicationContext(),CheckoutActivity.class);
-             intent.putParcelableArrayListExtra("items", cartItems);
-             intent.putExtra("total",total);
-             startActivity(intent);
+             if(new SessionManager(CartActivity.this).getId() != -1) {
+                 Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+                 intent.putParcelableArrayListExtra("items", cartItems);
+                 intent.putExtra("total", total);
+                 startActivity(intent);
+             }else {
+                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                 intent.putExtra("source", "cartItemsActivity");
+                 startActivityForResult(intent,LOGIN_REQUEST_CODE);
+             }
             }
         });
 
@@ -84,6 +100,16 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             }else {
                 showSnakbar();
             }
+            String ids = getIdsAsString(cartItems);
+            String q=getQuantitiesAsString(cartItems);
+            vm.getCartItems(ids,q,"1")
+                    .observe(this, new Observer<CartResponse>() {
+                        @Override
+                        public void onChanged(@Nullable CartResponse cartResponse) {
+                           handleCartItems(cartResponse,cartItems,"1");
+                        }
+                    });
+            //getCartItems(cartItems,"1");
         }
 
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -100,6 +126,15 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK && requestCode == LOGIN_REQUEST_CODE && data != null){
+            Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+            intent.putExtra("total", total);
+            startActivity(intent);
+        }
+    }
 
     public void getCartItems(final ArrayList<CartItem> cartItems, final String page) {
         String ids = getIdsAsString(cartItems);
@@ -142,6 +177,24 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         linearLayoutManager=new LinearLayoutManager(this);
         recyclerView.setAdapter(cartItemAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    private void handleCartItems(CartResponse cartResponse,ArrayList<CartItem> cartItems,String page){
+        ArrayList<Product> products = cartResponse.getProducts();
+        ArrayList<CartItem> newCartItems=new ArrayList<>();
+        Log.d("CARTTT","price "+cartResponse.getTotal());
+        for (int i = 0; i < products.size(); i++) {
+            int j=(Integer.valueOf(page)-1) *10 +i;
+            //newCartItems.get(j).setProduct(products.get(i));
+            newCartItems.add(new CartItem(products.get(i),cartItems.get(j).getQuantity()));
+        }
+        Log.d("CARTTT",page);
+
+        cartItemAdapter.addItems(newCartItems);
+        if (!products.isEmpty())
+            cart_subtotal.setText(String.valueOf(cartResponse.getTotal()));
+        cartProgressBar.setVisibility(View.GONE);
+        checkoutButton.setEnabled(true);
     }
 
     private String getIdsAsString(ArrayList<CartItem> cartItems){

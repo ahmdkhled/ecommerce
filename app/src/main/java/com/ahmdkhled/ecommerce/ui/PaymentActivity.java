@@ -23,7 +23,7 @@ import com.ahmdkhled.ecommerce.model.Order;
 import com.ahmdkhled.ecommerce.model.OrderItem;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
-import com.ahmdkhled.ecommerce.viewmodel.PaymentViewModel;
+//import com.ahmdkhled.ecommerce.viewmodel.PaymentViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class PaymentActivity extends AppCompatActivity {
     private int mSubTotal;
     private Address mShipmentAddress;
     private List<CartItem> mCartItems = new ArrayList<>();
-    private PaymentViewModel mViewModel;
+    //private PaymentViewModel mViewModel;
     private long userId;
 
     @Override
@@ -94,50 +94,50 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
         // view model
-        mViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
+        //mViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
 
         // read cart items from shared preference
-        CartItemsManger cartItemsManger = new CartItemsManger(this);
+        CartItemsManger cartItemsManger = CartItemsManger.getInstance(this);
         mCartItems = cartItemsManger.getCartItems();
         Log.d(TAG,"quantity "+mCartItems.get(0).getQuantity());
 
         // read user id from shared preference
         userId = new SessionManager(this).getId();
 
-        mPlaceOrderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mViewModel.placeOrder(userId,mShipmentAddress.getId(),mCartItems);
-                observePlacingOrderResponse();
-                observePlacingOrderStatus();
-            }
-        });
+//        mPlaceOrderBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mViewModel.placeOrder(userId,mShipmentAddress.getId(),mCartItems);
+//                observePlacingOrderResponse();
+//                observePlacingOrderStatus();
+//            }
+//        });
 
 
     }
-
-    private void observePlacingOrderStatus() {
-        mViewModel.getIsPlacing().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if(!aBoolean)showProgressBar();
-                else hideProgressBar();
-            }
-        });
-    }
-
-    private void observePlacingOrderResponse() {
-        mViewModel.getmOrder().observe(this, new Observer<Order>() {
-            @Override
-            public void onChanged(@Nullable Order order) {
-                Log.d(TAG,"q "+order.getOrderItems().get(0).getOrderItem_quantity());
-                Intent intent = new Intent(getApplicationContext(),OrderSummaryActivity.class);
-                intent.putExtra("order_id",order.getOrder_id());
+//
+//    private void observePlacingOrderStatus() {
+//        mViewModel.getIsPlacing().observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(@Nullable Boolean aBoolean) {
+//                if(!aBoolean)showProgressBar();
+//                else hideProgressBar();
+//            }
+//        });
+//    }
+//
+//    private void observePlacingOrderResponse() {
+//        mViewModel.getmOrder().observe(this, new Observer<Order>() {
+//            @Override
+//            public void onChanged(@Nullable Order order) {
+//                Log.d(TAG,"q "+order.getOrderItems().get(0).getOrderItem_quantity());
+//                Intent intent = new Intent(getApplicationContext(),OrderSummaryActivity.class);
+//                intent.putExtra("order_id",order.getOrder_id());
 //                startActivity(intent);
-
-            }
-        });
-    }
+//
+//            }
+//        });
+//    }
 
 
 

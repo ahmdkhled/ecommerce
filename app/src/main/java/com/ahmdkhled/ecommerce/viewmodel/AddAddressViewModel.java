@@ -13,6 +13,7 @@ public class AddAddressViewModel extends ViewModel {
     private AddressRepository mAddressActivtyRepo;
     private MutableLiveData<Response> addResponse,editResponse;
     private MutableLiveData<Boolean> mIsAdding,mIsEditing;
+    private MutableLiveData<Boolean> mWantToEditAddress;
 
 
     public void init(){
@@ -54,5 +55,14 @@ public class AddAddressViewModel extends ViewModel {
     public MutableLiveData<Boolean> getIsEditing() {
         if(mIsEditing == null)mIsEditing = new MutableLiveData<>();
         return mIsEditing;
+    }
+
+    public void wantToEditAddress(boolean b) {
+        mWantToEditAddress.setValue(b);
+    }
+
+    public MutableLiveData<Boolean> getmWantToEditAddress() {
+        if(mWantToEditAddress == null)mWantToEditAddress = new MutableLiveData<>();
+        return mWantToEditAddress;
     }
 }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="15dp"
+    >
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:id="@+id/checkout_price_layout"
+        android:paddingBottom="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/shipping_txt"
+        android:text="Shipping"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="10dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/total_txt"
+        android:text="Total"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/shipping_txt"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/shipping_value"
+        android:text="5.00 EGP"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="@+id/shipping_txt"
+        android:layout_marginTop="5dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="10dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/total_value"
+        android:text="150.00 EGP"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="@+id/total_txt"
+        android:layout_marginTop="5dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="10dp"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/continue_btn"
+        android:background="@drawable/cont_btn_rec"
+        tools:text="Continue To Payment"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkout_price_layout"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        />
+
+
+</android.support.constraint.ConstraintLayout>
