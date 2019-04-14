@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.OrdersAdapter;
 import com.ahmdkhled.ecommerce.model.Order;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.ahmdkhled.ecommerce.viewmodel.OrdersViewModel;
 
@@ -35,6 +36,7 @@ public class OrdersActivity extends AppCompatActivity {
         ordersViewModel= ViewModelProviders.of(this).get(OrdersViewModel.class);
         SessionManager sessionManager=new SessionManager(this);
         if (sessionManager.sessionExist()){
+            if(Network.isConnected(this))
             ordersViewModel.getOrders(String.valueOf(sessionManager.getId()))
                     .observe(this, new Observer<ArrayList<Order>>() {
                         @Override
@@ -42,6 +44,9 @@ public class OrdersActivity extends AppCompatActivity {
                             showOrders(orders);
                         }
                     });
+            else
+                Toast.makeText(this, "there is no connection ", Toast.LENGTH_SHORT).show();
+
         }else{
             Toast.makeText(this, "please login first to view your orders", Toast.LENGTH_SHORT).show();
         }
