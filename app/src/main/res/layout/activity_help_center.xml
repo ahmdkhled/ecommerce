@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HelpCenterActivity">
+
+    <TextView
+        android:id="@+id/customerName_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="name"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/CustomerName_IL"
+        app:layout_constraintBottom_toBottomOf="@id/CustomerName_IL"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/CustomerName_IL"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/customerSubject_IL"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/customerName_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias=".4"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="enter your email"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/customerEmail_label"
+        app:layout_constraintStart_toStartOf="@id/customerName_label"
+        app:layout_constraintTop_toTopOf="@id/customerEmail_IL"
+        app:layout_constraintBottom_toBottomOf="@id/customerEmail_IL"
+        app:layout_constraintTop_toBottomOf="@id/CustomerName_IL"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/customerEmail_IL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toEndOf="@id/customer_subject"
+        app:layout_constraintTop_toBottomOf="@id/customerName_label"
+        app:layout_constraintStart_toStartOf="@id/customerSubject_IL"
+        app:layout_constraintEnd_toEndOf="parent">
+        ><EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="enter your email address"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="subject"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:id="@+id/customer_subject"
+        app:layout_constraintTop_toBottomOf="@id/customerEmail_IL"
+        app:layout_constraintTop_toTopOf="@id/customerSubject_IL"
+        app:layout_constraintBottom_toBottomOf="@id/customerSubject_IL"
+        app:layout_constraintStart_toStartOf="@id/customerEmail_label"
+        />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/customerSubject_IL"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/customer_subject"
+        app:layout_constraintTop_toBottomOf="@id/customerEmail_IL"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="enter your subject"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/customer_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="your message"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/customerSubject_IL"
+        app:layout_constraintStart_toStartOf="@id/customer_subject"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        app:layout_constraintStart_toStartOf="@id/customerSubject_IL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customer_message"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="enter your message"/>
+    </android.support.design.widget.TextInputLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="send"
+        android:background="#061453"
+        android:id="@+id/send-button"/>
+
+</android.support.constraint.ConstraintLayout>
