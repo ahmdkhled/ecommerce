@@ -33,6 +33,9 @@ public class CartItemsManger {
         if(cartItemsSize == null) {
             cartItemsSize = new MutableLiveData<>();
             sharedPreferences=context.getSharedPreferences(PREFS,Context.MODE_PRIVATE);
+            if (getCartItems()==null)
+                cartItemsSize.setValue(0);
+            else
             cartItemsSize.setValue(getCartItems().size());
         }
         Log.d("BADGEEE", "sp cons null");
