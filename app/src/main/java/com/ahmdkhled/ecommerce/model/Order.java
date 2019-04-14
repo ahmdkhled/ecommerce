@@ -1,10 +1,13 @@
 package com.ahmdkhled.ecommerce.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class Order {
+public class Order implements Parcelable {
 
     @SerializedName("order_id")
     private int order_id;
@@ -30,6 +33,27 @@ public class Order {
         this.addressId = addressId;
         this.orderItems = orderItems;
     }
+
+    protected Order(Parcel in) {
+        order_id = in.readInt();
+        order_date = in.readString();
+        userId = in.readInt();
+        status = in.readString();
+        addressId = in.readInt();
+        orderItems=in.readArrayList(Order.class.getClassLoader());
+    }
+
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
 
     public int getOrder_id() {
         return order_id;
@@ -77,5 +101,20 @@ public class Order {
 
     public void setOrderItems(ArrayList<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(order_id);
+        dest.writeString(order_date);
+        dest.writeInt(userId);
+        dest.writeString(status);
+        dest.writeInt(addressId);
+        dest.writeList(orderItems);
     }
 }

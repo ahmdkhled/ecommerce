@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ahmdkhled.ecommerce.OrderDetailActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Order;
 
@@ -59,6 +61,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderHolde
              line1=itemView.findViewById(R.id.line1);
              line2=itemView.findViewById(R.id.line2);
              deliveredLabel=itemView.findViewById(R.id.delivered_label);
+
+             itemView.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     Intent intent=new Intent(context, OrderDetailActivity.class);
+                     intent.putExtra(OrderDetailActivity.ORDER_Key,ordersList.get(getAdapterPosition()));
+                     context.startActivity(intent);
+                 }
+             });
         }
 
         void handleStatus(String status){

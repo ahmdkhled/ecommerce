@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +10,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/order_CV"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="wrap_content"
         app:cardElevation="5dp"
         app:cardCornerRadius="10dp"
         android:layout_margin="5dp"
@@ -35,10 +36,10 @@
                 />
 
             <TextView
-                android:id="@+id/order_detail_Num-TV"
+                android:id="@+id/order_detail_Num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11"
+                tools:text="11"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/order_detail_Num_label"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,16 +53,16 @@
                 android:text="Total"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/order_detail_Num-TV"
+                app:layout_constraintTop_toBottomOf="@id/order_detail_Num"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginLeft="10dp"
                 />
 
             <TextView
-                android:id="@+id/total_detail_TV"
+                android:id="@+id/order_detail_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
+                tools:text="100"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/total_detail_label"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,16 +85,17 @@
                 android:id="@+id/order_detail_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2019-10-10"
+                tools:text="2019-10-10"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/order_detail_Num_label"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
                 />
 
             <TextView
-                android:id="@+id/delivered_TV"
+                android:id="@+id/order_detail_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delivered"
@@ -101,7 +103,7 @@
                 app:layout_constraintTop_toBottomOf="@id/order_detail_date"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:textColor="#b10a0a"
                 />
 
