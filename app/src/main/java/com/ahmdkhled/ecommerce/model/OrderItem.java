@@ -6,18 +6,25 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class OrderItem implements Parcelable {
-    private int id;
-    @SerializedName(value="quantity", alternate={"orderItem_quantity"})
-    private int orderItem_quantity;
 
-    public OrderItem(int id, int quantity) {
-        this.id = id;
-        this.orderItem_quantity = quantity;
-    }
+    @SerializedName("orderItem_id")
+    private int id;
+    @SerializedName("orderItem_quantity")
+    private int orderItem_quantity;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("price")
+    private float price;
+    @SerializedName("description")
+    private String description;
+
 
     protected OrderItem(Parcel in) {
         id = in.readInt();
         orderItem_quantity = in.readInt();
+        name = in.readString();
+        price = in.readFloat();
+        description = in.readString();
     }
 
     public static final Creator<OrderItem> CREATOR = new Creator<OrderItem>() {
@@ -32,22 +39,6 @@ public class OrderItem implements Parcelable {
         }
     };
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getOrderItem_quantity() {
-        return orderItem_quantity;
-    }
-
-    public void setOrderItem_quantity(int orderItem_quantity) {
-        this.orderItem_quantity = orderItem_quantity;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -57,5 +48,29 @@ public class OrderItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeInt(orderItem_quantity);
+        dest.writeString(name);
+        dest.writeFloat(price);
+        dest.writeString(description);
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public int getOrderItem_quantity() {
+        return orderItem_quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

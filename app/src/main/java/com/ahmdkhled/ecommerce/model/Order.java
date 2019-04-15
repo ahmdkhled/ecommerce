@@ -19,18 +19,21 @@ public class Order implements Parcelable {
     private String status;
     @SerializedName("order_addressId")
     private int addressId;
-    @SerializedName("products")
+    @SerializedName("address")
+    private Address address;
+    @SerializedName("orderItems")
     private ArrayList<OrderItem> orderItems;
 
 
-
-
-    public Order(int order_id, String order_date, int userId, String status, int addressId, ArrayList<OrderItem> orderItems) {
+    public Order(int order_id, String order_date,
+                 int userId, String status, int addressId,
+                 Address address, ArrayList<OrderItem> orderItems) {
         this.order_id = order_id;
         this.order_date = order_date;
         this.userId = userId;
         this.status = status;
         this.addressId = addressId;
+        this.address = address;
         this.orderItems = orderItems;
     }
 
@@ -40,6 +43,7 @@ public class Order implements Parcelable {
         userId = in.readInt();
         status = in.readString();
         addressId = in.readInt();
+        address=in.readParcelable(Address.class.getClassLoader());
         orderItems=in.readArrayList(Order.class.getClassLoader());
     }
 
@@ -95,6 +99,10 @@ public class Order implements Parcelable {
         this.addressId = addressId;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public ArrayList<OrderItem> getOrderItems() {
         return orderItems;
     }
@@ -115,6 +123,7 @@ public class Order implements Parcelable {
         dest.writeInt(userId);
         dest.writeString(status);
         dest.writeInt(addressId);
+        dest.writeParcelable(address,flags);
         dest.writeList(orderItems);
     }
 }

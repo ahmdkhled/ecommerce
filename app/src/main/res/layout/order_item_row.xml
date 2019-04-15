@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardElevation="5dp"
+    android:layout_margin="2dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    >
 
     <ImageView
         android:layout_width="100dp"
@@ -18,7 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Iphone7plus"
-        android:id="@+id/text"
+        android:id="@+id/orderItem_name"
         android:textSize="20sp"
         android:textStyle="bold"
         android:maxLines="1"
@@ -33,18 +41,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="2 pcs"
-        android:id="@+id/text2"
+        android:id="@+id/orderItem_quantity"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/text"
-        app:layout_constraintStart_toStartOf="@id/text"/>
+        app:layout_constraintTop_toBottomOf="@id/orderItem_name"
+        app:layout_constraintStart_toStartOf="@id/orderItem_name"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="20$"
-        app:layout_constraintTop_toBottomOf="@id/text2"
-        app:layout_constraintStart_toStartOf="@id/text"
+        android:id="@+id/orderItem_price"
+        app:layout_constraintTop_toBottomOf="@id/orderItem_quantity"
+        app:layout_constraintStart_toStartOf="@id/orderItem_name"
         android:textSize="20sp"/>
 
 
 </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
