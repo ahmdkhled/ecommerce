@@ -14,6 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".HelpCenterActivity"
+            android:exported="true"/>
         <activity
             android:name=".ui.OrdersActivity"
             android:exported="true" />
@@ -59,7 +61,8 @@
             android:name=".ui.CheckoutActivity"
             android:exported="true" />
         <activity android:name=".OrderDetailActivity" />
-        <activity android:name=".ProfileUpdateActivity"></activity>
+        <activity android:name=".ProfileUpdateActivity"/>
+
     </application>
 
 </manifest>
