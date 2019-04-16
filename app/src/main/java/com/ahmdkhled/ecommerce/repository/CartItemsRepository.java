@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.repository;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.CartResponse;
@@ -13,7 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartItemsRepository {
-    private MutableLiveData<CartResponse> cartItems=new MutableLiveData<>();
+    private MutableLiveData<CartResponse> cartItems;
     private static CartItemsRepository cartItemsRepository;
 
     public static CartItemsRepository getInstance(){
@@ -23,6 +24,8 @@ public class CartItemsRepository {
     }
 
     public MutableLiveData<CartResponse> getCartItems(String ids,String q,String page){
+        Log.d("CARRTTT","request  ");
+        cartItems=new MutableLiveData<>();
         RetrofetClient.getApiService()
                 .getCartItems(ids,q,page)
                 .enqueue(new Callback<CartResponse>() {
@@ -36,6 +39,10 @@ public class CartItemsRepository {
 
                     }
                 });
+        return cartItems;
+    }
+
+    public MutableLiveData<CartResponse> getCartItems() {
         return cartItems;
     }
 }

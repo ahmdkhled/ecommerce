@@ -96,19 +96,15 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             cartProgressBar.setVisibility(View.VISIBLE);
             showCartItems(null);
             if(Network.isConnected(this)) {
-                getCartItems(cartItems, "1");
+                String ids = getIdsAsString(cartItems);
+                String q=getQuantitiesAsString(cartItems);
+                vm.getCartItems(ids,q,"1");
+                vm.getCartItems().removeObservers(this);
+                observeCartItems(cartItems,"1");
             }else {
                 showSnakbar();
             }
-            String ids = getIdsAsString(cartItems);
-            String q=getQuantitiesAsString(cartItems);
-            vm.getCartItems(ids,q,"1")
-                    .observe(this, new Observer<CartResponse>() {
-                        @Override
-                        public void onChanged(@Nullable CartResponse cartResponse) {
-                           handleCartItems(cartResponse,cartItems,"1");
-                        }
-                    });
+
             //getCartItems(cartItems,"1");
         }
 
@@ -116,8 +112,10 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 if (Network.isConnected(getApplicationContext())) {
-                    page++;
-                    getCartItems(cartItems, String.valueOf(page));
+                    //Log.d("CARRTTT","onloadmore ");
+                        page++;
+                        //getCartItems(cartItems, String.valueOf(page));
+
                 }else{
                     showSnakbar();
                 }
@@ -136,39 +134,6 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         }
     }
 
-    public void getCartItems(final ArrayList<CartItem> cartItems, final String page) {
-        String ids = getIdsAsString(cartItems);
-        String q=getQuantitiesAsString(cartItems);
-        RetrofetClient.getApiService().getCartItems(ids,q,page)
-                .enqueue(new Callback<CartResponse>() {
-                    @Override
-                    public void onResponse (Call<CartResponse> call, Response<CartResponse> response) {
-                        CartResponse cartResponse=response.body();
-                        ArrayList<Product> products = cartResponse.getProducts();
-                        ArrayList<CartItem> newCartItems=new ArrayList<>();
-                        Log.d("CARTTT","price "+cartResponse.getTotal());
-                        for (int i = 0; i < products.size(); i++) {
-                            int j=(Integer.valueOf(page)-1) *10 +i;
-                            //newCartItems.get(j).setProduct(products.get(i));
-                            newCartItems.add(new CartItem(products.get(i),cartItems.get(j).getQuantity()));
-                        }
-                        Log.d("CARTTT",page);
-
-                        cartItemAdapter.addItems(newCartItems);
-                        if (!products.isEmpty())
-                            cart_subtotal.setText(String.valueOf(cartResponse.getTotal()));
-                        cartProgressBar.setVisibility(View.GONE);
-                        checkoutButton.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onFailure(Call<CartResponse> call, Throwable t) {
-                        cartProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(CartActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
-                        Log.d("CARTTT",t.getMessage());
-                    }
-                });
-    }
 
 
     private void showCartItems(ArrayList<CartItem> cartItems) {
@@ -188,13 +153,29 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             //newCartItems.get(j).setProduct(products.get(i));
             newCartItems.add(new CartItem(products.get(i),cartItems.get(j).getQuantity()));
         }
-        Log.d("CARTTT",page);
+        //Log.d("CARRTTT",newCartItems.size()+"");
 
         cartItemAdapter.addItems(newCartItems);
         if (!products.isEmpty())
             cart_subtotal.setText(String.valueOf(cartResponse.getTotal()));
         cartProgressBar.setVisibility(View.GONE);
         checkoutButton.setEnabled(true);
+    }
+
+    private void observeCartItems(final ArrayList<CartItem> cartItems, final String page){
+        if (vm.getCartItems().hasActiveObservers()){
+            Log.d("CARRTTT","hasActiveObservers  ");
+            return;
+        }
+
+        vm.getCartItems().observe(this, new Observer<CartResponse>() {
+            @Override
+            public void onChanged(@Nullable CartResponse cartResponse) {
+                Log.d("CARRTTT","onChanged  ");
+                handleCartItems(cartResponse,cartItems,page);
+
+            }
+        });
     }
 
     private String getIdsAsString(ArrayList<CartItem> cartItems){
@@ -276,4 +257,6 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         cart_subtotal.setText(String.valueOf(total));
         handleVisibility(cartItemAdapter.getCartItemList());
     }
+
+   
 }
