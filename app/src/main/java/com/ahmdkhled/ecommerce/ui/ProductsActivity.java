@@ -19,6 +19,7 @@ import com.ahmdkhled.ecommerce.EndlessRecyclerViewScrollListener;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.ProductAdapter;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
@@ -53,6 +54,7 @@ public class ProductsActivity  extends AppCompatActivity {
         recyclerView=findViewById(R.id.products_recyclerView);
         loadMorePB=findViewById(R.id.fav_loadMore_PB);
         loadProductsPB =findViewById(R.id.load_Products);
+
 
         productsList=new ArrayList<>();
 
@@ -209,7 +211,8 @@ public class ProductsActivity  extends AppCompatActivity {
         loadProductsPB.setVisibility(View.VISIBLE);
         RetrofetClient.getApiService().getProducts(String.valueOf(categoryId),1,"date",null).enqueue(new Callback<ArrayList<Product>>() {
             @Override
-            public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
+            public void onResponse(Call<ArrayList<Product>>
+                                           call, Response<ArrayList<Product>> response) {
                 ArrayList<Product> products = response.body();
                 if(products!=null){
                     productsList=products;
