@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.ahmdkhled.ecommerce.adapter.ProductAdapter;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 
@@ -45,6 +47,7 @@ public class ProductsActivity  extends AppCompatActivity {
     ProgressBar loadMorePB;
     ProgressBar loadProductsPB;
     int categoryId =-1;
+    ConstraintLayout constraintLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,13 @@ public class ProductsActivity  extends AppCompatActivity {
         recyclerView=findViewById(R.id.products_recyclerView);
         loadMorePB=findViewById(R.id.fav_loadMore_PB);
         loadProductsPB =findViewById(R.id.load_Products);
+        constraintLayout = findViewById(R.id.products_activity);
+
+        if (!Network.isConnected(this)){
+            SnackBarUtil.showSnackBar(constraintLayout);
+            return;
+        }
+
 
 
         productsList=new ArrayList<>();
@@ -62,15 +72,24 @@ public class ProductsActivity  extends AppCompatActivity {
 
         if (intent.hasExtra(TARGET_KEY)&&intent.getStringExtra(TARGET_KEY).equals(RA_TARGET)){
             target=RA_TARGET;
-            getRecentlyAddedProducts(1);
+
             loadProductsPB.setVisibility(View.VISIBLE);
+            if (Network.isConnected(this)) {
+                getRecentlyAddedProducts(1);
+            } else{
+                SnackBarUtil.showSnackBar(constraintLayout);
+            }
         }
 
         if (intent.hasExtra(CATEGORY_ID_KEY)&& intent.getIntExtra(CATEGORY_ID_KEY,-1)>-1){
             target=CATEGORY_ID_KEY;
             categoryId=intent.getIntExtra(CATEGORY_ID_KEY,-1);
-            getProducts(String.valueOf(categoryId),1);
             loadProductsPB.setVisibility(View.VISIBLE);
+            if (!Network.isConnected(this)){
+                getProducts(String.valueOf(categoryId),1);
+            }else{
+                SnackBarUtil.showSnackBar(constraintLayout);
+            }
         }
 
 
@@ -81,17 +100,35 @@ public class ProductsActivity  extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("spinner","i "+l);
                 if(l==1){
-                    orderProductsByDate();
+                    if (Network.isConnected(getApplicationContext())){
+                        orderProductsByDate();
+
+
+                    }else {
+                        SnackBarUtil.showSnackBar(constraintLayout);
+                    }
 
                 }
-                else if(l==2){
-                    orderProductsByPriceLow();
+                else if(l==2) {
+                    if (Network.isConnected(getApplicationContext())) {
+                        orderProductsByPriceLow();
+                    } else {
+                        SnackBarUtil.showSnackBar(constraintLayout);
+                    }
                 }
                 else if(l==3) {
-                    orderProductsByPriceHigh();
+                    if (Network.isConnected(getApplicationContext())) {
+                        orderProductsByPriceHigh();
+                    }else {
+                        SnackBarUtil.showSnackBar(constraintLayout);
+                    }
                 }
                 else if (l==4) {
-                    orderProductsByRate();
+                    if (Network.isConnected(getApplicationContext())) {
+                        orderProductsByRate();
+                    }else {
+                        SnackBarUtil.showSnackBar(constraintLayout);
+                    }
                 }
 
             }
@@ -109,9 +146,17 @@ public class ProductsActivity  extends AppCompatActivity {
                 loadMorePB.setVisibility(View.VISIBLE);
                 Log.d("ENDLESSSCROLL","page "+page);
                 if (target.equals(CATEGORY_ID_KEY))
-                    getProducts(String.valueOf(categoryId),page);
+                    if (Network.isConnected(getApplicationContext())) {
+                        getProducts(String.valueOf(categoryId), page);
+                    }else {
+                        SnackBarUtil.showSnackBar(constraintLayout);
+                    }
                 else if (target.equals(RA_TARGET))
-                    getRecentlyAddedProducts(page);
+                    if (Network.isConnected(getApplicationContext())) {
+                        getRecentlyAddedProducts(page);
+                    }else {
+                        SnackBarUtil.showSnackBar(constraintLayout);
+                    }
 
             }
         });

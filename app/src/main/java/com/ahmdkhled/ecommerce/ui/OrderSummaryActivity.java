@@ -23,6 +23,7 @@ import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.ahmdkhled.ecommerce.viewmodel.OrdersViewModel;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         constraintLayout = findViewById(R.id.order_summary_activity);
         if (!Network.isConnected(this)){
-            showSnakbar();
+            SnackBarUtil.showSnackBar(constraintLayout);
             return;
         }
 
@@ -113,11 +114,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
 
     }
-    private void showSnakbar() {
-        Snackbar snackbar = Snackbar.make(constraintLayout, "there is no connection", Snackbar.LENGTH_LONG);
-        snackbar.show();
-    }
-
 
 
     private void showProgressBar() {

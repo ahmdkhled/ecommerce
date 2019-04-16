@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.Network;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.ahmdkhled.ecommerce.viewmodel.RegistrationViewModel;
 
 public class RegistrationActivity extends AppCompatActivity  {
@@ -54,10 +55,7 @@ public class RegistrationActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_registration);
         constraintLayout = findViewById(R.id.registration_activity);
 
-        if (!Network.isConnected(getApplicationContext())) {
-            showSnakbar();
-            return;
-        }
+
 
 
         // bind views
@@ -72,7 +70,7 @@ public class RegistrationActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 if (!Network.isConnected(getApplicationContext())) {
-                    showSnakbar();
+                    SnackBarUtil.showSnackBar(constraintLayout);
                     return;
                 }
                 signUp();
@@ -83,14 +81,6 @@ public class RegistrationActivity extends AppCompatActivity  {
 
 
     }
-
-    private void showSnakbar(){
-        Snackbar snackbar = Snackbar.make(constraintLayout,"there is no connection",Snackbar.LENGTH_LONG);
-        snackbar.show();
-    }
-
-
-
 
 
     private void signUp() {

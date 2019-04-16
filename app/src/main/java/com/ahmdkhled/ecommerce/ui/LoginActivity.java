@@ -22,6 +22,7 @@ import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Response;
 import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.ahmdkhled.ecommerce.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!Network.isConnected(getApplicationContext())){
-                    showSnakbar();
+                    SnackBarUtil.showSnackBar(constraintLayout);
                     return;
                 }
 
@@ -88,10 +89,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void showSnakbar(){
-        Snackbar snackbar = Snackbar.make(constraintLayout,"there is no connection",Snackbar.LENGTH_LONG);
-        snackbar.show();
-    }
 
     private void observeResponse(){
         loginViewModel.getResponse().observe(this, new Observer<Response>() {
