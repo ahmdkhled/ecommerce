@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Media implements Parcelable{
 
-    @SerializedName("image_id")
+    @SerializedName("media_id")
     private long id;
-    @SerializedName("image_url")
+    @SerializedName("media_url")
     private String url;
 
     public Media(long id, String url) {
