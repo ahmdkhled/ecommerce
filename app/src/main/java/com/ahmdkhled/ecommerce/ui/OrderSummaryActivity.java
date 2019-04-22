@@ -7,6 +7,7 @@ import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +19,11 @@ import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.Order;
 import com.ahmdkhled.ecommerce.model.OrderItem;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.ahmdkhled.ecommerce.viewmodel.OrdersViewModel;
 
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     ProgressBar mProgressBar;
     @BindView(R.id.order_num_value)
     TextView mOrderNumberTxt;
+    ConstraintLayout constraintLayout;
 
 
 
@@ -69,6 +73,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         mViewModel = ViewModelProviders.of(this).get(OrdersViewModel.class);
         mViewModel.init();
+
+        constraintLayout = findViewById(R.id.order_summary_activity);
+        if (!Network.isConnected(this)){
+            SnackBarUtil.showSnackBar(constraintLayout);
+            return;
+        }
 
         mViewModel.placeOrder(userId,addressId,cartItems);
 
@@ -102,8 +112,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
 
 
-    }
 
+    }
 
 
     private void showProgressBar() {

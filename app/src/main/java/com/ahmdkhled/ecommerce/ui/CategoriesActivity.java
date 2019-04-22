@@ -13,6 +13,7 @@ import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 
 import java.util.ArrayList;
 
@@ -38,14 +39,11 @@ public class CategoriesActivity  extends AppCompatActivity {
         if (Network.isConnected(this)) {
             getCategories();
     }else {
-            showSnakbar();
+            SnackBarUtil.showSnackBar(constraintLayout);
         }
 
     }
-    private void showSnakbar(){
-        Snackbar snackbar = Snackbar.make(constraintLayout,"there is no connection",Snackbar.LENGTH_LONG);
-        snackbar.show();
-    }
+
 
     private void setAdapter() {
         CategoryAdapter adapter = new CategoryAdapter(categoriesArrayList, this);

@@ -3,6 +3,8 @@ package com.ahmdkhled.ecommerce.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,8 +17,10 @@ import android.widget.ProgressBar;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.FavoriteProductsAdapter;
 import com.ahmdkhled.ecommerce.model.Product;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.ahmdkhled.ecommerce.viewmodel.FavProductsViewModel;
 
 import java.util.ArrayList;
@@ -29,6 +33,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    ConstraintLayout constraintLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +42,15 @@ public class FavoritesActivity extends AppCompatActivity {
         progressBar=findViewById(R.id.fav_ProgressBar);
 
         FavProductsViewModel favProductsViewModel= ViewModelProviders.of(this).get(FavProductsViewModel.class);
-        favProductsViewModel.getFavProducts(this).observe(this, new Observer<ArrayList<Product>>() {
+        constraintLayout = findViewById(R.id.favorites_activity);
+        if (!Network.isConnected(this)){
+
+            SnackBarUtil.showSnackBar(constraintLayout);
+            return;
+        }
+
+        favProductsViewModel.getFavProducts(this)
+                .observe(this, new Observer<ArrayList<Product>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Product> products) {
                 showProducts(products);
@@ -54,6 +67,9 @@ public class FavoritesActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
 
 

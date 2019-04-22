@@ -29,6 +29,7 @@ import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.ahmdkhled.ecommerce.viewmodel.CartItemsViewModel;
 
 import com.ahmdkhled.ecommerce.utils.SessionManager;
@@ -102,7 +103,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                 vm.getCartItems().removeObservers(this);
                 observeCartItems(cartItems,"1");
             }else {
-                showSnakbar();
+                SnackBarUtil.showSnackBar(constraintLayout);
             }
 
             //getCartItems(cartItems,"1");
@@ -117,7 +118,7 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
                         //getCartItems(cartItems, String.valueOf(page));
 
                 }else{
-                    showSnakbar();
+                    SnackBarUtil.showSnackBar(constraintLayout);
                 }
             }
         });

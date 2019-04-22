@@ -26,8 +26,10 @@ import com.ahmdkhled.ecommerce.adapter.AddressAdapter;
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.AddressItem;
 import com.ahmdkhled.ecommerce.model.Response;
+import com.ahmdkhled.ecommerce.network.Network;
 import com.ahmdkhled.ecommerce.utils.AddressCommunication;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.ahmdkhled.ecommerce.viewmodel.AddressViewModel;
 import com.ahmdkhled.ecommerce.viewmodel.CheckoutViewModel;
 
@@ -58,6 +60,7 @@ public class AddressFragment extends Fragment implements AddressCommunication {
 
     AddressAdapter mAddressAdapter;
     AddressViewModel mAddressViewModel;
+    ConstraintLayout constraintLayout;
     private String userId;
     private int editedAddressPosition;
     private CheckoutViewModel mCheckOutViewModel;
@@ -68,10 +71,11 @@ public class AddressFragment extends Fragment implements AddressCommunication {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.address_fragment,container,false);
+        View view = inflater.inflate(R.layout.address_fragment, container, false);
 
         // bind views
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
+        constraintLayout = getActivity().findViewById(R.id.address_activity);
 
         // set Roboto font to text view
         setupViewFont();
@@ -82,7 +86,7 @@ public class AddressFragment extends Fragment implements AddressCommunication {
 
 
         Bundle bundle = getArguments();
-        if(bundle != null && bundle.getString("source") != null){
+        if (bundle != null && bundle.getString("source") != null) {
             source = bundle.getString("source");
         }
 
@@ -92,7 +96,12 @@ public class AddressFragment extends Fragment implements AddressCommunication {
         mAddressViewModel.init();
 
         // load address
-        mAddressViewModel.loadAddresses(userId,null);
+        if (Network.isConnected(getContext())) {
+
+        mAddressViewModel.loadAddresses(userId, null);
+    }else {
+            SnackBarUtil.showSnackBar(constraintLayout);
+        }
 
         // observe loading address response
         mAddressViewModel.getAddressList().observe(getActivity(), new Observer<List<Address>>() {

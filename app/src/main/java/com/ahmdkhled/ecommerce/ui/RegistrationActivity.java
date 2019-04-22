@@ -3,6 +3,8 @@ package com.ahmdkhled.ecommerce.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -20,6 +22,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.ahmdkhled.ecommerce.model.Response;
+import com.ahmdkhled.ecommerce.network.Network;
+import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
 import com.ahmdkhled.ecommerce.viewmodel.RegistrationViewModel;
 
 public class RegistrationActivity extends AppCompatActivity  {
@@ -42,13 +46,17 @@ public class RegistrationActivity extends AppCompatActivity  {
     RegistrationViewModel mRegistrationViewModel;
     Toast mToast;
 
-
+    ConstraintLayout constraintLayout;
     public static final String TAG = RegistrationActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        constraintLayout = findViewById(R.id.registration_activity);
+
+
+
 
         // bind views
         ButterKnife.bind(this);
@@ -61,16 +69,18 @@ public class RegistrationActivity extends AppCompatActivity  {
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!Network.isConnected(getApplicationContext())) {
+                    SnackBarUtil.showSnackBar(constraintLayout);
+                    return;
+                }
                 signUp();
                 observeRegistrationResponse();
                 observeRegistrationStatus();
             }
         });
 
+
     }
-
-
-
 
 
     private void signUp() {
