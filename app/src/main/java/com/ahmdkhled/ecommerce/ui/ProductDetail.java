@@ -1,6 +1,7 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -8,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.adapter.DetailsPageAdapter;
-import com.ahmdkhled.ecommerce.adapter.ProductsImagesPagerAdapter;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.SlideShowAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
@@ -28,7 +27,6 @@ import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 import com.rd.PageIndicatorView;
 import com.rd.animation.type.AnimationType;
-import com.rd.draw.data.Indicator;
 
 import java.util.ArrayList;
 
@@ -38,7 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductDetail extends AppCompatActivity {
-    TextView name,seller,price;
+    TextView name,seller,price,price_after;
     Button addToCart;
     Toolbar toolbar;
     ViewPager viewPager,detailsViewpager;
@@ -66,7 +64,8 @@ public class ProductDetail extends AppCompatActivity {
         indicator=findViewById(R.id.productpagerIndicatorView);
         name = findViewById(R.id.product_name);
         seller = findViewById(R.id.seller);
-        price = findViewById(R.id.productPrice);
+        price = findViewById(R.id.productDetail_Price);
+        price_after = findViewById(R.id.productDetail_price_after);
         addToCart = findViewById(R.id.addToCart);
         favorite= findViewById(R.id.fav_fab);
 
@@ -157,6 +156,12 @@ public class ProductDetail extends AppCompatActivity {
     void populateData(Product product){
         name.setText(product.getName());
         price.setText(String.valueOf(product.getPrice()));
+        if (product.getPrice_after()!=null){
+            price_after.setVisibility(View.VISIBLE);
+            price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            price_after.setText(product.getPrice_after());
+        }
+
         seller.setText(product.getSellerName());
         if (product.getMedia()!=null&&!product.getMedia().isEmpty())
         indicator.setCount(product.getMedia().size());

@@ -75,19 +75,32 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/productPrice"
-        android:text="price:"
+        android:id="@+id/productDetail_Price"
+        android:text="2500"
         app:layout_constraintStart_toStartOf="@id/product_name"
         app:layout_constraintTop_toBottomOf="@id/seller"
         android:layout_marginTop="5dp"
         android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/productDetail_price_after"
+        app:layout_constraintTop_toTopOf="@id/productDetail_Price"
+        app:layout_constraintStart_toEndOf="@id/productDetail_Price"
+        tools:text="2000"
+        android:textSize="20sp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp" />
 
     <android.support.design.widget.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/product_tabLayout"
         tools:background="#880e4f"
-        app:layout_constraintTop_toBottomOf="@id/productPrice"
+        app:layout_constraintTop_toBottomOf="@id/productDetail_Price"
         android:layout_marginTop="5dp"/>
 
 
