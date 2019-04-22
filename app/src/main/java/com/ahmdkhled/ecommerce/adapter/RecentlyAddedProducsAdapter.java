@@ -66,8 +66,8 @@ public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAd
         public ProductHolder(@NonNull View itemView) {
             super(itemView);
             image=itemView.findViewById(R.id.product_image);
-            name=itemView.findViewById(R.id.name);
-            price=itemView.findViewById(R.id.price);
+            name=itemView.findViewById(R.id.product_name);
+            price=itemView.findViewById(R.id.product_price);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

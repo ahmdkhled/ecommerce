@@ -18,7 +18,9 @@ public class Product implements Parcelable {
     @SerializedName("product_quantity")
     private int quantity;
     @SerializedName("product_price")
-    private int price;
+    private String price;
+    @SerializedName("product_price_after")
+    private String price_after;
     @SerializedName("product_categoryId")
     private int categoryId;
     @SerializedName("product_date")
@@ -30,21 +32,7 @@ public class Product implements Parcelable {
     @SerializedName("media")
     private ArrayList<Media> media;
 
-    public Product(int id, String name, int marketId, int quantity,
-                   int price, int categoryId, String date,
-                   String description, String sellerName,
-                   ArrayList<Media> media) {
-        this.id = id;
-        this.name = name;
-        this.marketId = marketId;
-        this.quantity = quantity;
-        this.price = price;
-        this.categoryId = categoryId;
-        this.date = date;
-        this.description = description;
-        this.sellerName = sellerName;
-        this.media = media;
-    }
+
 
     public Product(int id) {
         this.id = id;
@@ -55,7 +43,8 @@ public class Product implements Parcelable {
         name = in.readString();
         marketId = in.readInt();
         quantity = in.readInt();
-        price = in.readInt();
+        price = in.readString();
+        price_after=in.readString();
         categoryId = in.readInt();
         date = in.readString();
         description = in.readString();
@@ -99,12 +88,20 @@ public class Product implements Parcelable {
         this.quantity = quantity;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getPrice_after() {
+        return price_after;
+    }
+
+    public void setPrice_after(String price_after) {
+        this.price_after = price_after;
     }
 
     public int getCategoryId() {
@@ -174,7 +171,8 @@ public class Product implements Parcelable {
         parcel.writeString(name);
         parcel.writeInt(marketId);
         parcel.writeInt(quantity);
-        parcel.writeInt(price);
+        parcel.writeString(price);
+        parcel.writeString(price_after);
         parcel.writeInt(categoryId);
         parcel.writeString(date);
         parcel.writeString(description);

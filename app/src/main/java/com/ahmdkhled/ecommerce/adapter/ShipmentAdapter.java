@@ -10,16 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ahmdkhled.ecommerce.R;
-import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.CartResponse;
-import com.ahmdkhled.ecommerce.model.Media;
 import com.ahmdkhled.ecommerce.model.Product;
-import com.ahmdkhled.ecommerce.model.Shipment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.ShipmentHolder> {
 
@@ -77,7 +71,7 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
             super(itemView);
             img_product = itemView.findViewById(R.id.product_image);
             product_name = itemView.findViewById(R.id.name_tv);
-            product_price = itemView.findViewById(R.id.price);
+            product_price = itemView.findViewById(R.id.product_price);
             seller_name = itemView.findViewById(R.id.tv_seller_name);
             quantity_value = itemView.findViewById(R.id.tv_q_value);
         }

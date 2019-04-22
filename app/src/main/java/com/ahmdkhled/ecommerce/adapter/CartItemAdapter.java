@@ -78,7 +78,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     private int getTotal (){
             int total=0;
             for(int i=0;i<cartItemList.size();i++){
-                total+=cartItemList.get(i).getQuantity()*cartItemList.get(i).getProduct().getPrice();
+                total+=cartItemList.get(i).getQuantity()*Integer.valueOf( cartItemList.get(i).getProduct().getPrice());
             }
             return total;
         }
@@ -91,7 +91,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         public CartItemHolder(View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.name_tv);
-            price=itemView.findViewById(R.id.price);
+            price=itemView.findViewById(R.id.product_price);
             quantity=itemView.findViewById(R.id.quantity);
             image=itemView.findViewById(R.id.product_image);
             increment=itemView.findViewById(R.id.Increment);
