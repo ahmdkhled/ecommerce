@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,6 +46,11 @@ public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAd
         Product product=productsList.get(position);
         holder.name.setText(product.getName());
         holder.price.setText(String.valueOf(product.getPrice()));
+        if (product.getPrice_after()!=null){
+            holder.price_after.setVisibility(View.VISIBLE);
+            holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.price_after.setText(product.getPrice_after());
+        }
         ArrayList<Media> media=product.getMedia();
         if (media!=null&&media.size()>0){
             String imageUrl=media.get(0).getUrl();
@@ -62,12 +68,13 @@ public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAd
     class ProductHolder extends RecyclerView.ViewHolder{
 
         ImageView image;
-        TextView name,price;
+        TextView name,price,price_after;
         public ProductHolder(@NonNull View itemView) {
             super(itemView);
             image=itemView.findViewById(R.id.product_image);
             name=itemView.findViewById(R.id.product_name);
             price=itemView.findViewById(R.id.product_price);
+            price_after=itemView.findViewById(R.id.product_price_after);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
