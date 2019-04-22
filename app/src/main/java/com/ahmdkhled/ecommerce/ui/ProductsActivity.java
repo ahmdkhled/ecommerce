@@ -59,11 +59,6 @@ public class ProductsActivity  extends AppCompatActivity {
         loadProductsPB =findViewById(R.id.load_Products);
         constraintLayout = findViewById(R.id.products_activity);
 
-        if (!Network.isConnected(this)){
-            SnackBarUtil.showSnackBar(constraintLayout);
-            return;
-        }
-
 
 
         productsList=new ArrayList<>();
@@ -85,7 +80,7 @@ public class ProductsActivity  extends AppCompatActivity {
             target=CATEGORY_ID_KEY;
             categoryId=intent.getIntExtra(CATEGORY_ID_KEY,-1);
             loadProductsPB.setVisibility(View.VISIBLE);
-            if (!Network.isConnected(this)){
+            if (Network.isConnected(this)){
                 getProducts(String.valueOf(categoryId),1);
             }else{
                 SnackBarUtil.showSnackBar(constraintLayout);
