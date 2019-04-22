@@ -49,10 +49,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/name_tv"
-        app:layout_constraintTop_toBottomOf="@id/price"
+        app:layout_constraintTop_toBottomOf="@id/cartItem_price"
         android:text="Quantity :"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:layout_marginTop="5dp"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
         />
@@ -99,19 +100,30 @@
 
 
     <TextView
-        android:id="@+id/price"
-        android:layout_width="0dp"
+        android:id="@+id/cartItem_price"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/product_image"
         app:layout_constraintTop_toBottomOf="@id/name_tv"
-        app:layout_constraintEnd_toStartOf="@id/deleteCartItem"
+        app:layout_constraintEnd_toStartOf="@id/cartItem_price_after"
         tools:text="100$"
-        android:textStyle="italic"
         android:textSize="15sp"
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/cartItem_price_after"
+        tools:text="2000"
+        app:layout_constraintTop_toTopOf="@id/cartItem_price"
+        app:layout_constraintStart_toEndOf="@id/cartItem_price"
+        app:layout_constraintEnd_toStartOf="@id/deleteCartItem"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp" />
+
 
     <ImageView
         android:layout_width="30dp"

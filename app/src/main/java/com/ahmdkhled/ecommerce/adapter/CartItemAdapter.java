@@ -2,6 +2,7 @@ package com.ahmdkhled.ecommerce.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,8 +46,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
     @Override
     public void onBindViewHolder(@NonNull CartItemHolder holder, int position) {
+        Log.d("CARRTTRR","price "+cartItemList.get(position).getProduct().getPrice());
         holder.name.setText(cartItemList.get(position).getProduct().getName());
-        holder.price.setText(String.valueOf(cartItemList.get(position).getProduct().getPrice()));
+        holder.price.setText(cartItemList.get(position).getProduct().getPrice());
+        if (cartItemList.get(position).getProduct().getPrice_after()!=null){
+            holder.price_after.setVisibility(View.VISIBLE);
+            holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.price_after.setText(cartItemList.get(position).getProduct().getPrice_after());
+        }
         holder.quantity.setText(String.valueOf(cartItemList.get(position).getQuantity()));
         ArrayList<Media> imagesList=cartItemList.get(position).getProduct().getMedia();
         if (imagesList!=null&&imagesList.size()>0){
@@ -85,13 +92,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
     class CartItemHolder extends RecyclerView.ViewHolder{
         ImageView image ,delete;
-        TextView name , price , quantity ;
+        TextView name , price,price_after , quantity ;
         Button increment , decrement ;
 
         public CartItemHolder(View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.name_tv);
-            price=itemView.findViewById(R.id.product_price);
+            price=itemView.findViewById(R.id.cartItem_price);
+            price_after=itemView.findViewById(R.id.cartItem_price_after);
             quantity=itemView.findViewById(R.id.quantity);
             image=itemView.findViewById(R.id.product_image);
             increment=itemView.findViewById(R.id.Increment);
