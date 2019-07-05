@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,8 @@ public class CheckoutActivity extends AppCompatActivity {
     TextView mTotalValueTxt;
     @BindView(R.id.continue_btn)
     Button mContinueBtn;
+    @BindView(R.id.back_arrow_icon)
+    ImageButton backArrow;
 
     CheckoutViewPagerAdapter mCheckoutViewPagerAdapter;
     private Fragment[] checkoutFragment = {new AddressFragment(), new CheckoutShippingFragment()
@@ -169,6 +172,13 @@ public class CheckoutActivity extends AppCompatActivity {
                     else Toast.makeText(CheckoutActivity.this, "please choose one address",
                             Toast.LENGTH_SHORT).show();
                 }
+
+                backArrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                });
 
             }
         });
