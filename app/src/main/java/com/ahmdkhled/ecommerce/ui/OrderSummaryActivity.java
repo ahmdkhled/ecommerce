@@ -39,7 +39,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
     @BindView(R.id.place_order_layout)
     ConstraintLayout layout;
-    @BindView(R.id.progress_bar)
+    @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
     @BindView(R.id.order_num_value)
     TextView mOrderNumberTxt;
@@ -58,6 +58,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
+
+        ButterKnife.bind(this);
 
         Intent intent= getIntent();
         if(intent != null){
