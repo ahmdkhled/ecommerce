@@ -1,4 +1,4 @@
-package com.ahmdkhled.ecommerce;
+package com.ahmdkhled.ecommerce.ui;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

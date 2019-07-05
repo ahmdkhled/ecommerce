@@ -1,4 +1,4 @@
-package com.ahmdkhled.ecommerce;
+package com.ahmdkhled.ecommerce.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Category;
 import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;

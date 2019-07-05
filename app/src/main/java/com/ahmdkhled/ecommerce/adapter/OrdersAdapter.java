@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ahmdkhled.ecommerce.OrderDetailActivity;
+import com.ahmdkhled.ecommerce.ui.OrderDetailActivity;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.model.Order;
 

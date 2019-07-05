@@ -1,7 +1,6 @@
 package com.ahmdkhled.ecommerce.ui;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
@@ -17,16 +16,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ahmdkhled.ecommerce.EndlessRecyclerViewScrollListener;
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.CartItemAdapter;
 import com.ahmdkhled.ecommerce.model.CartItem;
 import com.ahmdkhled.ecommerce.model.CartResponse;
 import com.ahmdkhled.ecommerce.model.Product;
 import com.ahmdkhled.ecommerce.network.Network;
-import com.ahmdkhled.ecommerce.network.RetrofetClient;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 
 import com.ahmdkhled.ecommerce.utils.SnackBarUtil;
@@ -35,9 +31,6 @@ import com.ahmdkhled.ecommerce.viewmodel.CartItemsViewModel;
 import com.ahmdkhled.ecommerce.utils.SessionManager;
 
 import java.util.ArrayList;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity implements CartItemAdapter.OnCartItemsChange{
     private static final int LOGIN_REQUEST_CODE = 1009;
