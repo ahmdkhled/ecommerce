@@ -3,9 +3,11 @@ package com.ahmdkhled.ecommerce.ui;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -155,14 +157,17 @@ public class ProductDetail extends AppCompatActivity {
 
     void populateData(Product product){
         name.setText(product.getName());
-        price.setText(String.valueOf(product.getPrice()));
+        price.setText(getString(R.string.product_price,product.getPrice()));
         if (product.getPrice_after()!=null){
             price_after.setVisibility(View.VISIBLE);
             price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            price_after.setText(product.getPrice_after());
+            price_after.setText(getString(R.string.product_price,product.getPrice_after()));
+            TextViewCompat.setTextAppearance(price, android.R.style.TextAppearance_DeviceDefault_Medium);
+            name.setTypeface(null, Typeface.NORMAL);
         }
 
-        seller.setText(product.getSellerName());
+
+        seller.setText(getString(R.string.seller,product.getSellerName()));
         if (product.getMedia()!=null&&!product.getMedia().isEmpty())
         indicator.setCount(product.getMedia().size());
     }

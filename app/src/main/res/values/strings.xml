@@ -28,5 +28,8 @@
     <string name="error_message">something went wrong please try again</string>
     <string name="phone_edit_hint">Phone Number</string>
     <string name="payment_activiy_title">Payment Options</string>
+    <string name="seller">by: %1$s</string>
+    <string name="product_price">%1$s EGP</string>
+
 
 </resources>
