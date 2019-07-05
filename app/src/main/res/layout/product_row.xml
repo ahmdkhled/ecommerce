@@ -32,6 +32,7 @@
         android:layout_width="match_parent"
         android:maxLines="1"
         android:ellipsize="end"
+        android:textColor="@color/colorPrimary"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/product_image"
         tools:text="samsung Galaxy Note 10"
@@ -43,7 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="2000"
-        android:textSize="20sp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/product_name"
         app:layout_constraintStart_toStartOf="parent"
 
@@ -56,9 +58,10 @@
         app:layout_constraintStart_toEndOf="@id/product_price"
         app:layout_constraintTop_toTopOf="@id/product_price"
         tools:text="1500"
+        android:textStyle="bold"
         android:visibility="gone"
         tools:visibility="visible"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_marginStart="7sp"
         android:layout_marginLeft="7sp" />
 

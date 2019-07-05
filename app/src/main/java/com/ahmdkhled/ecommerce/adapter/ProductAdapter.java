@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +52,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
         if (product.getPrice_after()!=null){
             holder.price_after.setVisibility(View.VISIBLE);
             holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.price_after.setText(product.getPrice_after());
+            TextViewCompat.setTextAppearance(holder.price, android.R.style.TextAppearance_DeviceDefault_Medium);
+            holder.price_after.setText(context.getString(R.string.product_price,product.getPrice_after()));
         }
         ArrayList<Media> media=product.getMedia();
         if (media!=null&&media.size()>0){
