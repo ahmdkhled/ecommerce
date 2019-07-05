@@ -17,7 +17,7 @@
         app:layout_constraintLeft_toLeftOf="parent">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/backToShopping"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"

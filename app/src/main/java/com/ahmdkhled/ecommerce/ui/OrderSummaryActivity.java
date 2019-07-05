@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,6 +42,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
     ConstraintLayout layout;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(R.id.backToShopping)
+    Button backToShopping;
     @BindView(R.id.order_num_value)
     TextView mOrderNumberTxt;
     ConstraintLayout constraintLayout;
@@ -61,7 +64,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Intent intent= getIntent();
+        final Intent intent= getIntent();
         if(intent != null){
             addressId = intent.getIntExtra("shipping_address_id",0);
             shippingMethod = intent.getIntExtra("shipping_method",0);
@@ -111,7 +114,14 @@ public class OrderSummaryActivity extends AppCompatActivity {
             }
         });
 
-
+        backToShopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
 
