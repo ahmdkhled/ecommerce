@@ -199,6 +199,9 @@ public class ProductDetail extends AppCompatActivity {
             Intent intent=new Intent(this,CartActivity.class);
             startActivity(intent);
         }
+        else if (item.getItemId()==android.R.id.home){
+            onBackPressed();
+        }
         return true;
     }
 
@@ -214,10 +217,6 @@ public class ProductDetail extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
+
 
 }
