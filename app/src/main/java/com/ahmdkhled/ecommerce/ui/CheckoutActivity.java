@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +38,8 @@ public class CheckoutActivity extends AppCompatActivity {
     TabLayout mTabLayout;
     @BindView(R.id.checkout_view_pager)
     CustomViewPager mViewPager;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.toolbar_title)
-    TextView mToolbarTitle;
+
+
     @BindView(R.id.shipping_txt)
     TextView mShippingTxt;
     @BindView(R.id.shipping_value)
@@ -51,8 +50,8 @@ public class CheckoutActivity extends AppCompatActivity {
     TextView mTotalValueTxt;
     @BindView(R.id.continue_btn)
     Button mContinueBtn;
-    @BindView(R.id.back_arrow_icon)
-    ImageButton backArrow;
+    @BindView(R.id.CheckoutToolbar)
+    Toolbar toolbar;
 
     CheckoutViewPagerAdapter mCheckoutViewPagerAdapter;
     private Fragment[] checkoutFragment = {new AddressFragment(), new CheckoutShippingFragment()
@@ -74,7 +73,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // bind views
         ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
 
@@ -173,12 +174,6 @@ public class CheckoutActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
 
-                backArrow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onBackPressed();
-                    }
-                });
 
             }
         });
@@ -249,7 +244,6 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void setFonts() {
-        mToolbarTitle.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_black)));
         mContinueBtn.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.roboto_regular)));
 
     }
@@ -258,5 +252,12 @@ public class CheckoutActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==android.R.id.home)
+            onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }
