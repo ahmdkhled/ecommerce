@@ -47,7 +47,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
 
         Product product=productsList.get(position);
         holder.name.setText(product.getName());
-        holder.price.setText(String.valueOf(product.getPrice()));
+        holder.price.setText(context.getString(R.string.product_price,product.getPrice()));
         Log.d("SALLEE","sale "+product.getPrice_after());
         if (product.getPrice_after()!=null){
             holder.price_after.setVisibility(View.VISIBLE);
