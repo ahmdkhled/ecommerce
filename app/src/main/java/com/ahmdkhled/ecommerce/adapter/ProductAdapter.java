@@ -47,7 +47,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
 
         Product product=productsList.get(position);
         holder.name.setText(product.getName());
-        holder.price.setText(context.getString(R.string.product_price,product.getPrice()));
         Log.d("SALLEE","sale "+product.getPrice_after());
         if (product.getPrice_after()!=null){
             holder.price_after.setVisibility(View.VISIBLE);
@@ -55,10 +54,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Products
             TextViewCompat.setTextAppearance(holder.price, android.R.style.TextAppearance_DeviceDefault_Medium);
             holder.price_after.setText(context.getString(R.string.product_price,product.getPrice_after()));
         }
+        holder.price.setText(context.getString(R.string.product_price,product.getPrice()));
+
         ArrayList<Media> media=product.getMedia();
         if (media!=null&&media.size()>0){
             String imageUrl=media.get(0).getUrl();
-            Log.d("SALLEE","url "+imageUrl);
+            //Log.d("SALLEE","url "+imageUrl);
             Glide.with(context)
                     .load(imageUrl)
                     .into(holder.productImage);

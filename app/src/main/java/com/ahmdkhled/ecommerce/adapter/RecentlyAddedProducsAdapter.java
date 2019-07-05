@@ -45,11 +45,13 @@ public class RecentlyAddedProducsAdapter extends RecyclerView.Adapter<RecentlyAd
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         Product product=productsList.get(position);
         holder.name.setText(product.getName());
-        holder.price.setText(String.valueOf(product.getPrice()));
+        holder.price.setText(context.getString(R.string.product_price,product.getPrice()));
         if (product.getPrice_after()!=null){
             holder.price_after.setVisibility(View.VISIBLE);
             holder.price.setPaintFlags(holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.price_after.setText(product.getPrice_after());
+            holder.price_after.setText(context.getString(R.string.product_price,product.getPrice_after()));
+
         }
         ArrayList<Media> media=product.getMedia();
         if (media!=null&&media.size()>0){
