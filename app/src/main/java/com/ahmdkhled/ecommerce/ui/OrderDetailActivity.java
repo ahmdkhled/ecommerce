@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.adapter.OrderItemAdapter;
@@ -52,6 +53,10 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     }
     private void populateAddress(Order order) {
+        if (order.getAddress()==null){
+            Toast.makeText(this, "no adddress", Toast.LENGTH_SHORT).show();
+            return;
+        }
         address1.setText(order.getAddress().getAddress_1());
         address2.setText(order.getAddress().getAddress_2());
         city.setText(order.getAddress().getCity());
