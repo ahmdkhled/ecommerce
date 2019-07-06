@@ -10,14 +10,25 @@
 
 <android.support.constraint.ConstraintLayout
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:scaleType="fitXY"
         android:id="@+id/mainCategoryImage"
-        tools:src="@color/colorAccent" />
+         />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:background="#A1960808"
+        app:layout_constraintStart_toStartOf="@id/mainCategoryImage"
+        app:layout_constraintEnd_toEndOf="@id/mainCategoryImage"
+        app:layout_constraintBottom_toBottomOf="@id/mainCategoryImage"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -25,7 +36,7 @@
         android:id="@+id/mainCategoryName"
         tools:text="Mobiles"
         android:textSize="20sp"
-        android:textColor="#424242"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

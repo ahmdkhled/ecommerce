@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity
     private void showSlider(ArrayList<Ad> ads){
         MainSliderAdapter mainSliderAdapter=new MainSliderAdapter(this,ads);
         mainSliderPager.setAdapter(mainSliderAdapter);
+        pageIndicatorView.setCount(ads.size());
 
     }
 
