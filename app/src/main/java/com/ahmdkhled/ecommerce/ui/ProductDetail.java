@@ -49,6 +49,7 @@ public class ProductDetail extends AppCompatActivity {
     public static final String PRODUCT_KEY="product_key";
     public Product product;
     private TextView badgeTV;
+    boolean isFavorite=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +136,13 @@ public class ProductDetail extends AppCompatActivity {
     }
 
     void addToFavorite(int productId,long userId){
+        if (isFavorite){
+            favorite.setImageResource(R.drawable.ic_star_border_black_24dp);
+            isFavorite=false;
+            Toast.makeText(this, "removed from favorites", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //isFavorite=true;
         RetrofetClient.getApiService()
                 .addToFavorite(productId,userId)
                 .enqueue(new Callback<ResponseBody>() {
@@ -143,7 +151,8 @@ public class ProductDetail extends AppCompatActivity {
                         if (response.isSuccessful()){
                             Toast.makeText(ProductDetail.this, "added to favorite",
                                     Toast.LENGTH_SHORT).show();
-                            favorite.setBackgroundResource(R.drawable.ic_star_black_24dp);
+                            favorite.setImageResource(R.drawable.ic_star_black_24dp);
+                            isFavorite=true;
                         }
                     }
 
