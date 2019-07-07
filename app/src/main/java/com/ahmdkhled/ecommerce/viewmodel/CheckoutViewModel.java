@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.ahmdkhled.ecommerce.model.Address;
 import com.ahmdkhled.ecommerce.model.CartItem;
+import com.ahmdkhled.ecommerce.model.Coupon;
 import com.ahmdkhled.ecommerce.repository.AddressRepository;
 import com.ahmdkhled.ecommerce.utils.CartItemsManger;
 
@@ -15,6 +16,7 @@ public class CheckoutViewModel extends ViewModel {
 
     private MutableLiveData<Integer> shippingOption,paymentOption;
     private MutableLiveData<Integer> shippingAddress;
+    private MutableLiveData<String> mCouponAmount;
 
 
     public void init(){
@@ -66,5 +68,12 @@ public class CheckoutViewModel extends ViewModel {
     }
 
 
+    public void setCouponAmount(String s) {
+        mCouponAmount.setValue(s);
+    }
 
+    public MutableLiveData<String> getmCouponAmount() {
+        if(mCouponAmount == null)mCouponAmount = new MutableLiveData<>();
+        return mCouponAmount;
+    }
 }

@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -63,7 +64,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private int shippingOption;
     private int shippingAddressId;
     private int paymentOption;
-    private int total;
+    private double total;
 
 
     @Override
@@ -204,6 +205,20 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onChanged(@Nullable Integer addressId) {
                 if(addressId != null){
                     shippingAddressId = addressId;
+                }
+            }
+        });
+
+        mCheckoutViewModel.getmCouponAmount().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                if(s != null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
+                    builder.setTitle("Congrats")
+                            .setMessage("You got a great offer")
+                            .show();
+                    total = total - (total * Integer.valueOf(s) / 100);
+                    mTotalValueTxt.setText(total+" EGP");
                 }
             }
         });

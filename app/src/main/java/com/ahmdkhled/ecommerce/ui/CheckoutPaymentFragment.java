@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmdkhled.ecommerce.R;
 import com.ahmdkhled.ecommerce.utils.PrefManager;
@@ -77,6 +78,21 @@ public class CheckoutPaymentFragment extends Fragment {
         });
 
 
+        mApplyCouponBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mCouponCode = mCouponEditTxt.getText().toString();
+                if(!mCouponCode.isEmpty()){
+                    if(mCouponCode.equals("mn112")){
+                        mCheckoutViewModel.setCouponAmount("10");
+                    }else{
+                        Toast.makeText(getContext(), "invalid coupon", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getContext(), "Please enter a code", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         return view;
     }
